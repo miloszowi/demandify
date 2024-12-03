@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: querify
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "querify", "-U", "postgres"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    ports:
+      - '5432:5432'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  php-fpm:
+    build: .docker/php
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "9000:9000"
+    depends_on:
+      - database
+      - rabbitmq
+    networks:
+      - default
+
+  nginx:
+    build: .docker/nginx
+    depends_on:
+      - php-fpm
+    volumes:
+      - .:/var/www/html
+      - ./public:/var/www/html/public
+    ports:
+      - '80:80'
+    networks:
+      - default
+
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  database_data:
+  rabbitmq_data:
+
+networks:
+  default:
+    driver: bridge

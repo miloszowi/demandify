@@ -1,0 +1,11 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Querify\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'

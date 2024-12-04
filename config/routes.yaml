@@ -3,3 +3,10 @@ controllers:
         path: ../src/Infrastructure/Controller/
         namespace: Querify\Infrastructure\Controller
     type: attribute
+
+api_login:
+    path: /api/login
+    methods: ['POST']
+    controller: \Querify\Infrastructure\Api\UserApiController::login
+
+

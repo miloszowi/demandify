@@ -13,9 +13,11 @@
         "doctrine/doctrine-bundle": "^2.13.1",
         "doctrine/doctrine-migrations-bundle": "^3.3.1",
         "doctrine/orm": "^3.3",
+        "nelmio/api-doc-bundle": "^4.33",
         "ramsey/uuid": "^4.7.6",
         "ramsey/uuid-doctrine": "^2.1",
         "symfony/amqp-messenger": "7.2.*",
+        "symfony/asset": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2.4.7",
@@ -29,6 +31,8 @@
         "symfony/validator": "7.2.*",
         "symfony/yaml": "7.2.*",
         "symfonycasts/verify-email-bundle": "^1.17.2",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0",
         "webmozart/assert": "^1.11"
     },
     "config": {

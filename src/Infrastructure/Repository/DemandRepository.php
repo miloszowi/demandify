@@ -19,7 +19,7 @@ class DemandRepository extends ServiceEntityRepository implements DemandReposito
 
     public function findByUuid(UuidInterface $uuid): Demand
     {
-        return $this->getEntityManager()->createQueryBuilder('u')
+        return $this->getEntityManager()->createQueryBuilder()
             ->andWhere('u.uuid = :uuid')
             ->setParameter('uuid', $uuid)
             ->getQuery()
@@ -30,6 +30,6 @@ class DemandRepository extends ServiceEntityRepository implements DemandReposito
     public function save(Demand $demand): void
     {
         $this->getEntityManager()->persist($demand);
-        $this->getEntityManager()->flush($demand);
+        $this->getEntityManager()->flush();
     }
 }

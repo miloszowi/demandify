@@ -1,0 +1,12 @@
+parameters:
+    ignoreErrors:
+        - identifier: missingType.generics
+    level: 6
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
+    excludePaths:
+        - tests/spec

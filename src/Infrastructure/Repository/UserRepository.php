@@ -22,7 +22,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function findByUuid(UuidInterface $uuid): ?User
     {
-        return $this->getEntityManager()->createQueryBuilder('u')
+        return $this->getEntityManager()->createQueryBuilder()
             ->andWhere('u.uuid = :uuid')
             ->setParameter('uuid', $uuid)
             ->getQuery()
@@ -32,7 +32,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
 
     public function getByUuid(UuidInterface $uuid): User
     {
-        $user = $this->getEntityManager()->createQueryBuilder('u')
+        $user = $this->getEntityManager()->createQueryBuilder()
             ->andWhere('u.uuid = :uuid')
             ->setParameter('uuid', $uuid->toString())
             ->getQuery()

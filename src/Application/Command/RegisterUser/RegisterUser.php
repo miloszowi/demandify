@@ -15,6 +15,9 @@ final readonly class RegisterUser
         public string $plainPassword,
         public string $firstName,
         public string $lastName,
+        /**
+         * @var string[]
+         */
         public array $roles,
     ) {
     }

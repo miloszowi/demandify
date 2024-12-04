@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   database:
     image: postgres:16-alpine
@@ -19,15 +17,14 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
     ports:
       - 5672:5672
       - 15672:15672
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  php-fpm:
-    build: .docker/php
+  php:
+    build: .
     volumes:
       - .:/var/www/html
     ports:
@@ -39,9 +36,9 @@ services:
       - default
 
   nginx:
-    build: .docker/nginx
+    build: docker/nginx
     depends_on:
-      - php-fpm
+      - php
     volumes:
       - .:/var/www/html
       - ./public:/var/www/html/public

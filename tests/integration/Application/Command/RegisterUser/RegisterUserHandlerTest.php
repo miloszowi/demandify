@@ -18,7 +18,6 @@ class RegisterUserHandlerTest extends KernelTestCase
     private EntityManagerInterface $entityManager;
     private RegisterUserHandler $handler;
     private UserRepository $userRepository;
-    private MessageBusInterface $messageBus;
 
     protected function setUp(): void
     {
@@ -27,7 +26,6 @@ class RegisterUserHandlerTest extends KernelTestCase
         $this->entityManager = self::getContainer()->get(EntityManagerInterface::class);
         $this->userRepository = self::getContainer()->get(UserRepository::class);
         $this->handler = self::getContainer()->get(RegisterUserHandler::class);
-        $this->messageBus = self::getContainer()->get(MessageBusInterface::class);
 
         $this->entityManager->createQuery('DELETE FROM Querify\Domain\User\User')->execute();
     }

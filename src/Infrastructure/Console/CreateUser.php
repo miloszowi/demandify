@@ -7,6 +7,7 @@ namespace Querify\Infrastructure\Console;
 use Querify\Application\Command\RegisterUser\RegisterUser;
 use Querify\Domain\UserRole;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,10 +18,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateUser extends Command
 {
-    public function __construct(
-        private readonly MessageBusInterface $messageBus,
-        private readonly UserPasswordHasherInterface $passwordHasher
-    ) {
+    public function __construct(private readonly MessageBusInterface $messageBus)
+    {
         parent::__construct();
     }
 
@@ -61,6 +60,7 @@ class CreateUser extends Command
 
     private function getUserData(InputInterface $input, OutputInterface $output, string $userData): string
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $question = new Question(
             \sprintf('[%s]: ', $userData)
@@ -71,6 +71,7 @@ class CreateUser extends Command
 
     private function getPassword(InputInterface $input, OutputInterface $output): string
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $question = new Question('[Password]:');
         $question->setHidden(true);
@@ -80,6 +81,7 @@ class CreateUser extends Command
 
     private function getRole(InputInterface $input, OutputInterface $output): string
     {
+        /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
         $question = new ChoiceQuestion(
             'Please select role: ',

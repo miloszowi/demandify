@@ -7,7 +7,6 @@ namespace Querify\Domain\Demand;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Querify\Domain\User\User;
-use Querify\Repository\DemandRepository;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

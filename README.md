@@ -10,12 +10,15 @@ Web application to serve production services demands.
 ## Installation
 ```
 $ git clone git@github.com:miloszowi/querify.git
-
 ```
 
 ## Run
+To start the project, you simply execute script below:
 ```
 $ docker/start
 ```
 
-// TODO
+## Tests
+```
+$ docker/tests
+```

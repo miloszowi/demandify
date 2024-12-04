@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+echo -e "${GREEN}======================================================================="
+echo -e "starting containers"
+echo -e "=======================================================================${NC}"
+docker-compose up -d
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "wait for database"
+echo -e "=======================================================================${NC}"
+source ./docker/wait-for-container
+waitContainer "database"
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "create database if not exist"
+echo -e "=======================================================================${NC}"
+docker-compose exec php bin/console doctrine:database:create --if-not-exists
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "create test database if not exist"
+echo -e "=======================================================================${NC}"
+docker-compose exec php bin/console doctrine:database:create --env=test --if-not-exists
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "execute migrations"
+echo -e "=======================================================================${NC}"
+docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "execute test migrations"
+echo -e "=======================================================================${NC}"
+docker-compose exec php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "execute test migrations"
+echo -e "=======================================================================${NC}"
+docker-compose exec php bin/console messenger:setup-transports
+
+
+

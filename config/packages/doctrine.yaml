@@ -2,7 +2,7 @@ doctrine:
     dbal:
         driver: 'pdo_psql'
         charset: utf8
-        schema_filter: ~^(?!doctrine_)~
+#        schema_filter: ~^(?!doctrine_)~
         default_table_options:
             charset: utf8
             collate: utf_8_unicode_ci

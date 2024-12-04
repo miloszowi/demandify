@@ -12,6 +12,9 @@ enum Status: string
     case DECLINED = 'DECLINED';
     case EXECUTED = 'EXECUTED';
 
+    /**
+     * @return string[]
+     */
     public static function asArray(): array
     {
         return \array_column(self::cases(), 'name');

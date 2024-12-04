@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+function getContainerHealth() {
+  CONTAINER_ID=$(docker-compose ps -q --filter "status=running" "$1")
+  docker inspect --format "{{json .State.Health.Status }}" "$CONTAINER_ID"
+}
+
+function waitContainer() {
+  printf "%s" "$1"
+  while
+    STATUS=$(getContainerHealth "$1")
+    [ "$STATUS" != "\"healthy\"" ]
+  do
+    if [ -z "$STATUS" ]; then
+      echo "Try again!"
+      exit 1
+    fi
+    if [ "$STATUS" == "\"unhealthy\"" ]; then
+      echo "Failed!"
+      exit 1
+    fi
+    printf .
+    sleep 1
+  done
+  printf " ready\n"
+}

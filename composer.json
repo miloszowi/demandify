@@ -43,7 +43,7 @@
         },
         "bump-after-update": true,
         "sort-packages": true,
-        "bin-dir": "bin"
+        "bin-dir": "vendor/bin"
     },
     "autoload": {
         "psr-4": {
@@ -78,7 +78,9 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpspec": "vendor/bin/phpspec run --no-code-generation"
+        "phpspec": "vendor/bin/phpspec run --no-code-generation",
+        "phpunit": "vendor/bin/phpunit --no-deprecations",
+        "phpstan": "vendor/bin/phpstan"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -93,6 +95,7 @@
         "phpspec/phpspec": "^7.5",
         "phpspec/prophecy": "^1.20",
         "phpspec/prophecy-phpunit": "^2.3",
+        "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^9.6.21",
         "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",

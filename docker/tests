@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+echo -e "${GREEN}======================================================================="
+echo -e "functional & integration tests"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer phpunit
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "phpspec"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer phpspec

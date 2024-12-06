@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Querify\Domain\Demand;
+
 enum Status: string
 {
     case NEW = 'NEW';
@@ -17,6 +18,6 @@ enum Status: string
      */
     public static function asArray(): array
     {
-        return \array_column(self::cases(), 'name');
+        return array_column(self::cases(), 'name');
     }
 }

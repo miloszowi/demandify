@@ -21,3 +21,12 @@
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php.dist
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###
+
+###> qossmic/deptrac ###
+/.deptrac.cache
+###< qossmic/deptrac ###

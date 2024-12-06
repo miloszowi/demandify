@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Application\Event\UserRegistered;
 
+use Querify\Domain\User\Event\UserRegistered;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

@@ -21,9 +21,9 @@ class RegistrationFormType extends AbstractType
             ->add('email', options: [
                 'constraints' => [
                     new Email([
-                        'message' => 'Please enter your e-mail.'
-                    ])
-                ]
+                        'message' => 'Please enter your e-mail.',
+                    ]),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
@@ -43,13 +43,13 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3]),
-                ]
+                ],
             ])
             ->add('lastName', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3]),
-                ]
+                ],
             ])
             ->add('save', SubmitType::class, ['label' => 'Register'])
         ;

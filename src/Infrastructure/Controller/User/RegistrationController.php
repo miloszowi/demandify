@@ -21,14 +21,13 @@ class RegistrationController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $messageBus,
-        private readonly UserRepository $userRepository
-    ) {
-    }
+        private readonly UserRepository $userRepository,
+    ) {}
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security): Response
     {
-        $user = new User;
+        $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 

@@ -2,3 +2,5 @@
 .CHANGELOG.md
 vendor/
 docker
+.git
+.github

@@ -9,7 +9,7 @@ framework:
              sync: 'sync://'
 
         routing:
-            Querify\Application\Event\UserRegistered\UserRegistered: async
+            Querify\Domain\User\Event\UserRegistered: async
 
 when@test:
     framework:

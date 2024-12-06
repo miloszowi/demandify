@@ -10,6 +10,5 @@ class Demand
         public string $service = '',
         public string $content = '',
         public string $reason = '',
-    ) {
-    }
+    ) {}
 }

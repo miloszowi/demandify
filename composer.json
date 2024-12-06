@@ -79,8 +79,18 @@
             "@auto-scripts"
         ],
         "phpspec": "vendor/bin/phpspec run --no-code-generation",
-        "phpunit": "vendor/bin/phpunit --no-deprecations",
-        "phpstan": "vendor/bin/phpstan"
+        "phpunit": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan",
+        "csfixer-check": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer check --allow-risky=yes --diff",
+        "csfixer-fix": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --diff",
+        "deptrac": "vendor/bin/deptrac --report-uncovered --fail-on-uncovered",
+        "tests": [
+            "@phpspec",
+            "@phpunit",
+            "@phpstan",
+            "@csfixer-check",
+            "@deptrac"
+        ]
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -92,11 +102,14 @@
         }
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^4.0",
+        "friendsofphp/php-cs-fixer": "^3.65",
         "phpspec/phpspec": "^7.5",
         "phpspec/prophecy": "^1.20",
         "phpspec/prophecy-phpunit": "^2.3",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^9.6.21",
+        "qossmic/deptrac": "^2.0",
         "symfony/browser-kit": "7.2.*",
         "symfony/css-selector": "7.2.*",
         "symfony/maker-bundle": "^1.61",

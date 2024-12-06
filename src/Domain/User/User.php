@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Querify\Domain\User;
 
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\UserRole;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[
-    ORM\Entity(repositoryClass: \Querify\Infrastructure\Repository\UserRepository::class),
+    ORM\Entity(repositoryClass: UserRepository::class),
     ORM\Table(name: '`user`')
 ]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -26,6 +24,12 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     ]
     public readonly UuidInterface $uuid;
 
+    #[ORM\Column(type: 'datetimetz_immutable')]
+    public readonly \DateTimeImmutable $createdAt;
+
+    #[ORM\Column(type: 'datetimetz_immutable')]
+    public readonly \DateTimeImmutable $updatedAt;
+
     #[ORM\Column(length: 255)]
     private string $password;
 
@@ -34,12 +38,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
      */
     #[ORM\Column(type: 'json')]
     private array $roles;
-
-    #[ORM\Column(type: 'datetimetz_immutable')]
-    public readonly \DateTimeImmutable $createdAt;
-
-    #[ORM\Column(type: 'datetimetz_immutable')]
-    public readonly \DateTimeImmutable $updatedAt;
 
     public function __construct(
         #[ORM\Embedded(class: Email::class, columnPrefix: false)]
@@ -57,7 +55,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function grantPrivilege(UserRole $role): void
     {
-        if (\in_array($role->value, $this->roles)) {
+        if (\in_array($role->value, $this->roles, true)) {
             return;
         }
 
@@ -66,7 +64,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function hasPrivilege(UserRole $role): bool
     {
-        return \in_array($role->value, $this->roles);
+        return \in_array($role->value, $this->roles, true);
     }
 
     public function setPassword(string $password): void
@@ -94,7 +92,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     public function getFullName(): string

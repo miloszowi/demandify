@@ -2,14 +2,49 @@
 
 
 GREEN='\033[0;32m'
+RED='\033[0;31m'
 NC='\033[0m'
 
+declare -A tests_status
+
 echo -e "${GREEN}======================================================================="
-echo -e "functional & integration tests"
+echo -e "functional & integration tests (phpunit)"
 echo -e "=======================================================================${NC}"
 docker-compose exec php composer phpunit
+tests_status["phpunit"]=$?
 
 echo -e "\n${GREEN}======================================================================="
 echo -e "phpspec"
 echo -e "=======================================================================${NC}"
 docker-compose exec php composer phpspec
+tests_status["phpspec"]=$?
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "phpstan"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer phpstan
+tests_status["phpstan"]=$?
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "csfixer"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer csfixer-check
+tests_status["csfixer"]=$?
+
+echo -e "\n${GREEN}======================================================================="
+echo -e "deptrac"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer deptrac
+tests_status["deptrac"]=$?
+
+echo -e "\n${GREEN}=======================================================================${NC}"
+
+for key in "${!tests_status[@]}"
+do
+  if [ ${tests_status[$key]} -eq 0 ]; then
+     echo -e "$key - ${GREEN}PASSED${NC}"
+  else
+     echo -e "$key - ${RED}FAILED${NC}"
+  fi
+done
+echo -e "${GREEN}=======================================================================${NC}"

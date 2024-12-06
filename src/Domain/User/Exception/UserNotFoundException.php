@@ -19,7 +19,7 @@ class UserNotFoundException extends \Exception
     public static function fromEmail(Email $email): self
     {
         return new self(
-            \sprintf('User with email of "%s" was not found.', (string)$email)
+            \sprintf('User with email of "%s" was not found.', (string) $email)
         );
     }
 }

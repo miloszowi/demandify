@@ -44,7 +44,7 @@ class Demand
     #[ORM\Column(type: Types::TEXT, nullable: false)]
     public readonly string $content;
 
-    #[ORM\Column(type: Types::TEXT,  nullable: false)]
+    #[ORM\Column(type: Types::TEXT, nullable: false)]
     public readonly string $reason;
 
     #[ORM\Column(nullable: false)]
@@ -72,6 +72,14 @@ class Demand
     public function approveBy(User $user): void
     {
         $this->status = Status::APPROVED;
+        $this->approverUuid = $user->uuid;
+
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function declineBy(User $user): void
+    {
+        $this->status = Status::DECLINED;
         $this->approverUuid = $user->uuid;
 
         $this->updatedAt = new \DateTimeImmutable();

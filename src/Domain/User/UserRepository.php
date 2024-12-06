@@ -6,7 +6,6 @@ namespace Querify\Domain\User;
 
 use Querify\Domain\User\Exception\UserNotFoundException;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 
 interface UserRepository
 {

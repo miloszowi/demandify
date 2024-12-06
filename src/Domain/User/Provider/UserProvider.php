@@ -12,9 +12,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 readonly class UserProvider implements UserProviderInterface
 {
-    public function __construct(private UserRepository $userRepository)
-    {
-    }
+    public function __construct(private UserRepository $userRepository) {}
 
     public function refreshUser(UserInterface $user): UserInterface
     {
@@ -23,7 +21,7 @@ readonly class UserProvider implements UserProviderInterface
 
     public function supportsClass(string $class): bool
     {
-        return $class === User::class;
+        return User::class === $class;
     }
 
     public function loadUserByIdentifier(string $identifier): UserInterface

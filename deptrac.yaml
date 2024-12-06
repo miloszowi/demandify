@@ -1,0 +1,50 @@
+deptrac:
+    paths:
+        - ./src
+    exclude_files:
+        - '#.*test.*#'
+    layers:
+        -
+            name: Domain
+            collectors:
+                -
+                    type: directory
+                    value: src/Domain/.*
+        -
+            name: Application
+            collectors:
+                -
+                    type: directory
+                    value: src/Application/.*
+        -
+            name: Infrastructure
+            collectors:
+                -
+                    type: directory
+                    value: src/Infrastructure/.*
+
+        -
+            name: DomainVendor
+            collectors:
+              -
+                  type: classLike
+                  value: ^(Money|Doctrine|Ramsey\\Uuid|Webmozart)\\.*
+        -
+          name: Vendor
+          collectors:
+              -
+                  type: classLike
+                  value: ^(Symfony|Doctrine)\\.*
+    ruleset:
+        Domain:
+          - DomainVendor
+          - Vendor
+        Application:
+          - Domain
+          - DomainVendor
+          - Vendor
+        Infrastructure:
+          - Vendor
+          - Domain
+          - Application
+          - DomainVendor

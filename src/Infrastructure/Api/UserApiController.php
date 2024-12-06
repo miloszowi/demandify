@@ -14,9 +14,9 @@ class UserApiController
     public function login(Request $request): JsonResponse
     {
         return new JsonResponse([
-           [
-               'test' => 23
-           ]
+            [
+                'test' => 23,
+            ],
         ]);
     }
 }

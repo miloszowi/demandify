@@ -19,6 +19,5 @@ final readonly class RegisterUser
          * @var string[]
          */
         public array $roles,
-    ) {
-    }
+    ) {}
 }

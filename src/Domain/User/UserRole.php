@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain;
+namespace Querify\Domain\User;
 
 enum UserRole: string
 {
@@ -14,6 +14,6 @@ enum UserRole: string
      */
     public static function asArray(): array
     {
-        return \array_column(self::cases(), 'name');
+        return array_column(self::cases(), 'name');
     }
 }

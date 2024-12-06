@@ -22,21 +22,19 @@ class DemandFormType extends AbstractType
                 ],
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('content', options: [
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('reason', options: [
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ])
             ->add('save', SubmitType::class, ['label' => 'Submit'])
-
         ;
     }
-
 }

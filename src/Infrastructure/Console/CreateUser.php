@@ -5,16 +5,14 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\Console;
 
 use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Domain\UserRole;
+use Querify\Domain\User\UserRole;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CreateUser extends Command
 {
@@ -56,7 +54,6 @@ class CreateUser extends Command
 
         return Command::SUCCESS;
     }
-
 
     private function getUserData(InputInterface $input, OutputInterface $output, string $userData): string
     {

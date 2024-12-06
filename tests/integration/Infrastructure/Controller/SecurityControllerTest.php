@@ -1,16 +1,17 @@
 <?php
+
 //
-//declare(strict_types=1);
+// declare(strict_types=1);
 //
-//namespace Querify\Tests\integration\Infrastructure\Controller;
+// namespace Querify\Tests\integration\Infrastructure\Controller;
 //
-//use Querify\Domain\User\User;
-//use PHPUnit\Framework\TestCase;
-//use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-//use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+// use Querify\Domain\User\User;
+// use PHPUnit\Framework\TestCase;
+// use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+// use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 //
-//class SecurityControllerTest extends TestCase
-//{
+// class SecurityControllerTest extends TestCase
+// {
 //    private KernelBrowser $client;
 //
 //    protected function setUp(): void
@@ -82,4 +83,4 @@
 //        self::assertSelectorNotExists('.alert-danger');
 //        self::assertResponseIsSuccessful();
 //    }
-//}
+// }

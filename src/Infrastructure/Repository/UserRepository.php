@@ -14,7 +14,6 @@ use Ramsey\Uuid\UuidInterface;
 
 class UserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -50,7 +49,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.email.email = :email')
-            ->setParameter('email', (string)$email)
+            ->setParameter('email', (string) $email)
             ->getQuery()
             ->getOneOrNullResult()
         ;
@@ -70,6 +69,6 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     public function save(User $user): void
     {
         $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();;
+        $this->getEntityManager()->flush();
     }
 }

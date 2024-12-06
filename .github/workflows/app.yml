@@ -64,50 +64,50 @@ jobs:
           docker pull ghcr.io/${{ github.repository }}:latest
           docker run --rm --link postgres:postgres ghcr.io/${{ github.repository }}:latest composer phpunit
 
-    phpspec_tests:
-      runs-on: ubuntu-latest
-      needs: build_and_push
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+  phpspec_tests:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-        - name: Run PHPSpec tests
-          run: |
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker run --rm ghcr.io/${{ github.repository }}:latest composer phpspec
+      - name: Run PHPSpec tests
+        run: |
+          docker pull ghcr.io/${{ github.repository }}:latest
+          docker run --rm ghcr.io/${{ github.repository }}:latest composer phpspec
 
-    phpstan_tests:
-      runs-on: ubuntu-latest
-      needs: build_and_push
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+  phpstan_tests:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-        - name: Run PHPStan analysis
-          run: |
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker run --rm ghcr.io/${{ github.repository }}:latest composer phpstan
+      - name: Run PHPStan analysis
+        run: |
+          docker pull ghcr.io/${{ github.repository }}:latest
+          docker run --rm ghcr.io/${{ github.repository }}:latest composer phpstan
 
-    csfixer_tests:
-      runs-on: ubuntu-latest
-      needs: build_and_push
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+  csfixer_tests:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-        - name: Run CSFixer checks
-          run: |
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker run --rm ghcr.io/${{ github.repository }}:latest composer csfixer-check
+      - name: Run CSFixer checks
+        run: |
+          docker pull ghcr.io/${{ github.repository }}:latest
+          docker run --rm ghcr.io/${{ github.repository }}:latest composer csfixer-check
 
-    deptrac_tests:
-      runs-on: ubuntu-latest
-      needs: build_and_push
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v2
+  deptrac_tests:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-        - name: Run Deptrac analysis
-          run: |
-            docker pull ghcr.io/${{ github.repository }}:latest
-            docker run --rm ghcr.io/${{ github.repository }}:latest composer deptrac
+      - name: Run Deptrac analysis
+        run: |
+          docker pull ghcr.io/${{ github.repository }}:latest
+          docker run --rm ghcr.io/${{ github.repository }}:latest composer deptrac

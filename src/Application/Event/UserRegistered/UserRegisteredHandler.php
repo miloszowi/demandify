@@ -12,6 +12,6 @@ class UserRegisteredHandler
 {
     public function __invoke(UserRegistered $event): void
     {
-        // todo
+        // TODO: Notify
     }
 }

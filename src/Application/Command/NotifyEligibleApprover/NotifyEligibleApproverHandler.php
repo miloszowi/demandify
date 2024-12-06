@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Command\NotifyEligibleApprover;
+namespace Querify\Application\Command\NotifyEligibleApprover;
 
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 

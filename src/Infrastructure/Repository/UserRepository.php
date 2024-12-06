@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository implements UserRepositoryIn
     {
         return $this->getEntityManager()->createQueryBuilder()
             ->andWhere('u.uuid = :uuid')
-            ->setParameter('uuid', $uuid)
+            ->setParameter('uuid', $uuid->toString())
             ->getQuery()
             ->getOneOrNullResult()
         ;

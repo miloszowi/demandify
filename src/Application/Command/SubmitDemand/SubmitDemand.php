@@ -10,7 +10,7 @@ use Symfony\Component\Messenger\Attribute\AsMessage;
 final readonly class SubmitDemand
 {
     public function __construct(
-        public string $requesterUuid,
+        public string $requesterEmail,
         public string $service,
         public string $content,
         public string $reason,

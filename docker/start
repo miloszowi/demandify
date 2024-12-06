@@ -15,6 +15,11 @@ source ./docker/wait-for-container
 waitContainer "database"
 
 echo -e "\n${GREEN}======================================================================="
+echo -e "install dependencies"
+echo -e "=======================================================================${NC}"
+docker-compose exec php composer install --no-cache
+
+echo -e "\n${GREEN}======================================================================="
 echo -e "create database if not exist"
 echo -e "=======================================================================${NC}"
 docker-compose exec php bin/console doctrine:database:create --if-not-exists

@@ -26,10 +26,14 @@ COPY --chown=1000:1000 composer.* ./
 
 USER app
 
-RUN set -eux; \
-	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
-
 COPY --chown=1000:1000 ./ /var/www/html
+# for local development
+RUN composer install --no-cache
+
+# for production image
+# RUN set -eux; \
+# 	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
+
 
 RUN mkdir -p var/cache var/log && chown -R app:app var/
 

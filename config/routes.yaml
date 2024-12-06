@@ -4,9 +4,7 @@ controllers:
         namespace: Querify\Infrastructure\Controller
     type: attribute
 
-api_login:
+api_login_check:
     path: /api/login
-    methods: ['POST']
-    controller: \Querify\Infrastructure\Api\UserApiController::login
 
 

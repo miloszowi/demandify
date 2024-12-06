@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Event\DemandCreated;
+namespace Querify\Application\Event\DemandSubmitted;
 
-use Command\NotifyEligibleApprover\NotifyEligibleApprover;
+use Querify\Application\Command\NotifyEligibleApprover\NotifyEligibleApprover;
 use Querify\Domain\Demand\Event\DemandSubmitted;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

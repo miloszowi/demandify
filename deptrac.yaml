@@ -35,6 +35,11 @@ deptrac:
               -
                   type: classLike
                   value: ^(Symfony|Doctrine)\\.*
+        - name: ApiPlatform
+          collectors:
+              -
+                 type: classLike
+                 value: ^ApiPlatform\\.*
     ruleset:
         Domain:
           - DomainVendor
@@ -48,3 +53,4 @@ deptrac:
           - Domain
           - Application
           - DomainVendor
+          - ApiPlatform

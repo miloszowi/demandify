@@ -8,8 +8,9 @@ framework:
              failed: '%env(MESSENGER_TRANSPORT_DSN)%failed'
              sync: 'sync://'
 
-        routing:
-            Querify\Domain\User\Event\UserRegistered: async
+#        routing:
+#            Querify\Domain\User\Event\UserRegistered: async
+#            Querify\Domain\Demand\Event\DemandSubmitted: async
 
 when@test:
     framework:

@@ -1,9 +1,12 @@
 <?php
 
+use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle;
 use Nelmio\ApiDocBundle\NelmioApiDocBundle;
+use Nelmio\CorsBundle\NelmioCorsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
@@ -24,4 +27,7 @@ return [
     NelmioApiDocBundle::class => ['all' => true],
     TwigExtraBundle::class => ['all' => true],
     DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    NelmioCorsBundle::class => ['all' => true],
+    ApiPlatformBundle::class => ['all' => true],
+    LexikJWTAuthenticationBundle::class => ['all' => true],
 ];

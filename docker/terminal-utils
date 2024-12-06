@@ -1,0 +1,31 @@
+#!/bin/bash
+
+pretty_print_section() {
+    local GREEN='\033[0;32m'
+    local NC='\033[0m'
+
+    local input_string="$1"
+    local columns=$(tput cols)
+    local padding=$(( (columns - ${#input_string}) / 2 ))
+
+    if [ $padding -lt 1 ]; then
+        padding=1
+    fi
+
+    echo -e "${GREEN}$(for i in $(seq 1 $columns); do echo -n "="; done)${NC}"
+    echo -e "$(printf "%${padding}s")$input_string$(printf "%${padding}s")"
+    echo -e "${GREEN}$(for i in $(seq 1 $columns); do echo -n "="; done)${NC}"
+}
+
+print_test_result() {
+    local test_name="$1"
+    local test_status="$2"
+
+    result_message="$test_name - "
+    if [ "$test_status" -eq 0 ]; then
+        result_message+="${GREEN}PASSED${NC}"
+    else
+        result_message+="${RED}FAILED${NC}"
+    fi
+    echo -e "$result_message"
+}

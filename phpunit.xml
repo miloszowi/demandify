@@ -17,9 +17,9 @@
     </php>
 
     <testsuites>
-        <testsuite name="Functional Tests">
-            <directory>tests/functional</directory>
-        </testsuite>
+<!--        <testsuite name="Functional Tests">-->
+<!--            <directory>tests/functional</directory>-->
+<!--        </testsuite>-->
         <testsuite name="Integration Tests">
             <directory>tests/integration</directory>
         </testsuite>

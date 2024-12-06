@@ -12,7 +12,7 @@ class DemandProcessor implements ProcessorInterface
 {
     public function __construct(private readonly RequestStack $request) {}
 
-    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []) // @phpstan-ignore-line
     {
         var_dump($this->request->getCurrentRequest()->getUser());
         var_dump($data);

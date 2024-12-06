@@ -1,50 +1,35 @@
 #!/usr/bin/env bash
 
+source docker/terminal-utils
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-declare -A tests_status
+pretty_print_section "functional & integration tests (phpunit)"
+docker-compose exec -T php composer phpunit
+phpunit_status=$?
 
-echo -e "${GREEN}======================================================================="
-echo -e "functional & integration tests (phpunit)"
-echo -e "=======================================================================${NC}"
-docker-compose exec php composer phpunit
-tests_status["phpunit"]=$?
+pretty_print_section "phpspec"
+docker-compose exec -T php composer phpspec
+phpspec_status=$?
 
-echo -e "\n${GREEN}======================================================================="
-echo -e "phpspec"
-echo -e "=======================================================================${NC}"
-docker-compose exec php composer phpspec
-tests_status["phpspec"]=$?
+pretty_print_section "phpstan"
+docker-compose exec -T php composer phpstan
+phpstan_status=$?
 
-echo -e "\n${GREEN}======================================================================="
-echo -e "phpstan"
-echo -e "=======================================================================${NC}"
-docker-compose exec php composer phpstan
-tests_status["phpstan"]=$?
+pretty_print_section "csfixer"
+docker-compose exec -T php composer csfixer-check
+csfixer_status=$?
 
-echo -e "\n${GREEN}======================================================================="
-echo -e "csfixer"
-echo -e "=======================================================================${NC}"
-docker-compose exec php composer csfixer-check
-tests_status["csfixer"]=$?
+pretty_print_section "deptrac"
+docker-compose exec -T php composer deptrac
+deptrac_status=$?
 
-echo -e "\n${GREEN}======================================================================="
-echo -e "deptrac"
-echo -e "=======================================================================${NC}"
-docker-compose exec php composer deptrac
-tests_status["deptrac"]=$?
+print_test_result "phpunit" $phpunit_status
+print_test_result "phpspec" $phpspec_status
+print_test_result "phpstan" $phpstan_status
+print_test_result "csfixer" $csfixer_status
+print_test_result "deptrac" $deptrac_status
 
-echo -e "\n${GREEN}=======================================================================${NC}"
 
-for key in "${!tests_status[@]}"
-do
-  if [ ${tests_status[$key]} -eq 0 ]; then
-     echo -e "$key - ${GREEN}PASSED${NC}"
-  else
-     echo -e "$key - ${RED}FAILED${NC}"
-  fi
-done
-echo -e "${GREEN}=======================================================================${NC}"

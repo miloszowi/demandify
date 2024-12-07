@@ -4,6 +4,8 @@ security:
     providers:
         app_user_provider:
             id: Querify\Domain\User\Provider\UserProvider
+        api_user_provider:
+            id: Querify\Infrastructure\Api\Authentication\UserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -11,6 +13,7 @@ security:
         login:
             pattern: ^/api/login
             stateless: true
+            provider: api_user_provider
             json_login:
                 check_path: /api/login
                 success_handler: lexik_jwt_authentication.handler.authentication_success
@@ -28,7 +31,6 @@ security:
                 target: app_login
 
     access_control:
-         - { path: ^/api/login, roles: PUBLIC_ACCESS }
          - { attributes: { '_route': 'index' }, roles: ROLE_USER }
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }

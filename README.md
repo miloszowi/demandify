@@ -1,24 +1,28 @@
-# Querify
-Web application to serve production services demands.
+<p align="center"> 
+<img src="https://github.com/miloszowi/querify/actions/workflows/app.yml/badge.svg" alt="pipeline status" />
+</p>
+<h1 align="center">Querify </h1>
+<p align="center">Web application to serve production services demands.</p>
 
-## Requirement
+
+## Requirements
 * PHP 8.3 or newer
 * PostgreSQL 16 or newer
-* ...
-* #TODO
+* RabbitMQ 3.*
 
-## Installation
+## Quick Start
+Clone the repository
 ```
 $ git clone git@github.com:miloszowi/querify.git
 ```
-
-## Run
-To start the project, you simply execute script below:
+run
 ```
 $ docker/start
 ```
+to setup everything at once - querify should be available on localhost.
 
-## Tests
+
+## Running tests
 Querify uses the following to analyse & test code:
 - **phpspec** for unit testing
 - **phpunit** for integration & functional tests
@@ -35,14 +39,13 @@ or inside the container
 $ composer tests
 ```
 
-for specific tool, use one of those (inside a container):
+for specific case, use one of those (inside a container):
 ```bash
 $ composer phpspec
 $ composer phpunit
 $ composer phpstan
 $ composer csfixer-check
 $ composer deptrac
-
 ```
 
 

@@ -24,6 +24,11 @@ docker-compose exec php bin/console doctrine:migrations:migrate --no-interaction
 pretty_print_section "execute test migrations"
 docker-compose exec php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
+if ! docker-compose exec php test -d /var/www/html/config/jwt; then
+  pretty_print_section "generate jwt keypair"
+  docker-compose exec php bin/console lexik:jwt:generate-keypair
+fi
+
 pretty_print_section "setup transports"
 docker-compose exec php bin/console messenger:setup-transports
 

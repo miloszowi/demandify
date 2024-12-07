@@ -31,7 +31,6 @@ final class RegisterUserHandlerTest extends BaseKernelTestCase
         $this->userRepository = self::getContainer()->get(UserRepository::class);
         $this->handler = self::getContainer()->get(RegisterUserHandler::class);
 
-        $this->entityManager->createQuery('DELETE FROM Querify\Domain\User\User')->execute();
         $this->load([
             new UserFixture(),
         ]);

@@ -1,11 +1,22 @@
 parameters:
 
+
 services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $slackApiHttpClient: '@http_client.slack'
 
     Querify\:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
+
+    http_client.default:
+        alias: 'http_client'
+
+    http_client.slack:
+        class: Symfony\Component\HttpClient\CurlHttpClient
+        arguments:
+            - { base_uri: 'https://slack.com/api' }

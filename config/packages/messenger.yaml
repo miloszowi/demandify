@@ -4,18 +4,16 @@ framework:
 
         transports:
              async: '%env(MESSENGER_TRANSPORT_DSN)%messages'
-
              failed: '%env(MESSENGER_TRANSPORT_DSN)%failed'
              sync: 'sync://'
 
-#        routing:
-#            Querify\Domain\User\Event\UserRegistered: async
-#            Querify\Domain\Demand\Event\DemandSubmitted: async
+        routing:
+            Querify\Domain\User\Event\UserRegistered: async
+            Querify\Domain\Demand\Event\DemandSubmitted: async
 
 when@test:
     framework:
         messenger:
             transports:
-                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
                 async: 'in-memory://'
+                failed: 'in-memory://'

@@ -48,5 +48,6 @@ $ composer csfixer-check
 $ composer deptrac
 ```
 
-
+## OAuth providers
+- Slack
 

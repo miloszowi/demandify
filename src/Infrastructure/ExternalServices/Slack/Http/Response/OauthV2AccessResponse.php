@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\OAuth\Slack\Http\Response;
+namespace Querify\Infrastructure\ExternalServices\Slack\Http\Response;
 
-use Querify\Infrastructure\OAuth\Slack\Http\Response\OauthV2Access\AuthedUser;
-use Querify\Infrastructure\OAuth\Slack\Http\Response\OauthV2Access\Enterprise;
-use Querify\Infrastructure\OAuth\Slack\Http\Response\OauthV2Access\Team;
+use Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2Access\AuthedUser;
+use Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2Access\Enterprise;
+use Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2Access\Team;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
 final readonly class OauthV2AccessResponse

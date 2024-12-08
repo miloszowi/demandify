@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Querify\Domain\UserSocialAccount;
 
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Querify\Domain\User\User;
 
 #[
     ORM\Entity(repositoryClass: UserSocialAccountRepository::class),
@@ -16,9 +16,10 @@ final readonly class UserSocialAccount
     public function __construct(
         #[
             ORM\Id,
-            ORM\Column(type: 'uuid')
+            ORM\ManyToOne(targetEntity: User::class, inversedBy: 'socialAccounts'),
+            ORM\JoinColumn(name: 'user_uuid', referencedColumnName: 'uuid', nullable: false, onDelete: 'CASCADE'),
         ]
-        public UuidInterface $userUuid,
+        public User $user,
         #[
             ORM\Id,
             ORM\Column(length: 255)

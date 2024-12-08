@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\OAuth\Slack;
+namespace Querify\Infrastructure\ExternalServices\Slack;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 

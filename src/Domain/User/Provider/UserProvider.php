@@ -16,7 +16,7 @@ readonly class UserProvider implements UserProviderInterface
 
     public function refreshUser(UserInterface $user): UserInterface
     {
-        return $user;
+        return $this->userRepository->getByEmail(Email::fromString($user->getUserIdentifier()));
     }
 
     public function supportsClass(string $class): bool

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Querify\Domain\User;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Querify\Domain\UserSocialAccount\UserSocialAccount;
+use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -39,6 +43,9 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: 'json')]
     private array $roles;
 
+    #[ORM\OneToMany(targetEntity: UserSocialAccount::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+    private Collection $socialAccounts;
+
     public function __construct(
         #[ORM\Embedded(class: Email::class, columnPrefix: false)]
         public readonly Email $email,
@@ -51,6 +58,7 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
         $this->roles = [UserRole::ROLE_USER->value];
+        $this->socialAccounts = new ArrayCollection();
     }
 
     public function grantPrivilege(UserRole $role): void
@@ -65,6 +73,38 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function hasPrivilege(UserRole $role): bool
     {
         return \in_array($role->value, $this->roles, true);
+    }
+
+    public function getSocialAccount(UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
+    {
+        foreach ($this->socialAccounts as $socialAccount) {
+            if ($socialAccount->type === $userSocialAccountType) {
+                return $socialAccount;
+            }
+        }
+
+        return null;
+    }
+
+    public function hasLinkedSocialAccount(UserSocialAccountType $userSocialAccountType): bool
+    {
+        foreach ($this->getSocialAccounts()->getValues() as $socialAccount) {
+            if ($userSocialAccountType->value === $socialAccount->type->value) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getSocialAccounts(): Collection
+    {
+        return $this->socialAccounts;
+    }
+
+    public function addSocialAccount(UserSocialAccount $userSocialAccount): void
+    {
+        $this->socialAccounts->add($userSocialAccount);
     }
 
     public function setPassword(string $password): void

@@ -2,6 +2,9 @@ parameters:
 
 
 services:
+    _instanceof:
+        Querify\Infrastructure\ExternalServices\OAuth\OAuthHandler:
+            tags: [ 'querify.oauth.handler' ]
     _defaults:
         autowire: true
         autoconfigure: true
@@ -13,6 +16,10 @@ services:
         exclude:
             - '../src/Kernel.php'
 
+    Querify\Infrastructure\ExternalServices\OAuth\OAuthManager:
+        arguments:
+            - !tagged_iterator 'querify.oauth.handler'
+
     http_client.default:
         alias: 'http_client'
 
@@ -20,3 +27,4 @@ services:
         class: Symfony\Component\HttpClient\CurlHttpClient
         arguments:
             - { base_uri: 'https://slack.com/api' }
+

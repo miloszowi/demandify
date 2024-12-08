@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\OAuth\Slack\Http\Response\OauthV2Access;
+namespace Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2Access;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

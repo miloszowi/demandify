@@ -17,11 +17,9 @@ class UserFixture extends Fixture
     {
         $user = new User(
             Email::fromString(self::USER_EMAIL_FIXTURE),
-            'First Name',
-            'Last Name'
+            'Name',
         );
 
-        $user->setPassword('hashedPassword');
         $manager->persist($user);
         $manager->flush();
     }

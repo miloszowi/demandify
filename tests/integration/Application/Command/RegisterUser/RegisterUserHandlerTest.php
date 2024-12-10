@@ -10,6 +10,7 @@ use Querify\Application\Command\RegisterUser\RegisterUserHandler;
 use Querify\Domain\User\Email;
 use Querify\Domain\User\Exception\UserAlreadyRegisteredException;
 use Querify\Domain\User\UserRepository;
+use Querify\Domain\User\UserRole;
 use Querify\Tests\Fixtures\UserFixture;
 use Querify\Tests\integration\BaseKernelTestCase;
 
@@ -38,7 +39,7 @@ final class RegisterUserHandlerTest extends BaseKernelTestCase
 
     public function testRegistersUserSuccessfully(): void
     {
-        $command = new RegisterUser('new@example.com', 'John', 'Doe', 'password123', ['ROLE_USER']);
+        $command = new RegisterUser('new@example.com', 'John', [UserRole::ROLE_USER]);
 
         $this->handler->__invoke($command);
 
@@ -52,7 +53,7 @@ final class RegisterUserHandlerTest extends BaseKernelTestCase
     {
         $existingEmail = UserFixture::USER_EMAIL_FIXTURE;
 
-        $command = new RegisterUser($existingEmail, 'password', 'John', 'Doe', ['ROLE_USER']);
+        $command = new RegisterUser($existingEmail, 'John', [UserRole::ROLE_USER]);
 
         $this->expectException(UserAlreadyRegisteredException::class);
         $this->expectExceptionMessage(\sprintf('User with email "%s" is already registered.', $existingEmail));

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\ExternalServices\Slack\Http;
 
 use Querify\Infrastructure\ExternalServices\Slack\Http\Exception\SlackApiException;
-use Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2AccessResponse;
+use Querify\Infrastructure\ExternalServices\Slack\Http\Response\Oauth2AccessResponse;
 use Querify\Infrastructure\ExternalServices\Slack\Http\Response\UserInfoResponse;
 use Querify\Infrastructure\ExternalServices\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,15 +21,19 @@ class SlackHttpClient
         private readonly SerializerInterface $serializer
     ) {}
 
-    public function oauthAccess(string $code): OauthV2AccessResponse
+    public function oauthAccess(string $code): Oauth2AccessResponse
     {
         $response = $this->slackApiHttpClient->request(
             Request::METHOD_GET,
             '/api/oauth.v2.access',
             [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
                 'query' => [
                     'code' => $code,
                     'redirect_uri' => $this->slackConfiguration->oauthRedirectUri,
+                    'grant_type' => 'authorization_code',
                 ],
                 'auth_basic' => [
                     $this->slackConfiguration->clientId,
@@ -40,12 +44,12 @@ class SlackHttpClient
 
         $response = $this->serializer->deserialize(
             $response->getContent(),
-            OauthV2AccessResponse::class,
+            Oauth2AccessResponse::class,
             JsonEncoder::FORMAT
         );
 
         if (false === $response->ok) {
-            throw SlackApiException::fromError($response->error);
+            throw SlackApiException::fromError((string) $response->error);
         }
 
         return $response;
@@ -71,7 +75,7 @@ class SlackHttpClient
         );
 
         if (false === $response->ok) {
-            throw SlackApiException::fromError($response->error);
+            throw SlackApiException::fromError((string) $response->error);
         }
 
         return $response;

@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         operations: [
             new Get(
                 uriTemplate: '/demand/{uuid}',
-                security: "is_granted('".UserRole::ROLE_ADMIN->value."')",
+                security: "is_granted('".UserRole::ROLE_ADMIN->value." or (object.owner == user')",
             ),
             new Post(
                 security: "is_granted('".UserRole::ROLE_USER->value."')",

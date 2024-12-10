@@ -4,28 +4,15 @@ security:
     providers:
         app_user_provider:
             id: Querify\Domain\User\Provider\UserProvider
-        api_user_provider:
-            id: Querify\Infrastructure\Api\Authentication\UserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        login:
-            pattern: ^/api/login
-            stateless: true
-            provider: api_user_provider
-            json_login:
-                check_path: /api/login
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         main:
             lazy: true
             provider: app_user_provider
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                enable_csrf: true
-                default_target_path: app_profile
+            custom_authenticators:
+                - Querify\Infrastructure\Authentication\OAuth2Authenticator
             logout:
                 path: app_logout
                 target: app_login

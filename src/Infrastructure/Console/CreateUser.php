@@ -33,18 +33,14 @@ class CreateUser extends Command
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $this->getUserData($input, $output, 'Email');
-        $password = $this->getPassword($input, $output);
-        $firstName = $this->getUserData($input, $output, 'First Name');
-        $lastName = $this->getUserData($input, $output, 'Last Name');
+        $name = $this->getUserData($input, $output, 'Name');
         $role = $this->getRole($input, $output);
 
         $this->messageBus->dispatch(
             new RegisterUser(
                 email: $email,
-                plainPassword: $password,
-                firstName: $firstName,
-                lastName: $lastName,
-                roles: [$role]
+                name: $name,
+                roles: [UserRole::from($role)],
             )
         );
 
@@ -62,16 +58,6 @@ class CreateUser extends Command
         $question = new Question(
             \sprintf('[%s]: ', $userData)
         );
-
-        return $helper->ask($input, $output, $question);
-    }
-
-    private function getPassword(InputInterface $input, OutputInterface $output): string
-    {
-        /** @var QuestionHelper $helper */
-        $helper = $this->getHelper('question');
-        $question = new Question('[Password]:');
-        $question->setHidden(true);
 
         return $helper->ask($input, $output, $question);
     }

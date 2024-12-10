@@ -1,30 +1,28 @@
+imports:
+    - { resource: packages/http_clients.yaml }
 parameters:
-
-
 services:
-    _instanceof:
-        Querify\Infrastructure\ExternalServices\OAuth\OAuthHandler:
-            tags: [ 'querify.oauth.handler' ]
     _defaults:
         autowire: true
         autoconfigure: true
         bind:
             $slackApiHttpClient: '@http_client.slack'
 
+    _instanceof:
+        Querify\Infrastructure\ExternalServices\OAuth2\OAuth2Client:
+            tags: [ 'querify.oauth.client' ]
+
     Querify\:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
 
-    Querify\Infrastructure\ExternalServices\OAuth\OAuthManager:
+    Querify\Infrastructure\ExternalServices\OAuth2\OAuth2ClientManager:
         arguments:
-            - !tagged_iterator 'querify.oauth.handler'
+            - !tagged_iterator 'querify.oauth.client'
 
-    http_client.default:
-        alias: 'http_client'
-
-    http_client.slack:
-        class: Symfony\Component\HttpClient\CurlHttpClient
-        arguments:
-            - { base_uri: 'https://slack.com/api' }
-
+when@dev:
+    services:
+        Querify\Infrastructure\Doctrine\Listener\RemoveCreateSchemaFromMigrationListener:
+            tags:
+                - { name: doctrine.event_listener, event: postGenerateSchema }

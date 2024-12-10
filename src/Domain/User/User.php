@@ -12,7 +12,7 @@ use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[
@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     ORM\Table(name: '`user`')
 ]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements PasswordAuthenticatedUserInterface, UserInterface
+class User implements UserInterface, EquatableInterface
 {
     #[
         ORM\Id,
@@ -34,37 +34,39 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: 'datetimetz_immutable')]
     public readonly \DateTimeImmutable $updatedAt;
 
-    #[ORM\Column(length: 255)]
-    private string $password;
-
     /**
-     * @var string[]
+     * @var UserRole[] $roles
      */
     #[ORM\Column(type: 'json')]
     private array $roles;
 
-    #[ORM\OneToMany(targetEntity: UserSocialAccount::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+    #[ORM\OneToMany(targetEntity: UserSocialAccount::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
     private Collection $socialAccounts;
 
     public function __construct(
         #[ORM\Embedded(class: Email::class, columnPrefix: false)]
         public readonly Email $email,
         #[ORM\Column(length: 255)]
-        public readonly string $firstName,
-        #[ORM\Column(length: 255)]
-        public readonly string $lastName,
+        public readonly string $name,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
-        $this->roles = [UserRole::ROLE_USER->value];
+        $this->roles = [UserRole::ROLE_USER];
         $this->socialAccounts = new ArrayCollection();
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 
     public function grantPrivilege(UserRole $role): void
     {
-        if (\in_array($role->value, $this->roles, true)) {
-            return;
+        foreach ($this->roles as $assignedRole) {
+            if ($role->value === $assignedRole->value) {
+                return;
+            }
         }
 
         $this->roles[] = $role->value;
@@ -72,13 +74,19 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function hasPrivilege(UserRole $role): bool
     {
-        return \in_array($role->value, $this->roles, true);
+        foreach ($this->roles as $assignedRole) {
+            if ($role->value === $assignedRole->value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getSocialAccount(UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
         foreach ($this->socialAccounts as $socialAccount) {
-            if ($socialAccount->type === $userSocialAccountType) {
+            if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
                 return $socialAccount;
             }
         }
@@ -86,10 +94,10 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return null;
     }
 
-    public function hasLinkedSocialAccount(UserSocialAccountType $userSocialAccountType): bool
+    public function hasSocialAccountLinked(UserSocialAccountType $userSocialAccountType): bool
     {
         foreach ($this->getSocialAccounts()->getValues() as $socialAccount) {
-            if ($userSocialAccountType->value === $socialAccount->type->value) {
+            if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
                 return true;
             }
         }
@@ -102,45 +110,26 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         return $this->socialAccounts;
     }
 
-    public function addSocialAccount(UserSocialAccount $userSocialAccount): void
+    public function linkSocialAccount(UserSocialAccount $userSocialAccount): void
     {
         $this->socialAccounts->add($userSocialAccount);
     }
 
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
-    }
-
     /**
-     * @return string hashed version of password
+     * @return string[]|UserRole[]
      */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function eraseCredentials(): void
-    {
-        $this->password = '';
-    }
+    /**
+     * No credentials are stored as logging in is only available through OAuth2.
+     */
+    public function eraseCredentials(): void {}
 
-    public function getUserIdentifier(): string
+    public function isEqualTo(UserInterface $user): bool
     {
-        return (string) $this->email;
-    }
-
-    public function getFullName(): string
-    {
-        return \sprintf(
-            '%s %s',
-            $this->firstName,
-            $this->lastName
-        );
+        return $user->getUserIdentifier() === $this->getUserIdentifier();
     }
 }

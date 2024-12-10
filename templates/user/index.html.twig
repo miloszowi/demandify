@@ -11,19 +11,18 @@
 <div class="example-wrapper">
     <h1>Hello ✅</h1>
 
-    This friendly message is coming from:
     <ul>
-        <li> Hello {{ user.getFullName() }}</li>
-        <li>
-            {% for oauth_handler in oauth_handlers %}
-                {{ oauth_handler.name }}
-                {% if oauth_handler.isConnected %}
+        <li> Hello <input type="text" value="{{ user.name }}"></li>
+        {% for social_account_type in social_account_types %}
+            <li>
+                {{ social_account_type.value }} -
+                {% if user.hasSocialAccountLinked(social_account_type) %}
                     connected
                 {% else %}
-                    <a href="{{ oauth_handler.url }}">Connect to slack</a>
+                    <a href="/oauth/{{ social_account_type.value | lower }}">Connect</a>
                 {% endif %}
-            {% endfor %}
         </li>
+        {% endfor %}
     </ul>
 </div>
 {% endblock %}

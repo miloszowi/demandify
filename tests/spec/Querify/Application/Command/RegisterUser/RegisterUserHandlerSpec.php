@@ -14,19 +14,16 @@ use Querify\Domain\User\Event\UserRegistered;
 use Querify\Domain\User\Exception\UserAlreadyRegisteredException;
 use Querify\Domain\User\User;
 use Querify\Domain\User\UserRepository;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Querify\Domain\User\UserRole;
 
 class RegisterUserHandlerSpec extends ObjectBehavior
 {
     public function let(
         UserRepository $userRepository,
-        UserPasswordHasherInterface $userPasswordHasher,
         DomainEventPublisher $domainEventPublisher,
     ): void {
         $this->beConstructedWith(
             $userRepository,
-            $userPasswordHasher,
             $domainEventPublisher
         );
     }
@@ -42,31 +39,29 @@ class RegisterUserHandlerSpec extends ObjectBehavior
         $email = Email::fromString('existing@local.host');
 
         $userRepository->findByEmail($email)->willReturn(
-            new User($email, 'First', 'Last', ['ROLE_USER'])
+            new User($email, 'First')
         );
 
         $this->shouldThrow(UserAlreadyRegisteredException::class)
             ->during(
                 '__invoke',
-                [new RegisterUser((string) $email, 'plainPassword', 'First', 'Last', ['ROLE_USER'])]
+                [new RegisterUser((string) $email, 'plainPassword', [UserRole::ROLE_USER])]
             )
         ;
     }
 
     public function it_handles_the_registration(
         UserRepository $userRepository,
-        UserPasswordHasher $passwordHasher,
         DomainEventPublisher $domainEventPublisher,
     ): void {
-        $this->beConstructedWith($userRepository, $passwordHasher, $domainEventPublisher);
+        $this->beConstructedWith($userRepository, $domainEventPublisher);
 
         $email = Email::fromString('non.existing@local.host');
-        $command = new RegisterUser((string) $email, 'First', 'Last', 'plainPassword', ['ROLE_USER']);
+        $command = new RegisterUser((string) $email, 'First', [UserRole::ROLE_USER]);
 
         $userRepository->save(Argument::type(User::class))->shouldBeCalledOnce();
         $domainEventPublisher->publish(Argument::type(UserRegistered::class))->shouldBeCalledOnce();
 
-        $passwordHasher->hashPassword(Argument::type(User::class), $command->plainPassword)->willReturn('hashedPassword');
         $userRepository->findByEmail($email)->willReturn(null);
 
         $this->__invoke($command);

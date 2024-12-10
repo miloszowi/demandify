@@ -10,7 +10,7 @@ use Querify\Domain\User\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-readonly class UserProvider implements UserProviderInterface
+class UserProvider implements UserProviderInterface
 {
     public function __construct(private UserRepository $userRepository) {}
 

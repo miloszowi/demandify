@@ -37,6 +37,7 @@ final readonly class Profile
         public string $imageOriginal,
         #[SerializedName('is_custom_image')]
         public bool $isCustomImage,
+        public string $email,
         #[SerializedName('first_name')]
         public string $firstName,
         #[SerializedName('last_name')]

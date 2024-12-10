@@ -10,16 +10,13 @@ use Querify\Domain\User\Event\UserRegistered;
 use Querify\Domain\User\Exception\UserAlreadyRegisteredException;
 use Querify\Domain\User\User;
 use Querify\Domain\User\UserRepository;
-use Querify\Domain\User\UserRole;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsMessageHandler]
 class RegisterUserHandler
 {
     public function __construct(
         private readonly UserRepository $userRepository,
-        private readonly UserPasswordHasherInterface $passwordHasher,
         private readonly DomainEventPublisher $domainEventPublisher,
     ) {}
 
@@ -31,13 +28,10 @@ class RegisterUserHandler
             throw UserAlreadyRegisteredException::withEmail($command->email);
         }
 
-        $user = new User($email, $command->firstName, $command->lastName);
-        $user->setPassword(
-            $this->passwordHasher->hashPassword($user, $command->plainPassword)
-        );
+        $user = new User($email, $command->name);
 
         foreach ($command->roles as $role) {
-            $user->grantPrivilege(UserRole::from($role));
+            $user->grantPrivilege($role);
         }
 
         $this->userRepository->save($user);

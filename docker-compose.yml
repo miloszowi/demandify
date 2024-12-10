@@ -23,6 +23,15 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
+  session:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - session:/data
+
   php:
     build: .
     volumes:
@@ -32,6 +41,7 @@ services:
     depends_on:
       - database
       - rabbitmq
+      - session
     networks:
       - default
 
@@ -48,19 +58,10 @@ services:
       - '443:443'
     networks:
       - default
-
-  mailer:
-    image: axllent/mailpit
-    ports:
-      - "1025"
-      - "8025"
-    environment:
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-
 volumes:
   database_data:
   rabbitmq_data:
+  session:
 
 networks:
   default:

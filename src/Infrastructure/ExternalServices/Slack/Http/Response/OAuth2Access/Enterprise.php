@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\ExternalServices\Slack\Http\Response\OauthV2Access;
+namespace Querify\Infrastructure\ExternalServices\Slack\Http\Response\OAuth2Access;
 
 final readonly class Enterprise
 {

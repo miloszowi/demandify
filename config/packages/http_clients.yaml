@@ -1,0 +1,8 @@
+services:
+  http_client.default:
+    alias: 'http_client'
+
+  http_client.slack:
+    class: Symfony\Component\HttpClient\CurlHttpClient
+    arguments:
+      - { base_uri: 'https://slack.com/api' }

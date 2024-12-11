@@ -33,8 +33,6 @@ final class SubmitDemandHandler
         );
 
         $this->demandRepository->save($demand);
-        $this->domainEventPublisher->publish(
-            new DemandSubmitted($demand->uuid)
-        );
+        $this->domainEventPublisher->publish(new DemandSubmitted($demand->uuid));
     }
 }

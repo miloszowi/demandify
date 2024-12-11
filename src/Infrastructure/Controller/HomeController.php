@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\Controller;
 
 use Querify\Application\Command\SubmitDemand\SubmitDemand;
+use Querify\Domain\ExternalService\ExternalServiceRepository;
 use Querify\Infrastructure\Form\Demand\Demand;
 use Querify\Infrastructure\Form\Demand\DemandFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private readonly MessageBusInterface $messageBus) {}
+    public function __construct(
+        private readonly MessageBusInterface $messageBus,
+        private readonly ExternalServiceRepository $externalServiceRepository,
+    ) {}
 
     #[Route('/', name: 'index')]
     public function index(Request $request): Response
@@ -39,6 +43,7 @@ class HomeController extends AbstractController
 
         return $this->render('index.html.twig', [
             'demandForm' => $form,
+            'external_services' => $this->externalServiceRepository->getAll(),
         ]);
     }
 }

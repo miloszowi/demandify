@@ -9,7 +9,7 @@ services:
             $slackApiHttpClient: '@http_client.slack'
 
     _instanceof:
-        Querify\Infrastructure\ExternalServices\OAuth2\OAuth2Client:
+        Querify\Infrastructure\Authentication\OAuth2\OAuth2Client:
             tags: [ 'querify.oauth.client' ]
 
     Querify\:
@@ -17,7 +17,7 @@ services:
         exclude:
             - '../src/Kernel.php'
 
-    Querify\Infrastructure\ExternalServices\OAuth2\OAuth2ClientManager:
+    Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager:
         arguments:
             - !tagged_iterator 'querify.oauth.client'
 

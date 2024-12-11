@@ -6,7 +6,7 @@ namespace Querify\Infrastructure\Authentication;
 
 use Querify\Domain\User\Provider\UserProvider;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\ExternalServices\OAuth2\OAuth2ClientManager;
+use Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

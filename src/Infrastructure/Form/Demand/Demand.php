@@ -7,8 +7,8 @@ namespace Querify\Infrastructure\Form\Demand;
 class Demand
 {
     public function __construct(
-        public string $service = '',
-        public string $content = '',
-        public string $reason = '',
+        public ?string $service = null,
+        public ?string $content = null,
+        public ?string $reason = null,
     ) {}
 }

@@ -6,9 +6,9 @@ namespace Querify\Infrastructure\Controller\OAuth;
 
 use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
+use Querify\Infrastructure\Authentication\OAuth2\Request\OAuth2AccessRequest;
 use Querify\Infrastructure\Authentication\OAuth2Authenticator;
-use Querify\Infrastructure\ExternalServices\OAuth2\OAuth2ClientManager;
-use Querify\Infrastructure\ExternalServices\OAuth2\Request\OAuth2AccessRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

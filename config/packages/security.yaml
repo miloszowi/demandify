@@ -18,9 +18,9 @@ security:
                 target: app_login
 
     access_control:
-         - { attributes: { '_route': 'index' }, roles: ROLE_USER }
-         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: /admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { attributes: { '_route': 'index' }, roles: ROLE_USER }
 
 when@test:
     security:

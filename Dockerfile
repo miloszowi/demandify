@@ -1,24 +1,27 @@
-FROM php:8.3-fpm
+FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www/html
 
-RUN groupadd -g 1000 app && \
-    useradd -u 1000 -g app -m app
-
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
+RUN apk update && apk add --no-cache \
+    shadow \
+    postgresql-dev \
     libzip-dev \
     unzip \
     git \
     curl \
-    librabbitmq-dev \
+    rabbitmq-c-dev \
+    autoconf \
+    g++ \
+    make \
     && docker-php-ext-install \
     pdo \
     pdo_pgsql \
     zip \
     && pecl install amqp \
-    && docker-php-ext-enable pdo_pgsql zip amqp
+    && docker-php-ext-enable amqp
 
+RUN groupadd -g 1000 app && \
+    useradd -u 1000 -g app -m app
 
 COPY --from=composer:2.8.3 /usr/bin/composer /usr/bin/composer
 

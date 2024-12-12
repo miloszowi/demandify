@@ -22,4 +22,15 @@ interface UserRepository
     public function getByEmail(Email $email): User;
 
     public function save(User $user): void;
+
+    /**
+     * @return User[]
+     */
+    public function getAll(): array;
+
+    /**
+     * @param UuidInterface[] $uuids
+     * @return User[]
+     */
+    public function findByUuids(array $uuids): array;
 }

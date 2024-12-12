@@ -1,5 +1,6 @@
 imports:
     - { resource: packages/http_clients.yaml }
+
 parameters:
 services:
     _defaults:
@@ -12,6 +13,12 @@ services:
         Querify\Infrastructure\Authentication\OAuth2\OAuth2Client:
             tags: [ 'querify.oauth.client' ]
 
+        Querify\Infrastructure\Notification\NotificationContentGenerator:
+            tags: [ 'querify.notification.generator' ]
+
+        Querify\Infrastructure\Notification\NotificationClient:
+            tags: [ 'querify.notification.client' ]
+
     Querify\:
         resource: '../src/'
         exclude:
@@ -20,6 +27,13 @@ services:
     Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager:
         arguments:
             - !tagged_iterator 'querify.oauth.client'
+
+    Querify\Infrastructure\Notification\ContentGenerators\NotificationContentGeneratorImplementationResolver:
+        arguments:
+            - !tagged_iterator 'querify.notification.generator'
+    Querify\Infrastructure\Notification\Clients\NotificationClientImplementationResolver:
+        arguments:
+            - !tagged_iterator 'querify.notification.client'
 
 when@dev:
     services:

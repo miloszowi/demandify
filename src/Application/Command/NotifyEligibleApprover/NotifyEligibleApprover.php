@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessage;
 final readonly class NotifyEligibleApprover
 {
     public function __construct(
-        public UuidInterface $eligibleApproverUuid,
-        public UuidInterface $demandUuid,
+        public UuidInterface $eligibleApprover,
+        public UuidInterface $demand,
     ) {}
 }

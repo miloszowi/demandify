@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+   {% for external_service in external_services %}
+      <a href="/admin/services/{{ external_service.name }}">edit {{ external_service.name }}</a>
+   {% endfor %}
+{% endblock %}

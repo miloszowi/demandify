@@ -8,6 +8,7 @@ framework:
              sync: 'sync://'
 
         routing:
+            Querify\Application\Command\NotifyEligibleApprover\NotifyEligibleApprover: async
             Querify\Domain\User\Event\UserRegistered: async
             Querify\Domain\Demand\Event\DemandSubmitted: async
 

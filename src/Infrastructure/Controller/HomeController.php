@@ -6,8 +6,8 @@ namespace Querify\Infrastructure\Controller;
 
 use Querify\Application\Command\SubmitDemand\SubmitDemand;
 use Querify\Domain\ExternalService\ExternalServiceRepository;
-use Querify\Infrastructure\Form\Demand\Demand;
-use Querify\Infrastructure\Form\Demand\DemandFormType;
+use Querify\Infrastructure\Symfony\Form\Demand\Demand;
+use Querify\Infrastructure\Symfony\Form\Demand\DemandFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

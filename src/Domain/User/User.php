@@ -132,4 +132,18 @@ class User implements UserInterface, EquatableInterface
     {
         return $user->getUserIdentifier() === $this->getUserIdentifier();
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasPrivilege(UserRole::ROLE_ADMIN);
+    }
+
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s (%s)',
+            $this->name,
+            (string)$this->email
+        );
+    }
 }

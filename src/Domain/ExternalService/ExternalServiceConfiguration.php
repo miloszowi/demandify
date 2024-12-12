@@ -18,11 +18,11 @@ class ExternalServiceConfiguration
             ORM\Id,
             ORM\Column(type: 'string', nullable: false),
         ]
-        public readonly string $serviceName,
+        public readonly string $externalServiceName,
         /**
          * @var UuidInterface[]
          */
-        #[ORM\Column(type: 'json')]
+        #[ORM\Column(type: 'uuid_array')]
         public array $eligibleApprovers,
     ) {}
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\External\Slack\Http;
 
 use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
+use Querify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse;
 use Querify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
 use Querify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
 use Querify\Infrastructure\External\Slack\SlackConfiguration;
@@ -71,6 +72,37 @@ class SlackHttpClient
         $response = $this->serializer->deserialize(
             $response->getContent(),
             UserInfoResponse::class,
+            JsonEncoder::FORMAT
+        );
+
+        if (false === $response->ok) {
+            throw SlackApiException::fromError((string) $response->error);
+        }
+
+        return $response;
+    }
+
+    public function sendChatMessage(string $content, array $attachments, string $userId): PostMessageResponse
+    {
+        $response = $this->slackApiHttpClient->request(
+            Request::METHOD_POST,
+            '/api/chat.postMessage',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json; charset=utf-8',
+                    'Authorization' => 'Bearer '.$this->slackConfiguration->oauthBotToken,
+                ],
+                'json' => [
+                    'channel' => $userId,
+                    'text' => $content,
+                    'attachments' => json_encode($attachments),
+                ],
+            ]
+        );
+
+        $response = $this->serializer->deserialize(
+            $response->getContent(),
+            PostMessageResponse::class,
             JsonEncoder::FORMAT
         );
 

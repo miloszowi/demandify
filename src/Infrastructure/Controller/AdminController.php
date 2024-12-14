@@ -12,7 +12,6 @@ use Querify\Domain\User\User;
 use Querify\Domain\User\UserRepository;
 use Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfiguration;
 use Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfigurationFormType;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

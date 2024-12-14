@@ -20,4 +20,9 @@ enum Status: string
     {
         return array_column(self::cases(), 'name');
     }
+
+    public function isEqualTo(Status $status): bool
+    {
+        return $status->value === $this->value;
+    }
 }

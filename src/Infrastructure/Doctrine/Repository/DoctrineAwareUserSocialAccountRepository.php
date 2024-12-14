@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Querify\Domain\User\Email;
 use Querify\Domain\User\User;
+use Querify\Domain\UserSocialAccount\Exception\UserSocialAccountNotFound;
 use Querify\Domain\UserSocialAccount\UserSocialAccount;
 use Querify\Domain\UserSocialAccount\UserSocialAccountRepository as UserSocialAccountRepositoryInterface;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
@@ -21,7 +22,7 @@ class DoctrineAwareUserSocialAccountRepository extends ServiceEntityRepository i
         parent::__construct($registry, UserSocialAccount::class);
     }
 
-    public function findByPair(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
+    public function findByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
         return $this->createQueryBuilder('usa')
             ->andWhere('usa.userUuid = :user_uuid')
@@ -31,6 +32,24 @@ class DoctrineAwareUserSocialAccountRepository extends ServiceEntityRepository i
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function getByExternalIdAndType(string $externalId, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
+    {
+        $userSocialAccount = $this->createQueryBuilder('usa')
+            ->andWhere('usa.externalId = :user_uuid')
+            ->andWhere('usa.type = :type')
+            ->setParameter(':user_uuid', $externalId)
+            ->setParameter(':type', $userSocialAccountType->value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        if (null === $userSocialAccount) {
+            throw UserSocialAccountNotFound::fromExternalIdAndType($externalId, $userSocialAccountType);
+        }
+
+        return $userSocialAccount;
     }
 
     public function findByEmailAndType(Email $email, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount

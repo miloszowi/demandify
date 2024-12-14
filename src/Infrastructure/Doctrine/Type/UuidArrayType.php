@@ -28,6 +28,11 @@ class UuidArrayType extends Type
         return self::UUID_ARRAY;
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return null|UuidInterface[]
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform): ?array
     {
         if (null === $value) {

@@ -6,6 +6,7 @@ namespace Querify\Domain\Demand;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Querify\Domain\Exception\DomainLogicException;
 use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -71,6 +72,10 @@ class Demand
 
     public function approveBy(User $user): void
     {
+        if (!$this->status->isEqualTo(Status::NEW)) {
+            throw new DomainLogicException(\sprintf('Can not approve demand in status other than %s', Status::NEW->value));
+        }
+
         $this->status = Status::APPROVED;
         $this->approverUuid = $user->uuid;
 
@@ -79,6 +84,10 @@ class Demand
 
     public function declineBy(User $user): void
     {
+        if (!$this->status->isEqualTo(Status::NEW)) {
+            throw new DomainLogicException(\sprintf('Can not decline demand in status other than %s', Status::NEW->value));
+        }
+
         $this->status = Status::DECLINED;
         $this->approverUuid = $user->uuid;
 

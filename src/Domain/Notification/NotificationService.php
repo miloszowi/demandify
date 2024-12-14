@@ -10,7 +10,7 @@ use Querify\Domain\UserSocialAccount\UserSocialAccount;
 
 interface NotificationService
 {
-    public function notifyAboutNewDemand(UserSocialAccount $socialAccount, Demand $demand): void;
+    public function notifyAboutNewDemand(Demand $demand, UserSocialAccount $socialAccount): void;
 
     public function notifyDemandDecisionMade(UserSocialAccount $socialAccount, Demand $demand): void;
 

@@ -56,6 +56,15 @@ class User implements UserInterface, EquatableInterface
         $this->socialAccounts = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return \sprintf(
+            '%s (%s)',
+            $this->name,
+            (string) $this->email
+        );
+    }
+
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
@@ -136,14 +145,5 @@ class User implements UserInterface, EquatableInterface
     public function isAdmin(): bool
     {
         return $this->hasPrivilege(UserRole::ROLE_ADMIN);
-    }
-
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s (%s)',
-            $this->name,
-            (string)$this->email
-        );
     }
 }

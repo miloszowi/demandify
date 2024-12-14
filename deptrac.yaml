@@ -40,6 +40,11 @@ deptrac:
               -
                  type: classLike
                  value: ^ApiPlatform\\.*
+        - name: InfrastructureVendor
+          collectors:
+              -
+                  type: classLike
+                  value: ^Twig\\.*
     ruleset:
         Domain:
           - DomainVendor
@@ -54,3 +59,4 @@ deptrac:
           - Application
           - DomainVendor
           - ApiPlatform
+          - InfrastructureVendor

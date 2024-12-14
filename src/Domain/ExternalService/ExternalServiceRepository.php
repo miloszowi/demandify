@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Querify\Domain\ExternalService;
 
-use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
-
 interface ExternalServiceRepository
 {
     public function getByName(string $serviceName): ExternalService;

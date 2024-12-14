@@ -30,6 +30,7 @@ interface UserRepository
 
     /**
      * @param UuidInterface[] $uuids
+     *
      * @return User[]
      */
     public function findByUuids(array $uuids): array;

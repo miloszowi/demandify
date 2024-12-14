@@ -9,6 +9,7 @@ use Querify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse
 use Querify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
 use Querify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
 use Querify\Infrastructure\External\Slack\SlackConfiguration;
+use Querify\Infrastructure\Notification\ContentGenerator\NotificationContentDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -82,7 +83,7 @@ class SlackHttpClient
         return $response;
     }
 
-    public function sendChatMessage(string $content, array $attachments, string $userId): PostMessageResponse
+    public function sendChatMessage(NotificationContentDTO $notificationContentDTO, string $userId): PostMessageResponse
     {
         $response = $this->slackApiHttpClient->request(
             Request::METHOD_POST,
@@ -94,8 +95,8 @@ class SlackHttpClient
                 ],
                 'json' => [
                     'channel' => $userId,
-                    'text' => $content,
-                    'attachments' => json_encode($attachments),
+                    'text' => $notificationContentDTO->content,
+                    'attachments' => json_encode($notificationContentDTO->attachments),
                 ],
             ]
         );
@@ -111,5 +112,26 @@ class SlackHttpClient
         }
 
         return $response;
+    }
+
+    public function updateChatMessage(NotificationContentDTO $notificationContentDTO, string $channelId, string $notificationIdentifier): void
+    {
+        // todo better error handling
+        $this->slackApiHttpClient->request(
+            Request::METHOD_POST,
+            '/api/chat.update',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json; charset=utf-8',
+                    'Authorization' => 'Bearer '.$this->slackConfiguration->oauthBotToken,
+                ],
+                'json' => [
+                    'channel' => $channelId,
+                    'ts' => $notificationIdentifier,
+                    'text' => $notificationContentDTO->content,
+                    'attachments' => json_encode($notificationContentDTO->attachments),
+                ],
+            ]
+        );
     }
 }

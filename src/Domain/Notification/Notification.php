@@ -14,6 +14,7 @@ use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 ]
 class Notification
 {
+    #[ORM\Column(type: 'datetimetz_immutable')]
     public readonly \DateTimeImmutable $createdAt;
 
     public function __construct(
@@ -24,12 +25,13 @@ class Notification
         ]
         public readonly Demand $demand,
         #[ORM\Column(type: 'string', nullable: false)]
+        public readonly string $action,
+        #[ORM\Column(type: 'string', nullable: false)]
+        public readonly string $notificationIdentifier,
+        #[ORM\Column(type: 'string', nullable: false)]
         public readonly string $channel,
         #[ORM\Column(nullable: false)]
-        public readonly UserSocialAccountType $type,
-        /** @var array<string, string> */
-        #[ORM\Column(type: 'json')]
-        public ?array $extraData = []
+        public readonly UserSocialAccountType $type
     ) {
         $this->createdAt = new \DateTimeImmutable();
     }

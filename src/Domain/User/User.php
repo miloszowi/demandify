@@ -22,11 +22,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, EquatableInterface
 {
+    /**
+     * @readonly impossible to specify "readonly" attribute natively due
+     *           to a Doctrine feature/bug https://github.com/doctrine/orm/issues/9863
+     */
     #[
         ORM\Id,
         ORM\Column(name: 'uuid', type: 'uuid', unique: true, nullable: false)
     ]
-    public readonly UuidInterface $uuid;
+    public UuidInterface $uuid;
 
     #[ORM\Column(type: 'datetimetz_immutable')]
     public readonly \DateTimeImmutable $createdAt;
@@ -105,7 +109,7 @@ class User implements UserInterface, EquatableInterface
 
     public function hasSocialAccountLinked(UserSocialAccountType $userSocialAccountType): bool
     {
-        foreach ($this->getSocialAccounts()->getValues() as $socialAccount) {
+        foreach ($this->getSocialAccounts() as $socialAccount) {
             if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
                 return true;
             }
@@ -116,7 +120,7 @@ class User implements UserInterface, EquatableInterface
 
     public function getSocialAccounts(): Collection
     {
-        return $this->socialAccounts;
+        return !empty($this->socialAccounts) ? $this->socialAccounts : new ArrayCollection();
     }
 
     public function linkSocialAccount(UserSocialAccount $userSocialAccount): void

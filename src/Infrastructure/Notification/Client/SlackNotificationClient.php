@@ -3,26 +3,29 @@
 namespace Querify\Infrastructure\Notification\Client;
 
 use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\Exception\DomainLogicException;
 use Querify\Domain\Notification\Notification;
+use Querify\Domain\Notification\NotificationType;
 use Querify\Domain\UserSocialAccount\UserSocialAccount;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Infrastructure\External\Slack\Http\SlackHttpClient;
 use Querify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
+use Querify\Infrastructure\Notification\ContentGenerator\NotificationContentDTO;
 use Querify\Infrastructure\Notification\ContentGenerator\SlackNotificationContentGenerator;
 
 class SlackNotificationClient implements NotificationClient
 {
+    public const APPROVE_CALLBACK_KEY = 'approve';
+    public const DECLINE_CALLBACK_KEY = 'decline';
+
     public function __construct(
         private readonly SlackHttpClient $slackHttpClient,
         private readonly SlackNotificationContentGenerator $slackNotificationContentGenerator,
     ) {}
 
-    public function send(string $action, Demand $demand, UserSocialAccount $userSocialAccount): SendNotificationResponse
+    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): SendNotificationResponse
     {
         $notificationContent = $this->slackNotificationContentGenerator->generate(
-            $action,
+            $notificationType,
             $demand,
             $userSocialAccount
         );
@@ -34,22 +37,18 @@ class SlackNotificationClient implements NotificationClient
 
         return new SendNotificationResponse(
             $response->channel,
-            $response->timestamp
+            $response->timestamp,
+            $notificationContent->content,
+            $notificationContent->attachments
         );
     }
 
-    public function update(Notification $notification, Demand $demand, UserSocialAccount $userSocialAccount): void
+    public function update(Notification $notification, Demand $demand): void
     {
-        $template = match ($demand->status) {
-            Status::APPROVED => NotificationClient::DEMAND_APPROVED,
-            Status::DECLINED => NotificationClient::DEMAND_DECLINED,
-            default => throw new DomainLogicException('Invalid demand status') // todo: make this better
-        };
-
-        $notificationContent = $this->slackNotificationContentGenerator->generate(
-            $template,
-            $demand,
-            $userSocialAccount
+        $notificationContent = new NotificationContentDTO(
+            $notification->content,
+            $this->slackNotificationContentGenerator->generateDecisionUpdateAttachment($demand->approver, $demand->status),
+            $notification->channel
         );
 
         $this->slackHttpClient->updateChatMessage(

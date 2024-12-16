@@ -1,9 +1,5 @@
-:information_source: *_New Demand_* :information_source:
-*From*: {{ social_account.user.email }} (<@{{ social_account.externalId }}|cal>)
-*Destination*: `{{ demand.service }}`
-:question: *Reason*: ```
-{{ demand.reason }}
+:white_check_mark: Your demand
 ```
-:mag: *Content*: ```
 {{ demand.content }}
 ```
+was approved by {{ demand.approver.email }} {% if approver_social_account %}(<@{{ approver_social_account.externalId }}|cal>){% endif %}.

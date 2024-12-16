@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Querify\Application\Event\DemandSubmitted;
 
-use Querify\Application\Command\NotifyEligibleApprover\NotifyEligibleApprover;
-use Querify\Domain\Demand\DemandRepository;
+use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Querify\Domain\Demand\Event\DemandSubmitted;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Querify\Domain\Notification\NotificationType;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -16,23 +16,21 @@ class DemandSubmittedHandler
 {
     public function __construct(
         private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository,
-        private readonly DemandRepository $demandRepository,
         private readonly MessageBusInterface $messageBus
     ) {}
 
     public function __invoke(DemandSubmitted $event): void
     {
-        $demand = $this->demandRepository->getByUuid($event->demandUuid);
-        $externalServiceConfiguration = $this->externalServiceConfigurationRepository->findByName($demand->service);
+        $externalServiceConfiguration = $this->externalServiceConfigurationRepository->findByName($event->demand->service);
 
-        if (null === $externalServiceConfiguration) {
+        if (!$externalServiceConfiguration?->eligibleApprovers) {
             // no eligible approvers specified for this external service
             return;
         }
 
         foreach ($externalServiceConfiguration->eligibleApprovers as $approverUuid) {
             $this->messageBus->dispatch(
-                new NotifyEligibleApprover($approverUuid, $demand->uuid)
+                new SendDemandNotification($approverUuid, $event->demand, NotificationType::NEW_DEMAND)
             );
         }
     }

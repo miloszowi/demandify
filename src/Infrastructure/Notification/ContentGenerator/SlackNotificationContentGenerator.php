@@ -5,36 +5,62 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\Notification\ContentGenerator;
 
 use Querify\Domain\Demand\Demand;
-use Querify\Domain\Exception\DomainLogicException;
+use Querify\Domain\Demand\Status;
+use Querify\Domain\Notification\NotificationType;
+use Querify\Domain\User\User;
 use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Infrastructure\Notification\Client\NotificationClient;
+use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Querify\Infrastructure\Notification\Client\SlackNotificationClient;
 use Twig\Environment;
 
 class SlackNotificationContentGenerator
 {
     public function __construct(private readonly Environment $twigEnvironment) {}
 
-    public function generate(string $template, Demand $demand, UserSocialAccount $userSocialAccount): NotificationContentDTO
+    public function generate(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): NotificationContentDTO
     {
+        $requesterSocialAccount = $demand->requester->getSocialAccount(UserSocialAccountType::SLACK);
+        $approverSocialAccount = $demand->approver?->getSocialAccount(UserSocialAccountType::SLACK);
+
         return new NotificationContentDTO(
             $this->twigEnvironment->render(
-                \sprintf('notifications/slack/%s.html.twig', $template),
+                \sprintf('notifications/slack/%s.html.twig', $notificationType->value),
                 [
                     'demand' => $demand,
-                    'social_account' => $userSocialAccount,
+                    'requester_social_account' => $requesterSocialAccount,
+                    'approver_social_account' => $approverSocialAccount,
                 ]
             ),
-            $this->generateAttachments($template, $demand, $userSocialAccount)
+            $this->generateAttachments($notificationType, $demand),
+            $userSocialAccount->externalId,
         );
+    }
+
+    public function generateDecisionUpdateAttachment(User $approver, Status $status): array
+    {
+        $content = $this->twigEnvironment->render(
+            'notifications/slack/new_demand_update.html.twig',
+            [
+                'approver' => $approver,
+                'approver_social_account' => $approver->getSocialAccount(UserSocialAccountType::SLACK),
+                'status' => $status,
+            ]
+        );
+
+        return [
+            [
+                'text' => $content,
+            ],
+        ];
     }
 
     /**
      * @return mixed[]
      */
-    private function generateAttachments(string $template, Demand $demand, UserSocialAccount $userSocialAccount): array
+    private function generateAttachments(NotificationType $type, Demand $demand): array
     {
-        return match ($template) {
-            NotificationClient::NEW_DEMAND => [
+        return match ($type) {
+            NotificationType::NEW_DEMAND => [
                 [
                     'text' => '',
                     'fallback' => 'Something went wrong',
@@ -47,10 +73,10 @@ class SlackNotificationContentGenerator
                             'text' => 'Approve',
                             'style' => 'danger',
                             'type' => 'button',
-                            'value' => 'approve',
+                            'value' => SlackNotificationClient::APPROVE_CALLBACK_KEY,
                             'confirm' => [
-                                'title' => 'Task approval danger',
-                                'text' => 'Are you sure? This task will be executed upon this approval.',
+                                'title' => 'Action approval danger',
+                                'text' => 'Are you sure? This action will be executed upon this approval.',
                             ],
                             'ok_text' => 'Yes',
                             'dismiss_text' => 'No',
@@ -59,22 +85,12 @@ class SlackNotificationContentGenerator
                             'name' => 'decision',
                             'text' => 'Decline',
                             'type' => 'button',
-                            'value' => 'decline',
+                            'value' => SlackNotificationClient::DECLINE_CALLBACK_KEY,
                         ],
                     ],
                 ],
             ],
-            NotificationClient::DEMAND_APPROVED => [
-                [
-                    'text' => \sprintf(':white_check_mark: <@%s|cal> *approved* this.', $userSocialAccount->externalId),
-                ],
-            ],
-            NotificationClient::DEMAND_DECLINED => [
-                [
-                    'text' => \sprintf(' :no_entry: <@%s|cal> *declined* this.', $userSocialAccount->externalId),
-                ],
-            ],
-            default => throw new DomainLogicException('No suited action for given template') // todo
+            NotificationType::DEMAND_APPROVED, NotificationType::DEMAND_DECLINED => [],
         };
     }
 }

@@ -6,6 +6,7 @@ namespace Querify\Domain\Demand;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Querify\Domain\Demand\Exception\InvalidDemandStatusException;
 use Querify\Domain\Exception\DomainLogicException;
 use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
@@ -28,25 +29,10 @@ class Demand
     public Status $status;
 
     #[
-        ORM\Column(type: 'uuid', nullable: false),
-        ORM\OneToOne(User::class, mappedBy: 'uuid'),
+        ORM\ManyToOne(targetEntity: User::class),
+        ORM\JoinColumn(name: 'approver_uuid', referencedColumnName: 'uuid', unique: false, nullable: true)
     ]
-    public readonly UuidInterface $requesterUuid;
-
-    #[
-        ORM\Column(type: 'uuid', nullable: true),
-        ORM\OneToOne(User::class, mappedBy: 'uuid')
-    ]
-    public ?UuidInterface $approverUuid = null;
-
-    #[ORM\Column(length: 255, nullable: false)]
-    public readonly string $service;
-
-    #[ORM\Column(type: Types::TEXT, nullable: false)]
-    public readonly string $content;
-
-    #[ORM\Column(type: Types::TEXT, nullable: false)]
-    public readonly string $reason;
+    public ?User $approver = null;
 
     #[ORM\Column(nullable: false)]
     public readonly \DateTimeImmutable $createdAt;
@@ -55,41 +41,36 @@ class Demand
     public \DateTimeImmutable $updatedAt;
 
     public function __construct(
-        UuidInterface $requesterUuid,
-        string $service,
-        string $content,
-        string $reason,
+        #[
+            ORM\ManyToOne(targetEntity: User::class),
+            ORM\JoinColumn(name: 'requester_uuid', referencedColumnName: 'uuid', unique: false, nullable: false)
+        ]
+        public readonly User $requester,
+        #[ORM\Column(length: 255, nullable: false)]
+        public readonly string $service,
+        #[ORM\Column(type: Types::TEXT, nullable: false)]
+        public readonly string $content,
+        #[ORM\Column(type: Types::TEXT, nullable: false)]
+        public readonly string $reason,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->status = Status::NEW;
-        $this->requesterUuid = $requesterUuid;
-        $this->service = $service;
-        $this->content = $content;
-        $this->reason = $reason;
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
     }
 
     public function approveBy(User $user): void
     {
-        if (!$this->status->isEqualTo(Status::NEW)) {
-            throw new DomainLogicException(\sprintf('Can not approve demand in status other than %s', Status::NEW->value));
-        }
-
-        $this->status = Status::APPROVED;
-        $this->approverUuid = $user->uuid;
+        $this->status = $this->status->progress(Status::APPROVED);
+        $this->approver = $user;
 
         $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function declineBy(User $user): void
     {
-        if (!$this->status->isEqualTo(Status::NEW)) {
-            throw new DomainLogicException(\sprintf('Can not decline demand in status other than %s', Status::NEW->value));
-        }
-
-        $this->status = Status::DECLINED;
-        $this->approverUuid = $user->uuid;
+        $this->status = $this->status->progress(Status::DECLINED);
+        $this->approver = $user;
 
         $this->updatedAt = new \DateTimeImmutable();
     }

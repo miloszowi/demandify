@@ -49,7 +49,7 @@ class OAuth2SlackClient implements OAuth2Client
             http_build_query([
                 'redirect_uri' => $this->slackConfiguration->oauthRedirectUri,
                 'client_id' => $this->slackConfiguration->clientId,
-                'user_scope' => 'identify',
+                'user_scope' => 'identify,users:read,users:read.email',
                 'state' => $this->getState($request->getSession()->getId()),
             ])
         );

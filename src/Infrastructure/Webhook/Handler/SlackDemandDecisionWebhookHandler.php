@@ -7,11 +7,13 @@ namespace Querify\Infrastructure\Webhook\Handler;
 use Querify\Application\Command\ApproveDemand\ApproveDemand;
 use Querify\Application\Command\DeclineDemand\DeclineDemand;
 use Querify\Domain\Exception\DomainLogicException;
+use Querify\Domain\UserSocialAccount\UserSocialAccountRepository;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Infrastructure\External\Slack\SlackConfiguration;
-use Querify\Infrastructure\Webhook\Request\SlackWebhookRequest;
+use Querify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use Querify\Infrastructure\Webhook\WebhookHandler;
 use Ramsey\Uuid\Uuid;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -23,6 +25,7 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
         private readonly SlackConfiguration $slackConfiguration,
         private readonly SerializerInterface $serializer,
         private readonly MessageBusInterface $messageBus,
+        private readonly UserSocialAccountRepository $userSocialAccountRepository,
     ) {}
 
     public function supports(Request $request, string $type): bool
@@ -37,22 +40,24 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
     {
         $slackRequest = $this->serializer->deserialize(
             $request->get('payload'),
-            SlackWebhookRequest::class,
+            SlackDemandDecisionWebhookRequest::class,
             JsonEncoder::FORMAT
         );
 
-        $command = match ($slackRequest->decision) {
-            'approve' => new ApproveDemand(
+        $socialAccount = $this->userSocialAccountRepository->getByExternalIdAndType(
+            $slackRequest->slackUserId,
+            UserSocialAccountType::SLACK
+        );
+
+        $command = match ($slackRequest->isApproved()) {
+            true => new ApproveDemand(
                 Uuid::fromString($slackRequest->demandUuid),
-                $slackRequest->slackUserId,
-                UserSocialAccountType::SLACK
+                $socialAccount->user
             ),
-            'decline' => new DeclineDemand(
+            false => new DeclineDemand(
                 Uuid::fromString($slackRequest->demandUuid),
-                $slackRequest->slackUserId,
-                UserSocialAccountType::SLACK
+                $socialAccount->user
             ),
-            default => throw new DomainLogicException('No suitable action for this decision') // todo
         };
         $this->messageBus->dispatch($command);
     }

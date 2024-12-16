@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Querify\Domain\Notification\Exception\NotificationNotFoundException;
 use Querify\Domain\Notification\Notification;
 use Querify\Domain\Notification\NotificationRepository;
+use Querify\Domain\Notification\NotificationType;
 use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareNotificationRepository extends ServiceEntityRepository implements NotificationRepository
@@ -18,20 +19,16 @@ class DoctrineAwareNotificationRepository extends ServiceEntityRepository implem
         parent::__construct($registry, Notification::class);
     }
 
-    public function getByDemandUuid(UuidInterface $demandUuid): Notification
+    public function findByDemandUuidAndAction(UuidInterface $demandUuid, NotificationType $notificationType): array
     {
-        $notification = $this->createQueryBuilder('n')
-            ->andWhere('n.demand = :uuid')
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.demandUuid = :uuid')
+            ->andWhere('n.type = :type')
             ->setParameter('uuid', $demandUuid->toString())
+            ->setParameter('type', $notificationType->value)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
-
-        if (null === $notification) {
-            throw NotificationNotFoundException::fromDemandUuid($demandUuid);
-        }
-
-        return $notification;
     }
 
     public function save(Notification $notification): void

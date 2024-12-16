@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Querify\Domain\Demand\Event;
 
+use Querify\Domain\Demand\Demand;
 use Querify\Domain\DomainEvent;
-use Ramsey\Uuid\UuidInterface;
 
 readonly class DemandDeclined implements DomainEvent
 {
     public function __construct(
-        public UuidInterface $demandUuid,
+        public Demand $demand,
         private \DateTimeImmutable $occuredAt = new \DateTimeImmutable(),
     ) {}
 

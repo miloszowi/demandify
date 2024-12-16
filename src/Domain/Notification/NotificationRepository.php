@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Querify\Domain\Notification;
 
-use Querify\Domain\Notification\Exception\NotificationNotFoundException;
 use Ramsey\Uuid\UuidInterface;
 
 interface NotificationRepository
 {
     /**
-     * @throws NotificationNotFoundException
+     * @return Notification[]
      */
-    public function getByDemandUuid(UuidInterface $demandUuid): Notification;
+    public function findByDemandUuidAndAction(UuidInterface $demandUuid, NotificationType $notificationType): array;
 
     public function save(Notification $notification): void;
 }

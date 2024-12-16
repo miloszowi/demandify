@@ -9,5 +9,7 @@ readonly class SendNotificationResponse
     public function __construct(
         public string $channel,
         public string $notificationIdentifier,
+        public string $content,
+        public array $attachments,
     ) {}
 }

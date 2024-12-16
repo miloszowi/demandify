@@ -1,5 +1,6 @@
 :information_source: *_New Demand_* :information_source:
-*From*: {{ social_account.user.email }} (<@{{ social_account.externalId }}|cal>)
+*From*: {{ demand.requester.email }} {% if requester_social_account %} (<@{{ requester_social_account.externalId }}|cal>){% endif %}
+
 *Destination*: `{{ demand.service }}`
 :question: *Reason*: ```
 {{ demand.reason }}

@@ -31,7 +31,6 @@ class DoctrineAwareUserRepository extends ServiceEntityRepository implements Use
 
     public function getByUuid(UuidInterface $uuid): User
     {
-        $this->getEntityManager()->clear();
         $user = $this->findByUuid($uuid);
 
         if (null === $user) {

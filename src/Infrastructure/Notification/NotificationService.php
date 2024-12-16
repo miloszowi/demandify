@@ -6,49 +6,41 @@ namespace Querify\Infrastructure\Notification;
 
 use Querify\Domain\Demand\Demand;
 use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationRepository;
 use Querify\Domain\Notification\NotificationService as NotificationServiceInterface;
+use Querify\Domain\Notification\NotificationType;
 use Querify\Domain\Task\Task;
 use Querify\Domain\UserSocialAccount\UserSocialAccount;
 use Querify\Infrastructure\Notification\Client\NotificationClient;
 
 class NotificationService implements NotificationServiceInterface
 {
-    public function __construct(
-        private readonly NotificationClientResolver $notificationClientImplementationResolver,
-        private readonly NotificationRepository $notificationRepository,
-    ) {}
+    public function __construct(private readonly NotificationClientResolver $notificationClientImplementationResolver) {}
 
-    public function notifyAboutNewDemand(Demand $demand, UserSocialAccount $socialAccount): void
+    public function sendNotification(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): Notification
     {
-        $notificationClient = $this->notificationClientImplementationResolver->get($socialAccount->type);
-        $notification = $notificationClient->send(
-            NotificationClient::NEW_DEMAND,
+        $notificationClient = $this->notificationClientImplementationResolver->get($userSocialAccount->type);
+
+        $notificationResponse = $notificationClient->send(
+            $notificationType,
             $demand,
-            $socialAccount
+            $userSocialAccount
         );
 
-        $this->notificationRepository->save(
-            new Notification(
-                $demand,
-                NotificationClient::NEW_DEMAND,
-                $notification->notificationIdentifier,
-                $notification->channel,
-                $socialAccount->type,
-            )
+        return new Notification(
+            $demand->uuid,
+            $notificationType,
+            $notificationResponse->notificationIdentifier,
+            $notificationResponse->content,
+            $notificationResponse->attachments,
+            $notificationResponse->channel,
+            $userSocialAccount->type,
         );
     }
 
-    public function notifyDemandDecisionMade(UserSocialAccount $socialAccount, Demand $demand): void
+    public function update(Notification $notification, Demand $demand): void
     {
-        $notificationClient = $this->notificationClientImplementationResolver->get($socialAccount->type);
-        $notification = $this->notificationRepository->getByDemandUuid($demand->uuid);
+        $notificationClient = $this->notificationClientImplementationResolver->get($notification->socialAccountType);
 
-        $notificationClient->update($notification, $demand, $socialAccount);
-    }
-
-    public function notifyAboutNewTask(UserSocialAccount $socialAccount, Task $task): void
-    {
-        // todo
+        $notificationClient->update($notification, $demand);
     }
 }

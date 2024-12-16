@@ -10,5 +10,6 @@ readonly class NotificationContentDTO
         public string $content,
         /** @var mixed[] */
         public array $attachments,
+        public string $recipient,
     ) {}
 }

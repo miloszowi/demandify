@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Querify\Domain\Notification;
 
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\Demand\Demand;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Ramsey\Uuid\UuidInterface;
 
 #[
     ORM\Entity(repositoryClass: NotificationRepository::class),
@@ -20,18 +20,21 @@ class Notification
     public function __construct(
         #[
             ORM\Id,
-            ORM\ManyToOne(targetEntity: Demand::class, inversedBy: 'notifications'),
-            ORM\JoinColumn(name: 'demand_uuid', referencedColumnName: 'uuid', nullable: false, onDelete: 'CASCADE'),
+            ORM\Column(type: 'uuid', nullable: false)
         ]
-        public readonly Demand $demand,
-        #[ORM\Column(type: 'string', nullable: false)]
-        public readonly string $action,
+        public readonly UuidInterface $demandUuid,
+        #[ORM\Column(nullable: false)]
+        public readonly NotificationType $type,
         #[ORM\Column(type: 'string', nullable: false)]
         public readonly string $notificationIdentifier,
+        #[ORM\Column(type: 'text')]
+        public readonly string $content,
+        #[ORM\Column(type: 'json')]
+        public readonly array $attachments,
         #[ORM\Column(type: 'string', nullable: false)]
         public readonly string $channel,
         #[ORM\Column(nullable: false)]
-        public readonly UserSocialAccountType $type
+        public readonly UserSocialAccountType $socialAccountType
     ) {
         $this->createdAt = new \DateTimeImmutable();
     }

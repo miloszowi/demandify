@@ -1,31 +1,18 @@
 <?php
 
-use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
-use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
-use Nelmio\ApiDocBundle\NelmioApiDocBundle;
-use Nelmio\CorsBundle\NelmioCorsBundle;
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
-use Symfony\Bundle\MakerBundle\MakerBundle;
-use Symfony\Bundle\SecurityBundle\SecurityBundle;
-use Symfony\Bundle\TwigBundle\TwigBundle;
-use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
-use SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle;
-use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
-
 return [
-    FrameworkBundle::class => ['all' => true],
-    TwigBundle::class => ['all' => true],
-    DoctrineBundle::class => ['all' => true],
-    DoctrineMigrationsBundle::class => ['all' => true],
-    MakerBundle::class => ['dev' => true],
-    SecurityBundle::class => ['all' => true],
-    WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    SymfonyCastsVerifyEmailBundle::class => ['all' => true],
-    NelmioApiDocBundle::class => ['all' => true],
-    TwigExtraBundle::class => ['all' => true],
-    DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
-    NelmioCorsBundle::class => ['all' => true],
-    ApiPlatformBundle::class => ['all' => true],
+    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
+    Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
+    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
+    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
+    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
+    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
+    Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle::class => ['all' => true],
+    Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
+    Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
+    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],
+    ApiPlatform\Symfony\Bundle\ApiPlatformBundle::class => ['all' => true],
+    Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
 ];

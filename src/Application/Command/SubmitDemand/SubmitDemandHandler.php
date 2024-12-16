@@ -26,13 +26,13 @@ final class SubmitDemandHandler
         $user = $this->userRepository->getByEmail(Email::fromString($command->requesterEmail));
 
         $demand = new Demand(
-            $user->uuid,
+            $user,
             $command->service,
             $command->content,
             $command->reason
         );
 
         $this->demandRepository->save($demand);
-        $this->domainEventPublisher->publish(new DemandSubmitted($demand->uuid));
+        $this->domainEventPublisher->publish(new DemandSubmitted($demand));
     }
 }

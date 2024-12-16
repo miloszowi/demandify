@@ -116,7 +116,6 @@ class SlackHttpClient
 
     public function updateChatMessage(NotificationContentDTO $notificationContentDTO, string $channelId, string $notificationIdentifier): void
     {
-        // todo better error handling
         $this->slackApiHttpClient->request(
             Request::METHOD_POST,
             '/api/chat.update',

@@ -8,9 +8,14 @@ framework:
              sync: 'sync://'
 
         routing:
+            Querify\Application\Command\ExecuteDemand\ExecuteDemand: async
+            Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision: async
             Querify\Application\Command\SendDemandNotification\SendDemandNotification: async
             Querify\Domain\User\Event\UserRegistered: async
+            Querify\Domain\Demand\Event\DemandApproved: async
+            Querify\Domain\Demand\Event\DemandDeclined: async
             Querify\Domain\Demand\Event\DemandSubmitted: async
+
 
 when@test:
     framework:

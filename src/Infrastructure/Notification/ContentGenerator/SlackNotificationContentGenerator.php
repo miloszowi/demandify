@@ -36,6 +36,9 @@ class SlackNotificationContentGenerator
         );
     }
 
+    /**
+     * @return array<string[]>
+     */
     public function generateDecisionUpdateAttachment(User $approver, Status $status): array
     {
         $content = $this->twigEnvironment->render(

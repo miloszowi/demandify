@@ -11,7 +11,7 @@ use Querify\Domain\User\User;
     ORM\Entity(repositoryClass: UserSocialAccountRepository::class),
     ORM\Table('`user_social_account`'),
 ]
-final readonly class UserSocialAccount
+readonly class UserSocialAccount
 {
     public function __construct(
         #[
@@ -29,6 +29,6 @@ final readonly class UserSocialAccount
         public string $externalId,
         /** @var array<string, string> */
         #[ORM\Column(type: 'json')]
-        public ?array $extraData
+        public ?array $extraData = []
     ) {}
 }

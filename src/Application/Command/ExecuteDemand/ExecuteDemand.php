@@ -10,5 +10,5 @@ use Symfony\Component\Messenger\Attribute\AsMessage;
 #[AsMessage]
 readonly class ExecuteDemand
 {
-    public function __construct(public Demand $demand) {}
+    public function __construct(public Demand $demand) {} // todo
 }

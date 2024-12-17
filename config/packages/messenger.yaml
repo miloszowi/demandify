@@ -8,9 +8,9 @@ framework:
              sync: 'sync://'
 
         routing:
-#            Querify\Application\Command\SendDemandNotification\SendDemandNotification: async
-#            Querify\Domain\User\Event\UserRegistered: async
-#            Querify\Domain\Demand\Event\DemandSubmitted: async
+            Querify\Application\Command\SendDemandNotification\SendDemandNotification: async
+            Querify\Domain\User\Event\UserRegistered: async
+            Querify\Domain\Demand\Event\DemandSubmitted: async
 
 when@test:
     framework:

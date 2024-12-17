@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Querify\Infrastructure\Console;
 
 use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Application\Command\SubmitDemand\SubmitDemand;
 use Querify\Domain\User\UserRole;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -33,17 +32,6 @@ class CreateUser extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->messageBus->dispatch(
-            new SubmitDemand(
-                'test@test.pl',
-        'querify_postgres',
-        'test',
-        'test',
-            )
-        );
-
-        die();
-
         $email = $this->getUserData($input, $output, 'Email');
         $name = $this->getUserData($input, $output, 'Name');
         $role = $this->getRole($input, $output);

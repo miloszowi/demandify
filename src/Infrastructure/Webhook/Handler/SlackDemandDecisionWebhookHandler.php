@@ -6,14 +6,12 @@ namespace Querify\Infrastructure\Webhook\Handler;
 
 use Querify\Application\Command\ApproveDemand\ApproveDemand;
 use Querify\Application\Command\DeclineDemand\DeclineDemand;
-use Querify\Domain\Exception\DomainLogicException;
 use Querify\Domain\UserSocialAccount\UserSocialAccountRepository;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Infrastructure\External\Slack\SlackConfiguration;
 use Querify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use Querify\Infrastructure\Webhook\WebhookHandler;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;

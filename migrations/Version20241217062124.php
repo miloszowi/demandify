@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241215092601 extends AbstractMigration
+final class Version20241217062124 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -30,7 +30,7 @@ final class Version20241215092601 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN "demand".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "demand".updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE "external_service_configuration" (external_service_name VARCHAR(255) NOT NULL, eligible_approvers JSON NOT NULL, PRIMARY KEY(external_service_name))');
-        $this->addSql('CREATE TABLE "notifications" (demand_uuid UUID NOT NULL, created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, type VARCHAR(255) NOT NULL, notification_identifier VARCHAR(255) NOT NULL, channel VARCHAR(255) NOT NULL, social_account_type VARCHAR(255) NOT NULL, PRIMARY KEY(demand_uuid))');
+        $this->addSql('CREATE TABLE "notifications" (demand_uuid UUID NOT NULL, type VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, notification_identifier VARCHAR(255) NOT NULL, content TEXT NOT NULL, attachments JSON NOT NULL, channel VARCHAR(255) NOT NULL, social_account_type VARCHAR(255) NOT NULL, PRIMARY KEY(demand_uuid, type))');
         $this->addSql('COMMENT ON COLUMN "notifications".demand_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "notifications".created_at IS \'(DC2Type:datetimetz_immutable)\'');
         $this->addSql('CREATE TABLE task (uuid UUID NOT NULL, demand_uuid UUID DEFAULT NULL, executed_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, success BOOLEAN NOT NULL, execution_time INT NOT NULL, result_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))');

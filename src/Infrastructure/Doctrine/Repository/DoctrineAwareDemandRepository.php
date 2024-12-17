@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Querify\Domain\Demand\Demand;
 use Querify\Domain\Demand\DemandRepository as DemandRepositoryInterface;
 use Querify\Domain\Demand\Exception\DemandNotFoundException;
+use Querify\Domain\Demand\Status;
 use Querify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
@@ -48,8 +49,18 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
     public function findAllFromUser(User $user): array
     {
         return $this->createQueryBuilder('d')
-            ->andWhere('d.requesterUuid = :requester_uuid')
-            ->setParameter('requester_uuid', $user->uuid->toString())
+            ->andWhere('d.requester = :requester')
+            ->setParameter('requester', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findInStatus(Status $status): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.status = :status')
+            ->setParameter('status', $status)
             ->getQuery()
             ->getResult()
         ;

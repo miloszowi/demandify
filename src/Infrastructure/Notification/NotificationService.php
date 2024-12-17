@@ -8,15 +8,13 @@ use Querify\Domain\Demand\Demand;
 use Querify\Domain\Notification\Notification;
 use Querify\Domain\Notification\NotificationService as NotificationServiceInterface;
 use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\Task\Task;
 use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Infrastructure\Notification\Client\NotificationClient;
 
 class NotificationService implements NotificationServiceInterface
 {
     public function __construct(private readonly NotificationClientResolver $notificationClientImplementationResolver) {}
 
-    public function sendNotification(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): Notification
+    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): Notification
     {
         $notificationClient = $this->notificationClientImplementationResolver->get($userSocialAccount->type);
 

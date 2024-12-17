@@ -23,12 +23,16 @@ class Notification
             ORM\Column(type: 'uuid', nullable: false)
         ]
         public readonly UuidInterface $demandUuid,
-        #[ORM\Column(nullable: false)]
+        #[
+            ORM\Id,
+            ORM\Column(nullable: false)
+        ]
         public readonly NotificationType $type,
         #[ORM\Column(type: 'string', nullable: false)]
         public readonly string $notificationIdentifier,
         #[ORM\Column(type: 'text')]
         public readonly string $content,
+        /** @var mixed[] $attachments */
         #[ORM\Column(type: 'json')]
         public readonly array $attachments,
         #[ORM\Column(type: 'string', nullable: false)]

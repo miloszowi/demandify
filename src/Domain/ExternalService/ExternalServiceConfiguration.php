@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Querify\Domain\ExternalService;
 
 use Doctrine\ORM\Mapping as ORM;
+use Querify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
 #[
@@ -25,4 +26,15 @@ class ExternalServiceConfiguration
         #[ORM\Column(type: 'uuid_array')]
         public array $eligibleApprovers,
     ) {}
+
+    public function isUserEligible(User $user): bool
+    {
+        foreach ($this->eligibleApprovers as $eligibleApprover) {
+            if ($eligibleApprover->equals($user->uuid)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -46,8 +46,8 @@ class LinkSocialAccountToUserHandler
                     $command->extraData
                 )
             );
-        }
 
-        $this->userRepository->save($user);
+            $this->userRepository->save($user);
+        }
     }
 }

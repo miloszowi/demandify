@@ -16,7 +16,7 @@ use Querify\Tests\integration\BaseKernelTestCase;
 /**
  * @internal
  *
- * @coversNothing
+ * @covers \Querify\Application\Command\SubmitDemand\SubmitDemandHandler
  */
 final class SubmitDemandHandlerTest extends BaseKernelTestCase
 {
@@ -54,8 +54,7 @@ final class SubmitDemandHandlerTest extends BaseKernelTestCase
         self::assertSame('content', $demands[0]->content);
         self::assertSame('reason', $demands[0]->reason);
 
-        $transport = $this->getContainer()->get('messenger.transport.async');
-        self::assertCount(1, $transport->getSent());
+        self::assertCount(1, $this->getAsyncTransport()->getSent());
     }
 
     public function testSubmittingDemandWillFailDueToNonExistingUser(): void

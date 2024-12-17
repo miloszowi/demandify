@@ -6,7 +6,6 @@ namespace Querify\Infrastructure\Doctrine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\Notification\Exception\NotificationNotFoundException;
 use Querify\Domain\Notification\Notification;
 use Querify\Domain\Notification\NotificationRepository;
 use Querify\Domain\Notification\NotificationType;

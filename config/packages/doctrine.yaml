@@ -2,6 +2,7 @@ doctrine:
     dbal:
         driver: 'pdo_psql'
         charset: utf8
+        use_savepoints: true
         default_table_options:
             charset: utf8
             collate: utf_8_unicode_ci
@@ -19,3 +20,5 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Domain/'
                 prefix: 'Querify\Domain'
+        controller_resolver:
+            auto_mapping: true

@@ -8,7 +8,7 @@ use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]
-final readonly class EditEligibleApprovers
+readonly class EditEligibleApprovers
 {
     public function __construct(
         public string $externalServiceName,

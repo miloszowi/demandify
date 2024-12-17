@@ -18,12 +18,12 @@ class UuidArrayType extends Type
 {
     public const string UUID_ARRAY = 'uuid_array';
 
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return self::UUID_ARRAY;
     }

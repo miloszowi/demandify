@@ -23,10 +23,10 @@ use Symfony\Component\Serializer\Attribute\Groups;
                 uriTemplate: '/demand/{uuid}',
                 security: "is_granted('".UserRole::ROLE_ADMIN->value." or (object.owner == user')",
             ),
-            new Post(
-                security: "is_granted('".UserRole::ROLE_USER->value."')",
-                processor: DemandProcessor::class
-            ),
+            //            new Post(
+            //                security: "is_granted('".UserRole::ROLE_USER->value."')",
+            //                processor: DemandProcessor::class
+            //            ),
         ],
         normalizationContext: ['groups' => ['demand:read']],
         denormalizationContext: ['groups' => ['demand:write']],
@@ -61,13 +61,13 @@ readonly class Demand
     {
         return new self(
             $demand->uuid,
-            $demand->requesterUuid,
+            $demand->requester->uuid,
             $demand->service,
             $demand->content,
             $demand->reason,
             $demand->createdAt->format('Y-m-d H:i:s'),
             $demand->updatedAt->format('Y-m-d H:i:s'),
-            $demand->approverUuid
+            $demand->approver->uuid
         );
     }
 }

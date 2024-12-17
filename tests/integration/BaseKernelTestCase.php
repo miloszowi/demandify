@@ -10,6 +10,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 
 /**
  * @internal
@@ -40,5 +41,10 @@ abstract class BaseKernelTestCase extends KernelTestCase
 
         $executor = new ORMExecutor($this->entityManager, new ORMPurger($this->entityManager));
         $executor->execute($loader->getFixtures());
+    }
+
+    public function getAsyncTransport(): InMemoryTransport
+    {
+        return $this->getContainer()->get('messenger.transport.async');
     }
 }

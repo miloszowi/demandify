@@ -16,7 +16,7 @@ enum Status: string
     case EXECUTED = 'EXECUTED';
 
     /**
-     * @var array[]
+     * @var array<string[]>
      */
     private const array FLOW_TRANSITIONS = [
         self::NEW->value => [self::APPROVED->value, self::DECLINED->value],

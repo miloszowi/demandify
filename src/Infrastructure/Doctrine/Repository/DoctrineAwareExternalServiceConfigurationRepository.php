@@ -6,6 +6,7 @@ namespace Querify\Infrastructure\Doctrine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Querify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
 use Querify\Domain\ExternalService\ExternalServiceConfiguration;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 
@@ -30,5 +31,16 @@ class DoctrineAwareExternalServiceConfigurationRepository extends ServiceEntityR
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function getByName(string $name): ExternalServiceConfiguration
+    {
+        $configuration = $this->findByName($name);
+
+        if (null === $configuration) {
+            throw ExternalServiceConfigurationNotFoundException::fromName($name);
+        }
+
+        return $configuration;
     }
 }

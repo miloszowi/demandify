@@ -22,5 +22,10 @@ interface DemandRepository
      */
     public function findAllFromUser(User $user): array;
 
+    /**
+     * @return Demand[]
+     */
+    public function findInStatus(Status $status): array;
+
     public function save(Demand $demand): void;
 }

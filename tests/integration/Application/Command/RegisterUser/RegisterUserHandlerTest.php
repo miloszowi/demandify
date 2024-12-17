@@ -17,7 +17,7 @@ use Querify\Tests\integration\BaseKernelTestCase;
 /**
  * @internal
  *
- * @coversNothing
+ * @covers \Querify\Application\Command\RegisterUser\RegisterUserHandler
  */
 final class RegisterUserHandlerTest extends BaseKernelTestCase
 {

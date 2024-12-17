@@ -10,6 +10,7 @@ readonly class SendNotificationResponse
         public string $channel,
         public string $notificationIdentifier,
         public string $content,
+        /** @var mixed[] $attachments */
         public array $attachments,
     ) {}
 }

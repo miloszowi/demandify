@@ -6,8 +6,6 @@ namespace Querify\Domain\Demand;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\Demand\Exception\InvalidDemandStatusException;
-use Querify\Domain\Exception\DomainLogicException;
 use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Infrastructure\Controller;
 
-use Querify\Application\Command\EditEligibleApprovers\EditEligibleApprovers;
+use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
 use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Querify\Domain\ExternalService\ExternalServiceRepository;
@@ -55,7 +55,7 @@ class AdminController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->messageBus->dispatch(
-                new EditEligibleApprovers(
+                new UpdateEligibleApprovers(
                     $service->name,
                     array_map(
                         static fn (User $user) => $user->uuid,

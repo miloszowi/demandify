@@ -15,7 +15,7 @@ use Querify\Domain\User\UserRepository;
 use Querify\Tests\Fixtures\DemandFixture;
 use Querify\Tests\Fixtures\ExternalServiceConfigurationFixture;
 use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

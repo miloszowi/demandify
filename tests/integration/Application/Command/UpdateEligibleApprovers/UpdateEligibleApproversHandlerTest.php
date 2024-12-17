@@ -8,7 +8,7 @@ use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
 use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Querify\Tests\Fixtures\ExternalServiceConfigurationFixture;
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

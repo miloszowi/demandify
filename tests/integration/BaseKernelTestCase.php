@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\integration;
+namespace Querify\Tests\Integration;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;

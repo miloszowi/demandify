@@ -11,7 +11,7 @@ use Querify\Domain\User\Email;
 use Querify\Domain\User\Exception\UserNotFoundException;
 use Querify\Domain\User\UserRepository;
 use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

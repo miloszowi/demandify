@@ -61,14 +61,14 @@
     },
     "autoload": {
         "psr-4": {
-            "Querify\\": "src/",
-            "spec\\Querify\\": "tests/spec/Querify"
+            "Querify\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Querify\\Tests\\": "tests/",
-            "spec\\Querify\\": "tests/"
+            "spec\\Querify\\": "tests/",
+            "Querify\\Tests\\Integration\\": "tests/integration/"
         }
     },
     "replace": {

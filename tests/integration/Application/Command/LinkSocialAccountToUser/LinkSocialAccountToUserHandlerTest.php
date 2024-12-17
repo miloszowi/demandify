@@ -12,7 +12,7 @@ use Querify\Domain\User\UserRepository;
 use Querify\Domain\User\UserRole;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

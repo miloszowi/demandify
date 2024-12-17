@@ -16,7 +16,7 @@ use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
 use Querify\Tests\Fixtures\DemandFixture;
 use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

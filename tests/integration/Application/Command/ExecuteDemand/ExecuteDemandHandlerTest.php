@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\ExecuteDemand;
 
-use Querify\Tests\integration\BaseKernelTestCase;
+use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

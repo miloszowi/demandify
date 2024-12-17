@@ -12,6 +12,9 @@ use Querify\Domain\User\User;
 
 class DemandFixture extends Fixture implements DependentFixtureInterface
 {
+    public const string APPROVED_DEMAND_FIXTURE_KEY = 'approved_demand';
+    public const string DECLINED_DEMAND_FIXTURE_KEY = 'declined_demand';
+
     public function load(ObjectManager $manager): void
     {
         $user = $this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class);
@@ -40,7 +43,9 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
 
         $manager->persist($demand);
         $manager->persist($approvedDemand);
+        $this->setReference(self::APPROVED_DEMAND_FIXTURE_KEY, $approvedDemand);
         $manager->persist($declinedDemand);
+        $this->setReference(self::DECLINED_DEMAND_FIXTURE_KEY, $approvedDemand);
         $manager->flush();
     }
 

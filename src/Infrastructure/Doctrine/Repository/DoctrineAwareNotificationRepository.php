@@ -30,6 +30,16 @@ class DoctrineAwareNotificationRepository extends ServiceEntityRepository implem
         ;
     }
 
+    public function findByNotificationIdentifier(string $notificationIdentifier): ?Notification
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.notificationIdentifier = :identifier')
+            ->setParameter('identifier', $notificationIdentifier)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     public function save(Notification $notification): void
     {
         $this->getEntityManager()->persist($notification);

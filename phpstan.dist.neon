@@ -8,5 +8,3 @@ parameters:
         - public/
         - src/
         - tests/
-    excludePaths:
-        - tests/spec

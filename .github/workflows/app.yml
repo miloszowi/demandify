@@ -68,23 +68,6 @@ jobs:
             ghcr.io/${{ github.repository }}:latest \
             /bin/sh -c "bin/console d:d:c --env=test && bin/console d:m:m --env=test --no-interaction && composer phpunit"
 
-  phpspec:
-    runs-on: ubuntu-latest
-    needs: build_and_push
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Log in to GitHub Container Registry
-        id: login
-        run: |
-          echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | docker login ghcr.io -u ${{ github.ACTOR }} --password-stdin
-
-      - name: Run PHPSpec tests
-        run: |
-          docker pull ghcr.io/${{ github.repository }}:latest
-          docker run --rm ghcr.io/${{ github.repository }}:latest composer phpspec
-
   phpstan:
     runs-on: ubuntu-latest
     needs: build_and_push

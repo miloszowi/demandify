@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\UpdateSentNotificationsWithDecision;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
 use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
 use Querify\Domain\Demand\DemandRepository;
@@ -16,9 +17,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler
  */
+#[CoversClass(UpdateSentNotificationsWithDecisionHandler::class)]
 final class UpdateSentNotificationsWithDecisionHandlerTest extends BaseKernelTestCase
 {
     private UpdateSentNotificationsWithDecisionHandler $handler;
@@ -47,9 +47,9 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends BaseKernelTes
         $mockResponse = $this->createMock(ResponseInterface::class);
 
         $mockResponse
-            ->expects(self::never())
-            ->method('getContent')
-            ->willReturn('')
+            ->expects(self::once())
+            ->method('toArray')
+            ->willReturn(['ok' => true])
         ;
 
         $mockHttpClient

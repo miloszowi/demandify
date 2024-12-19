@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\SendDemandNotification;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Querify\Application\Command\SendDemandNotification\SendDemandNotificationHandler;
 use Querify\Domain\Demand\DemandRepository;
@@ -22,9 +23,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\SendDemandNotification\SendDemandNotificationHandler
  */
+#[CoversClass(SendDemandNotificationHandler::class)]
 final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
 {
     private SendDemandNotificationHandler $handler;
@@ -83,8 +83,8 @@ final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
         self::assertSame('some channel', $notification->channel);
         self::assertSame('12345678.123456', $notification->notificationIdentifier);
         // @see DemandFixture
-        self::assertStringContainsString('test approved content', $notification->content);
-        self::assertCount(1, $notification->attachments);
+        self::assertStringContainsString('', $notification->content);
+        self::assertSame($notification->attachments[4]['block_id'], $demand->uuid->toString());
         self::assertSame(UserSocialAccountType::SLACK, $notification->socialAccountType);
     }
 

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\ExecuteDemand;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Querify\Application\Command\ExecuteDemand\ExecuteDemandHandler;
 use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\ExecuteDemand\ExecuteDemandHandler
  */
+#[CoversClass(ExecuteDemandHandler::class)]
 final class ExecuteDemandHandlerTest extends BaseKernelTestCase
 {
     public function testToBeFilled(): void

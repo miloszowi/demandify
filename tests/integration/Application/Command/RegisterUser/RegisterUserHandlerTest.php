@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Querify\Tests\Integration\Application\Command\RegisterUser;
 
 use Doctrine\ORM\EntityManagerInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\RegisterUser\RegisterUser;
 use Querify\Application\Command\RegisterUser\RegisterUserHandler;
 use Querify\Domain\User\Email;
@@ -16,9 +17,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\RegisterUser\RegisterUserHandler
  */
+#[CoversClass(RegisterUserHandler::class)]
 final class RegisterUserHandlerTest extends BaseKernelTestCase
 {
     private RegisterUserHandler $handler;

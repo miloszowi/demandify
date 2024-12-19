@@ -15,7 +15,7 @@ interface DemandRepository
      */
     public function getByUuid(UuidInterface $uuid): Demand;
 
-    public function findByUuid(UuidInterface $uuid): Demand;
+    public function findByUuid(UuidInterface $uuid): ?Demand;
 
     /**
      * @return Demand[]

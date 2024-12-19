@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\ApproveDemand;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\ApproveDemand\ApproveDemand;
 use Querify\Application\Command\ApproveDemand\ApproveDemandHandler;
 use Querify\Domain\Demand\DemandRepository;
@@ -19,9 +20,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\ApproveDemand\ApproveDemandHandler
  */
+#[CoversClass(ApproveDemandHandler::class)]
 final class ApproveDemandHandlerTest extends BaseKernelTestCase
 {
     private ApproveDemandHandler $approveDemandHandler;

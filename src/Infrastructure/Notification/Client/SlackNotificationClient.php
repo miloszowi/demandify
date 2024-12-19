@@ -9,53 +9,40 @@ use Querify\Domain\UserSocialAccount\UserSocialAccount;
 use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Querify\Infrastructure\External\Slack\Http\SlackHttpClient;
 use Querify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
-use Querify\Infrastructure\Notification\ContentGenerator\NotificationContentDTO;
-use Querify\Infrastructure\Notification\ContentGenerator\SlackNotificationContentGenerator;
+use Querify\Infrastructure\Notification\Content\SlackNotificationBlocksFactory;
 
 class SlackNotificationClient implements NotificationClient
 {
-    public const APPROVE_CALLBACK_KEY = 'approve';
-    public const DECLINE_CALLBACK_KEY = 'decline';
+    public const string APPROVE_CALLBACK_KEY = 'approve';
+    public const string DECLINE_CALLBACK_KEY = 'decline';
 
     public function __construct(
         private readonly SlackHttpClient $slackHttpClient,
-        private readonly SlackNotificationContentGenerator $slackNotificationContentGenerator,
+        private readonly SlackNotificationBlocksFactory $slackNotificationBlocksFactory,
     ) {}
 
     public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): SendNotificationResponse
     {
-        $notificationContent = $this->slackNotificationContentGenerator->generate(
-            $notificationType,
-            $demand,
-            $userSocialAccount
-        );
+        $blocks = $this->slackNotificationBlocksFactory->create($notificationType, $demand);
 
         $response = $this->slackHttpClient->sendChatMessage(
-            $notificationContent,
-            $userSocialAccount->externalId,
+            blocks: $blocks,
+            recipientSlackId: $userSocialAccount->externalId
         );
 
         return new SendNotificationResponse(
             $response->channel,
             $response->timestamp,
-            $notificationContent->content,
-            $notificationContent->attachments
+            '',
+            $blocks
         );
     }
 
     public function update(Notification $notification, Demand $demand): void
     {
-        $notificationContent = new NotificationContentDTO(
-            $notification->content,
-            $this->slackNotificationContentGenerator->generateDecisionUpdateAttachment($demand->approver, $demand->status),
-            $notification->channel
-        );
+        $blocks = $this->slackNotificationBlocksFactory->createForUpdatedDecision($demand);
 
-        $this->slackHttpClient->updateChatMessage(
-            $notificationContent,
-            $notification->channel,
-            $notification->notificationIdentifier,
-        );
+        $this->slackHttpClient->updateChatMessage($blocks, $notification->channel, $notification->notificationIdentifier);
     }
 
     public function getType(): UserSocialAccountType

@@ -9,7 +9,6 @@ use Querify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse
 use Querify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
 use Querify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
 use Querify\Infrastructure\External\Slack\SlackConfiguration;
-use Querify\Infrastructure\Notification\ContentGenerator\NotificationContentDTO;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -83,7 +82,10 @@ class SlackHttpClient
         return $response;
     }
 
-    public function sendChatMessage(NotificationContentDTO $notificationContentDTO, string $userId): PostMessageResponse
+    /**
+     * @param mixed[] $blocks
+     */
+    public function sendChatMessage(array $blocks, string $recipientSlackId): PostMessageResponse
     {
         $response = $this->slackApiHttpClient->request(
             Request::METHOD_POST,
@@ -94,9 +96,8 @@ class SlackHttpClient
                     'Authorization' => 'Bearer '.$this->slackConfiguration->oauthBotToken,
                 ],
                 'json' => [
-                    'channel' => $userId,
-                    'text' => $notificationContentDTO->content,
-                    'attachments' => json_encode($notificationContentDTO->attachments),
+                    'channel' => $recipientSlackId,
+                    'blocks' => $blocks,
                 ],
             ]
         );
@@ -114,9 +115,12 @@ class SlackHttpClient
         return $response;
     }
 
-    public function updateChatMessage(NotificationContentDTO $notificationContentDTO, string $channelId, string $notificationIdentifier): void
+    /**
+     * @param mixed[] $blocks
+     */
+    public function updateChatMessage(array $blocks, string $channelId, string $notificationIdentifier): void
     {
-        $this->slackApiHttpClient->request(
+        $response = $this->slackApiHttpClient->request(
             Request::METHOD_POST,
             '/api/chat.update',
             [
@@ -127,10 +131,13 @@ class SlackHttpClient
                 'json' => [
                     'channel' => $channelId,
                     'ts' => $notificationIdentifier,
-                    'text' => $notificationContentDTO->content,
-                    'attachments' => json_encode($notificationContentDTO->attachments),
+                    'blocks' => $blocks,
                 ],
             ]
         );
+
+        if (false === $response->toArray()['ok']) {
+            throw SlackApiException::fromError((string) $response->toArray()['error']);
+        }
     }
 }

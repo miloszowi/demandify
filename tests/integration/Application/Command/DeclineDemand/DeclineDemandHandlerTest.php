@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\DeclineDemand;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\DeclineDemand\DeclineDemand;
 use Querify\Application\Command\DeclineDemand\DeclineDemandHandler;
 use Querify\Domain\Demand\DemandRepository;
@@ -19,9 +20,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\DeclineDemand\DeclineDemandHandler
  */
+#[CoversClass(DeclineDemandHandler::class)]
 final class DeclineDemandHandlerTest extends BaseKernelTestCase
 {
     private DeclineDemandHandler $declineDemandHandler;

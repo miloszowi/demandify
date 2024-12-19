@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\UpdateEligibleApprovers;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
 use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
@@ -12,9 +13,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler
  */
+#[CoversClass(UpdateEligibleApproversHandler::class)]
 final class UpdateEligibleApproversHandlerTest extends BaseKernelTestCase
 {
     private UpdateEligibleApproversHandler $handler;

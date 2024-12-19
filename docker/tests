@@ -6,13 +6,9 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-pretty_print_section "functional & integration tests (phpunit)"
+pretty_print_section "functional & integration & unit tests (phpunit)"
 docker-compose exec -T php composer phpunit
 phpunit_status=$?
-
-pretty_print_section "phpspec"
-docker-compose exec -T php composer phpspec
-phpspec_status=$?
 
 pretty_print_section "phpstan"
 docker-compose exec -T php composer phpstan
@@ -27,7 +23,6 @@ docker-compose exec -T php composer deptrac
 deptrac_status=$?
 
 print_test_result "phpunit" $phpunit_status
-print_test_result "phpspec" $phpspec_status
 print_test_result "phpstan" $phpstan_status
 print_test_result "csfixer" $csfixer_status
 print_test_result "deptrac" $deptrac_status

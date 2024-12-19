@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\SubmitDemand;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\SubmitDemand\SubmitDemand;
 use Querify\Application\Command\SubmitDemand\SubmitDemandHandler;
 use Querify\Domain\Demand\DemandRepository;
@@ -15,9 +16,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\SubmitDemand\SubmitDemandHandler
  */
+#[CoversClass(SubmitDemandHandler::class)]
 final class SubmitDemandHandlerTest extends BaseKernelTestCase
 {
     private DemandRepository $demandRepository;

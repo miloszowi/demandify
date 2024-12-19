@@ -44,7 +44,7 @@ class User implements UserInterface, EquatableInterface
     #[ORM\Column(type: 'json')]
     private array $roles;
 
-    #[ORM\OneToMany(targetEntity: UserSocialAccount::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EXTRA_LAZY')]
+    #[ORM\OneToMany(targetEntity: UserSocialAccount::class, mappedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
     private Collection $socialAccounts;
 
     public function __construct(
@@ -58,15 +58,6 @@ class User implements UserInterface, EquatableInterface
         $this->updatedAt = $this->createdAt;
         $this->roles = [UserRole::ROLE_USER];
         $this->socialAccounts = new ArrayCollection();
-    }
-
-    public function __toString(): string
-    {
-        return \sprintf(
-            '%s (%s)',
-            $this->name,
-            (string) $this->email
-        );
     }
 
     public function getUserIdentifier(): string
@@ -98,7 +89,7 @@ class User implements UserInterface, EquatableInterface
 
     public function getSocialAccount(UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
-        foreach ($this->socialAccounts as $socialAccount) {
+        foreach ($this->getSocialAccounts() as $socialAccount) {
             if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
                 return $socialAccount;
             }

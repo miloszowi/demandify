@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Command\LinkSocialAccountToUser;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
 use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler;
 use Querify\Domain\User\Email;
@@ -16,9 +17,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler
  */
+#[CoversClass(LinkSocialAccountToUserHandler::class)]
 final class LinkSocialAccountToUserHandlerTest extends BaseKernelTestCase
 {
     private LinkSocialAccountToUserHandler $handler;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Tests\Integration\Application\Event\DemandApproved;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Querify\Application\Command\ExecuteDemand\ExecuteDemand;
 use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
@@ -18,9 +19,8 @@ use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
- *
- * @covers \Querify\Application\Event\DemandApproved\DemandApprovedHandler
  */
+#[CoversClass(DemandApprovedHandler::class)]
 final class DemandApprovedHandlerTest extends BaseKernelTestCase
 {
     private DemandApprovedHandler $handler;

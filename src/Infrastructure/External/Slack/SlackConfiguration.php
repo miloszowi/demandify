@@ -6,7 +6,7 @@ namespace Querify\Infrastructure\External\Slack;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final readonly class SlackConfiguration
+readonly class SlackConfiguration
 {
     public function __construct(
         #[Autowire(env: 'SLACK_APP_ID')]

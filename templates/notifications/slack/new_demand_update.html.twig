@@ -1,5 +1,0 @@
-{% if status.isInApprovedFlow %}
-    {{ approver.email }} {% if approver_social_account %} (<@{{ approver_social_account.externalId}}|cal>){% endif %} approved this demand. :white_check_mark:
-{% else %}
-    {{ approver.email }} {% if approver_social_account %} (<@{{ approver_social_account.externalId}}|cal>){% endif %} declined this demand. :no_entry:
-{% endif %}

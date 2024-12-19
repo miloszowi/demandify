@@ -22,12 +22,7 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
 
     public function getByUuid(UuidInterface $uuid): Demand
     {
-        $demand = $this->createQueryBuilder('d')
-            ->andWhere('d.uuid = :uuid')
-            ->setParameter('uuid', $uuid->toString())
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $demand = $this->findByUuid($uuid);
 
         if (null !== $demand) {
             return $demand;
@@ -36,9 +31,13 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
         throw DemandNotFoundException::fromUuid($uuid);
     }
 
-    public function findByUuid(UuidInterface $uuid): Demand
+    public function findByUuid(UuidInterface $uuid): ?Demand
     {
         return $this->createQueryBuilder('d')
+            ->leftJoin('d.requester', 'requester')
+            ->addSelect('requester')
+            ->leftJoin('d.approver', 'approver')
+            ->addSelect('approver')
             ->andWhere('d.uuid = :uuid')
             ->setParameter('uuid', $uuid)
             ->getQuery()

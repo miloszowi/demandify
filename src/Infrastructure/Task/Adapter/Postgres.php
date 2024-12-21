@@ -37,6 +37,7 @@ class Postgres implements Adapter
                 $demand,
                 success: false,
                 executionTime: (int) ((microtime(true) - $start) * 1000),
+                errorMessage: $e->getMessage(),
             );
         }
         $executionTime = (int) ((microtime(true) - $start) * 1000);

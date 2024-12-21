@@ -31,6 +31,8 @@ readonly class Task
         public bool $success,
         #[ORM\Column(type: 'integer', nullable: false)]
         public int $executionTime,
+        #[ORM\Column(type: 'text', nullable: true)]
+        public ?string $errorMessage = null,
         #[ORM\Column(length: 255, nullable: true)]
         public ?string $resultPath = null
     ) {

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241217062124 extends AbstractMigration
+final class Version20241221083426 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -33,7 +33,7 @@ final class Version20241217062124 extends AbstractMigration
         $this->addSql('CREATE TABLE "notifications" (demand_uuid UUID NOT NULL, type VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, notification_identifier VARCHAR(255) NOT NULL, content TEXT NOT NULL, attachments JSON NOT NULL, channel VARCHAR(255) NOT NULL, social_account_type VARCHAR(255) NOT NULL, PRIMARY KEY(demand_uuid, type))');
         $this->addSql('COMMENT ON COLUMN "notifications".demand_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "notifications".created_at IS \'(DC2Type:datetimetz_immutable)\'');
-        $this->addSql('CREATE TABLE task (uuid UUID NOT NULL, demand_uuid UUID DEFAULT NULL, executed_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, success BOOLEAN NOT NULL, execution_time INT NOT NULL, result_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE task (uuid UUID NOT NULL, demand_uuid UUID DEFAULT NULL, executed_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, success BOOLEAN NOT NULL, execution_time INT NOT NULL, error_message TEXT DEFAULT NULL, result_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_527EDB25FBDF0E0 ON task (demand_uuid)');
         $this->addSql('COMMENT ON COLUMN task.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN task.demand_uuid IS \'(DC2Type:uuid)\'');

@@ -6,7 +6,7 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/core": "^4.0.11",
@@ -95,8 +95,8 @@
         ],
         "phpunit": "vendor/bin/phpunit",
         "phpstan": "vendor/bin/phpstan",
-        "csfixer-check": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer check --allow-risky=yes --diff",
-        "csfixer-fix": "vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --diff",
+        "csfixer-check": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer check --allow-risky=yes --diff",
+        "csfixer-fix": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --diff",
         "deptrac": "vendor/bin/deptrac --report-uncovered --fail-on-uncovered",
         "tests": [
             "@phpunit",

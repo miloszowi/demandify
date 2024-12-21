@@ -11,9 +11,9 @@ use Querify\Application\Command\ApproveDemand\ApproveDemand;
 use Querify\Application\Command\ApproveDemand\ApproveDemandHandler;
 use Querify\Domain\Demand\Demand;
 use Querify\Domain\Demand\DemandRepository;
+use Querify\Domain\Demand\Event\DemandApproved;
 use Querify\Domain\Demand\Exception\DemandNotFoundException;
 use Querify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Querify\Domain\DomainEvent;
 use Querify\Domain\DomainEventPublisher;
 use Querify\Domain\ExternalService\ExternalServiceConfiguration;
 use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
@@ -50,7 +50,7 @@ final class ApproveDemandHandlerTest extends TestCase
         self::assertInstanceOf(ApproveDemandHandler::class, $this->handler);
     }
 
-    public function testApprovesDemandAndPublishesEvent(): void
+    public function testApprovesDemandAndPublishesDemandApprovedEvent(): void
     {
         $userMock = $this->createMock(User::class);
         $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
@@ -58,47 +58,53 @@ final class ApproveDemandHandlerTest extends TestCase
 
         $command = new ApproveDemand($demand->uuid, $userMock);
 
-        $externalServiceConfigMock->expects(self::once())
+        $externalServiceConfigMock
+            ->expects(self::once())
             ->method('isUserEligible')
             ->with($userMock)
             ->willReturn(true)
         ;
 
-        $this->externalServiceConfigRepoMock->expects(self::once())
+        $this->externalServiceConfigRepoMock
+            ->expects(self::once())
             ->method('getByName')
             ->with($demand->service)
             ->willReturn($externalServiceConfigMock)
         ;
 
-        $this->demandRepositoryMock->expects(self::once())
+        $this->demandRepositoryMock
+            ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
         ;
 
-        $this->demandRepositoryMock->expects(self::once())
+        $this->demandRepositoryMock
+            ->expects(self::once())
             ->method('save')
             ->with($demand)
         ;
 
-        $this->domainEventPublisherMock->expects(self::once())
+        $this->domainEventPublisherMock
+            ->expects(self::once())
             ->method('publish')
-            ->with(self::isInstanceOf(DomainEvent::class))
+            ->with(self::isInstanceOf(DemandApproved::class))
         ;
 
         $this->handler->__invoke($command);
     }
 
-    public function testThrowsExceptionIfDemandNotFound(): void
+    public function testApprovingNonExistingDemandWillThrowException(): void
     {
         $userMock = $this->createMock(User::class);
-        $nonExistingUuid = Uuid::uuid4();
+        $nonExistingDemandUuid = Uuid::uuid4();
 
-        $command = new ApproveDemand($nonExistingUuid, $userMock);
+        $command = new ApproveDemand($nonExistingDemandUuid, $userMock);
 
-        $this->demandRepositoryMock->expects(self::once())
+        $this->demandRepositoryMock
+            ->expects(self::once())
             ->method('getByUuid')
-            ->with($nonExistingUuid)
+            ->with($nonExistingDemandUuid)
             ->willThrowException(new DemandNotFoundException())
         ;
 
@@ -107,36 +113,38 @@ final class ApproveDemandHandlerTest extends TestCase
         $this->handler->__invoke($command);
     }
 
-    public function testThrowsExceptionIfUserIsNotEligible(): void
+    public function testApprovingByIneligibleUserWillThrowException(): void
     {
         $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
         $user = new User(Email::fromString('test@local.host'), 'name');
         $demand = new Demand($user, 'test', 'test', 'test');
         $command = new ApproveDemand($demand->uuid, $user);
 
-        $externalServiceConfigMock->expects(self::once())
+        $externalServiceConfigMock
+            ->expects(self::once())
             ->method('isUserEligible')
             ->with($user)
             ->willReturn(false)
         ;
 
-        $this->externalServiceConfigRepoMock->expects(self::once())
+        $this->externalServiceConfigRepoMock
+            ->expects(self::once())
             ->method('getByName')
             ->with($demand->service)
             ->willReturn($externalServiceConfigMock)
         ;
-
-        $this->demandRepositoryMock->expects(self::once())
+        $this->demandRepositoryMock
+            ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
         ;
-
-        $this->demandRepositoryMock->expects(self::never())
+        $this->demandRepositoryMock
+            ->expects(self::never())
             ->method('save')
         ;
-
-        $this->domainEventPublisherMock->expects(self::never())
+        $this->domainEventPublisherMock
+            ->expects(self::never())
             ->method('publish')
         ;
 

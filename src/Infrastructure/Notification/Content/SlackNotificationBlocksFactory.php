@@ -69,7 +69,7 @@ class SlackNotificationBlocksFactory
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|go to querify>",
+                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|View Demand>",
                     ],
                 ],
             ],
@@ -153,7 +153,7 @@ class SlackNotificationBlocksFactory
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|go to querify>",
+                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|View Demand>",
                     ],
                 ],
             ],
@@ -204,7 +204,7 @@ class SlackNotificationBlocksFactory
                     ],
                     [
                         'type' => 'mrkdwn',
-                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|go to querify>",
+                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|View Demand>",
                     ],
                 ],
             ],

@@ -38,24 +38,6 @@ final class RegisterUserHandlerTest extends TestCase
         );
     }
 
-    public function testThrowsExceptionWhenEmailIsAlreadyRegistered(): void
-    {
-        $email = Email::fromString('existing@local.host');
-
-        $this->userRepositoryMock
-            ->expects(self::once())
-            ->method('findByEmail')
-            ->with($email)
-            ->willReturn(new User($email, 'First'))
-        ;
-
-        $this->expectException(UserAlreadyRegisteredException::class);
-
-        $this->handler->__invoke(
-            new RegisterUser((string) $email, 'plainPassword', [UserRole::ROLE_USER])
-        );
-    }
-
     public function testHandlesTheRegistration(): void
     {
         $email = Email::fromString('non.existing@local.host');
@@ -81,5 +63,23 @@ final class RegisterUserHandlerTest extends TestCase
         ;
 
         $this->handler->__invoke($command);
+    }
+
+    public function testThrowsExceptionWhenEmailIsAlreadyRegistered(): void
+    {
+        $email = Email::fromString('existing@local.host');
+
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('findByEmail')
+            ->with($email)
+            ->willReturn(new User($email, 'First'))
+        ;
+
+        $this->expectException(UserAlreadyRegisteredException::class);
+
+        $this->handler->__invoke(
+            new RegisterUser((string) $email, 'username', [UserRole::ROLE_USER])
+        );
     }
 }

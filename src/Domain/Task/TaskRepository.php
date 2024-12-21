@@ -4,4 +4,7 @@ declare(strict_types=1);
 
 namespace Querify\Domain\Task;
 
-interface TaskRepository {}
+interface TaskRepository
+{
+    public function save(Task $task): void;
+}

@@ -30,27 +30,40 @@ final class UpdateEligibleApproversHandlerTest extends TestCase
 
     public function testUpdatesExistingConfiguration(): void
     {
-        $command = new UpdateEligibleApprovers(
-            'test_service',
-            [Uuid::uuid4(), Uuid::uuid4()],
-        );
-        $externalServiceConfiguration = new ExternalServiceConfiguration(
-            $command->externalServiceName,
-            []
-        );
-        $this->externalServiceConfigurationRepositoryMock->expects(self::once())->method('findByName')->with($command->externalServiceName)->willReturn($externalServiceConfiguration);
-        $this->externalServiceConfigurationRepositoryMock->expects(self::once())->method('save')->with($externalServiceConfiguration);
+        $command = new UpdateEligibleApprovers('test_service', [Uuid::uuid4(), Uuid::uuid4()]);
+        $externalServiceConfiguration = new ExternalServiceConfiguration($command->externalServiceName, []);
+
+        $this->externalServiceConfigurationRepositoryMock
+            ->expects(self::once())
+            ->method('findByName')
+            ->with($command->externalServiceName)
+            ->willReturn($externalServiceConfiguration)
+        ;
+        $this->externalServiceConfigurationRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with($externalServiceConfiguration)
+        ;
+
         $this->updateEligibleApproversHandler->__invoke($command);
     }
 
     public function testCreatesNewConfigurationWhenNotFound(): void
     {
-        $command = new UpdateEligibleApprovers(
-            'test_service',
-            [Uuid::uuid4(), Uuid::uuid4()],
-        );
-        $this->externalServiceConfigurationRepositoryMock->expects(self::once())->method('findByName')->with($command->externalServiceName)->willReturn(null);
-        $this->externalServiceConfigurationRepositoryMock->expects(self::once())->method('save')->with(self::isInstanceOf(ExternalServiceConfiguration::class));
+        $command = new UpdateEligibleApprovers('test_service', [Uuid::uuid4(), Uuid::uuid4()]);
+
+        $this->externalServiceConfigurationRepositoryMock
+            ->expects(self::once())
+            ->method('findByName')
+            ->with($command->externalServiceName)
+            ->willReturn(null)
+        ;
+        $this->externalServiceConfigurationRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with(self::isInstanceOf(ExternalServiceConfiguration::class))
+        ;
+
         $this->updateEligibleApproversHandler->__invoke($command);
     }
 }

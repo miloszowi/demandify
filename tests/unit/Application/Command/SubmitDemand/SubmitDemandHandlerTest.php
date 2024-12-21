@@ -45,9 +45,22 @@ final class SubmitDemandHandlerTest extends TestCase
             'content',
             'reason'
         );
-        $this->userRepositoryMock->expects(self::once())->method('getByEmail')->with(Email::fromString($command->requesterEmail))->willReturn($userMock);
-        $this->demandRepositoryMock->expects(self::once())->method('save')->with(self::isInstanceOf(Demand::class));
-        $this->domainEventPublisherMock->expects(self::once())->method('publish')->with(self::isInstanceOf(DemandSubmitted::class));
+
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('getByEmail')
+            ->with(Email::fromString($command->requesterEmail))->willReturn($userMock)
+        ;
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with(self::isInstanceOf(Demand::class))
+        ;
+        $this->domainEventPublisherMock
+            ->expects(self::once())
+            ->method('publish')
+            ->with(self::isInstanceOf(DemandSubmitted::class))
+        ;
 
         $this->submitDemandHandler->__invoke($command);
     }

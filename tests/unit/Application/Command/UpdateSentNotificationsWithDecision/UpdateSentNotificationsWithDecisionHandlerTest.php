@@ -32,11 +32,14 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
     {
         $notificationMock = $this->createMock(Notification::class);
         $demandMock = $this->createMock(Demand::class);
-        $command = new UpdateSentNotificationsWithDecision(
-            [$notificationMock],
-            $demandMock,
-        );
-        $this->notificationServiceMock->expects(self::once())->method('update')->with($notificationMock, $command->demand);
+        $command = new UpdateSentNotificationsWithDecision([$notificationMock], $demandMock);
+
+        $this->notificationServiceMock
+            ->expects(self::once())
+            ->method('update')
+            ->with($notificationMock, $command->demand)
+        ;
+
         $this->updateSentNotificationsWithDecisionHandler->__invoke($command);
     }
 }

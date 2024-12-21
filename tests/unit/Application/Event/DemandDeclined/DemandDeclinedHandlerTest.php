@@ -41,8 +41,8 @@ final class DemandDeclinedHandlerTest extends TestCase
         $notificationMock = $this->createMock(Notification::class);
         $user = new User(Email::fromString('example@local.host'), 'username');
         $demand = new Demand($user, 'some_service', 'content', 'reason');
-
         $event = new DemandDeclined($demand);
+
         $this->notificationRepositoryMock
             ->expects(self::once())
             ->method('findByDemandUuidAndAction')->with($event->demand->uuid, NotificationType::NEW_DEMAND)
@@ -64,6 +64,7 @@ final class DemandDeclinedHandlerTest extends TestCase
         $user = new User(Email::fromString('example@local.host'), 'username');
         $demand = new Demand($user, 'some_service', 'content', 'reason');
         $event = new DemandDeclined($demand);
+
         $this->notificationRepositoryMock
             ->expects(self::once())
             ->method('findByDemandUuidAndAction')

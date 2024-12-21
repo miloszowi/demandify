@@ -16,7 +16,7 @@ readonly class Task
         ORM\Id,
         ORM\Column(type: 'uuid', nullable: false)
     ]
-    public ?UuidInterface $uuid;
+    public UuidInterface $uuid;
 
     #[ORM\Column(type: 'datetimetz_immutable')]
     public ?\DateTimeImmutable $executedAt;

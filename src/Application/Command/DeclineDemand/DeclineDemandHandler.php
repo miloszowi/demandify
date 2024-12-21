@@ -30,8 +30,8 @@ class DeclineDemandHandler
         }
 
         $demand->declineBy($command->approver);
-        $this->demandRepository->save($demand);
 
+        $this->demandRepository->save($demand);
         $this->domainEventPublisher->publish(
             new DemandDeclined($demand)
         );

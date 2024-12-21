@@ -35,24 +35,7 @@ final class LinkSocialAccountToUserHandlerTest extends TestCase
         $this->linkSocialAccountToUserHandler = new LinkSocialAccountToUserHandler($this->userRepositoryMock, $this->messageBusMock);
     }
 
-    public function testLinksSocialAccountWhenUserExists(): void
-    {
-        $userMock = $this->createMock(User::class);
-        $command = new LinkSocialAccountToUser(
-            'example@local.host',
-            'username',
-            UserSocialAccountType::SLACK,
-            'externalId',
-            ['some-data' => 'some-value']
-        );
-        $this->userRepositoryMock->expects(self::once())->method('getByEmail')->with(Email::fromString('example@local.host'))->willReturn($userMock);
-        $userMock->expects(self::once())->method('getSocialAccount')->with(UserSocialAccountType::SLACK)->willReturn(null);
-        $userMock->expects(self::once())->method('linkSocialAccount')->with(self::isInstanceOf(UserSocialAccount::class));
-        $this->userRepositoryMock->expects(self::once())->method('save')->with($userMock);
-        $this->linkSocialAccountToUserHandler->__invoke($command);
-    }
-
-    public function testRegistersUserIfNotFound(): void
+    public function testLinkingSocialAccountIsSuccessful(): void
     {
         $userMock = $this->createMock(User::class);
         $command = new LinkSocialAccountToUser(
@@ -64,6 +47,44 @@ final class LinkSocialAccountToUserHandlerTest extends TestCase
         );
 
         $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('getByEmail')
+            ->with(Email::fromString('example@local.host'))
+            ->willReturn($userMock)
+        ;
+        $userMock
+            ->expects(self::once())
+            ->method('getSocialAccount')
+            ->with(UserSocialAccountType::SLACK)
+            ->willReturn(null)
+        ;
+        $userMock
+            ->expects(self::once())
+            ->method('linkSocialAccount')
+            ->with(self::isInstanceOf(UserSocialAccount::class))
+        ;
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with($userMock)
+        ;
+
+        $this->linkSocialAccountToUserHandler->__invoke($command);
+    }
+
+    public function testLinkingSocialAccountWillRegisterUserIfNotExists(): void
+    {
+        $userMock = $this->createMock(User::class);
+        $command = new LinkSocialAccountToUser(
+            'example@local.host',
+            'username',
+            UserSocialAccountType::SLACK,
+            'externalId',
+            ['some-data' => 'some-value']
+        );
+
+        $this->userRepositoryMock
+            ->expects(self::exactly(2))
             ->method('getByEmail')
             ->with(Email::fromString($command->userEmail))
             ->willReturnOnConsecutiveCalls(
@@ -73,10 +94,28 @@ final class LinkSocialAccountToUserHandlerTest extends TestCase
         ;
 
         $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock->expects(self::once())->method('dispatch')->willReturn($mockEnvelope);
-        $userMock->expects(self::once())->method('getSocialAccount')->with($command->type)->willReturn(null);
-        $userMock->expects(self::once())->method('linkSocialAccount')->with(self::isInstanceOf(UserSocialAccount::class));
-        $this->userRepositoryMock->expects(self::once())->method('save')->with($userMock);
+        $this->messageBusMock
+            ->expects(self::once())
+            ->method('dispatch')
+            ->willReturn($mockEnvelope)
+        ;
+        $userMock
+            ->expects(self::once())
+            ->method('getSocialAccount')
+            ->with($command->type)
+            ->willReturn(null)
+        ;
+        $userMock
+            ->expects(self::once())
+            ->method('linkSocialAccount')
+            ->with(self::isInstanceOf(UserSocialAccount::class))
+        ;
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with($userMock)
+        ;
+
         $this->linkSocialAccountToUserHandler->__invoke($command);
     }
 
@@ -96,10 +135,30 @@ final class LinkSocialAccountToUserHandlerTest extends TestCase
             'externalId',
             []
         );
-        $this->userRepositoryMock->expects(self::once())->method('getByEmail')->with(Email::fromString($command->userEmail))->willReturn($userMock);
-        $userMock->expects(self::once())->method('getSocialAccount')->with($command->type)->willReturn($existingSocialAccount);
-        $userMock->expects(self::never())->method('linkSocialAccount')->with(self::isInstanceOf(UserSocialAccount::class));
-        $this->userRepositoryMock->expects(self::never())->method('save')->with($userMock);
+
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('getByEmail')
+            ->with(Email::fromString($command->userEmail))
+            ->willReturn($userMock)
+        ;
+        $userMock
+            ->expects(self::once())
+            ->method('getSocialAccount')
+            ->with($command->type)
+            ->willReturn($existingSocialAccount)
+        ;
+        $userMock
+            ->expects(self::never())
+            ->method('linkSocialAccount')
+            ->with(self::isInstanceOf(UserSocialAccount::class))
+        ;
+        $this->userRepositoryMock
+            ->expects(self::never())
+            ->method('save')
+            ->with($userMock)
+        ;
+
         $this->linkSocialAccountToUserHandler->__invoke($command);
     }
 }

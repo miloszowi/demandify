@@ -53,7 +53,6 @@ final class DemandSubmittedHandlerTest extends TestCase
             ->with($demand->service)
             ->willReturn(null)
         ;
-
         $this->messageBusMock
             ->expects(self::never())
             ->method('dispatch')

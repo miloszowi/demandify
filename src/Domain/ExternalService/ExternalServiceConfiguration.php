@@ -29,12 +29,6 @@ class ExternalServiceConfiguration
 
     public function isUserEligible(User $user): bool
     {
-        foreach ($this->eligibleApprovers as $eligibleApprover) {
-            if ($eligibleApprover->equals($user->uuid)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->eligibleApprovers, static fn ($eligibleApprover) => $eligibleApprover->equals($user->uuid));
     }
 }

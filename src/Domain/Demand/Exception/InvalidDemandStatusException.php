@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Querify\Domain\Demand\Exception;
 
 use Querify\Domain\Demand\Status;
-use Querify\Domain\Exception\DomainLogicException;
+use Querify\Domain\DomainLogicException;
 
 class InvalidDemandStatusException extends DomainLogicException
 {

@@ -67,10 +67,8 @@ class User implements UserInterface, EquatableInterface
 
     public function grantPrivilege(UserRole $role): void
     {
-        foreach ($this->roles as $assignedRole) {
-            if ($role->value === $assignedRole->value) {
-                return;
-            }
+        if (array_any($this->roles, static fn ($assignedRole) => $role->value === $assignedRole->value)) {
+            return;
         }
 
         $this->roles[] = $role->value;
@@ -78,35 +76,17 @@ class User implements UserInterface, EquatableInterface
 
     public function hasPrivilege(UserRole $role): bool
     {
-        foreach ($this->roles as $assignedRole) {
-            if ($role->value === $assignedRole->value) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->roles, static fn ($assignedRole) => $role->value === $assignedRole->value);
     }
 
     public function getSocialAccount(UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
-        foreach ($this->getSocialAccounts() as $socialAccount) {
-            if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
-                return $socialAccount;
-            }
-        }
-
-        return null;
+        return array_find($this->getSocialAccounts()->toArray(), static fn ($socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type));
     }
 
     public function hasSocialAccountLinked(UserSocialAccountType $userSocialAccountType): bool
     {
-        foreach ($this->getSocialAccounts() as $socialAccount) {
-            if ($userSocialAccountType->isEqualTo($socialAccount->type)) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_any($this->getSocialAccounts()->toArray(), static fn ($socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type));
     }
 
     public function getSocialAccounts(): Collection
@@ -135,10 +115,5 @@ class User implements UserInterface, EquatableInterface
     public function isEqualTo(UserInterface $user): bool
     {
         return $user->getUserIdentifier() === $this->getUserIdentifier();
-    }
-
-    public function isAdmin(): bool
-    {
-        return $this->hasPrivilege(UserRole::ROLE_ADMIN);
     }
 }

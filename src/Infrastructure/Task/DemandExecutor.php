@@ -19,13 +19,8 @@ class DemandExecutor implements DemandExecutorInterface
     public function execute(Demand $demand): Task
     {
         $externalService = $this->externalServiceRepository->getByName($demand->service);
+        $adapter = $this->adapterFactory->create($externalService->type);
 
-        $adpater = $this->adapterFactory->create($externalService);
-
-        return new Task(
-            $demand,
-            false,
-            0,
-        );
+        return $adapter->execute($demand, $externalService);
     }
 }

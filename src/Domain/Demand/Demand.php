@@ -6,6 +6,7 @@ namespace Querify\Domain\Demand;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Querify\Domain\Task\Task;
 use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -69,6 +70,23 @@ class Demand
     {
         $this->status = $this->status->progress(Status::DECLINED);
         $this->approver = $user;
+
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function start(): void
+    {
+        $this->status = $this->status->progress(Status::IN_PROGRESS);
+
+        $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function finish(Task $task): void
+    {
+        $this->status = match ($task->success) {
+            true => $this->status->progress(Status::EXECUTED),
+            false => $this->status->progress(Status::FAILED),
+        };
 
         $this->updatedAt = new \DateTimeImmutable();
     }

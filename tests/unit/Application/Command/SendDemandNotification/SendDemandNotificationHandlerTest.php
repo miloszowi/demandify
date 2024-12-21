@@ -51,16 +51,27 @@ final class SendDemandNotificationHandlerTest extends TestCase
             NotificationType::NEW_DEMAND
         );
 
-        $this->userRepositoryMock->expects(self::once())->method('getByUuid')->with($notificationCommand->recipientUuid)->willReturn($recipientMock);
-        $recipientMock->expects(self::once())->method('getSocialAccounts')->willReturn(
-            new ArrayCollection([
-                new UserSocialAccount(
-                    $recipientMock,
-                    UserSocialAccountType::SLACK,
-                    'externalId',
-                ),
-            ])
-        );
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($notificationCommand->recipientUuid)
+            ->willReturn($recipientMock)
+        ;
+        $recipientMock
+            ->expects(self::once())
+            ->method('getSocialAccounts')
+            ->willReturn(
+                new ArrayCollection(
+                    [
+                        new UserSocialAccount(
+                            $recipientMock,
+                            UserSocialAccountType::SLACK,
+                            'externalId',
+                        ),
+                    ],
+                )
+            )
+        ;
 
         $this->notificationServiceMock
             ->expects(self::once())
@@ -68,7 +79,11 @@ final class SendDemandNotificationHandlerTest extends TestCase
             ->with($notificationCommand->notificationType, $notificationCommand->demand, self::isInstanceOf(UserSocialAccount::class))
             ->willReturn($notificationMock)
         ;
-        $this->notificationRepositoryMock->expects(self::once())->method('save')->with($notificationMock);
+        $this->notificationRepositoryMock
+            ->expects(self::once())
+            ->method('save')
+            ->with($notificationMock)
+        ;
 
         $this->sendDemandNotificationHandler->__invoke($notificationCommand);
     }
@@ -83,12 +98,30 @@ final class SendDemandNotificationHandlerTest extends TestCase
             $demandMock,
             NotificationType::NEW_DEMAND
         );
-        $this->userRepositoryMock->expects(self::once())->method('getByUuid')->with($notificationCommand->recipientUuid)->willReturn($recipientMock);
-        $recipientMock->expects(self::once())->method('getSocialAccounts')->willReturn(
-            new ArrayCollection([])
-        );
-        $this->notificationServiceMock->expects(self::never())->method('send')->with($notificationCommand->notificationType, $notificationCommand->demand, self::isInstanceOf(UserSocialAccount::class))->willReturn($notificationMock);
-        $this->notificationRepositoryMock->expects(self::never())->method('save')->with($notificationMock);
+
+        $this->userRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($notificationCommand->recipientUuid)
+            ->willReturn($recipientMock)
+        ;
+        $recipientMock
+            ->expects(self::once())
+            ->method('getSocialAccounts')
+            ->willReturn(new ArrayCollection([]))
+        ;
+        $this->notificationServiceMock
+            ->expects(self::never())
+            ->method('send')
+            ->with($notificationCommand->notificationType, $notificationCommand->demand, self::isInstanceOf(UserSocialAccount::class))
+            ->willReturn($notificationMock)
+        ;
+        $this->notificationRepositoryMock
+            ->expects(self::never())
+            ->method('save')
+            ->with($notificationMock)
+        ;
+
         $this->sendDemandNotificationHandler->__invoke($notificationCommand);
     }
 }

@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Exception;
+namespace Querify\Domain;
 
 class DomainLogicException extends \Exception {}

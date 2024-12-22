@@ -6,8 +6,11 @@ namespace Querify\Application\Command\ExecuteDemand;
 
 use Querify\Domain\Demand\DemandRepository;
 use Querify\Domain\Task\DemandExecutor;
+use Querify\Domain\Task\Event\TaskFailed;
+use Querify\Domain\Task\Event\TaskSucceeded;
 use Querify\Domain\Task\TaskRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
 class ExecuteDemandHandler
@@ -16,19 +19,25 @@ class ExecuteDemandHandler
         private readonly DemandExecutor $demandExecutor,
         private readonly DemandRepository $demandRepository,
         private readonly TaskRepository $taskRepository,
+        private readonly MessageBusInterface $messageBus,
     ) {}
 
     public function __invoke(ExecuteDemand $command): void
     {
-        $command->demand->start();
-        $this->demandRepository->save($command->demand);
+        $demand = $this->demandRepository->getByUuid($command->demandUuid);
 
-        $task = $this->demandExecutor->execute($command->demand);
+        $demand->start();
+        $this->demandRepository->save($demand);
 
-        $command->demand->finish($task);
-        $this->demandRepository->save($command->demand);
+        $task = $this->demandExecutor->execute($demand);
+
+        $demand->finish($task);
+        $this->demandRepository->save($demand);
         $this->taskRepository->save($task);
 
-        // todo TaskSucceeded/TasksFailed event
+        match ($task->success) {
+            true => $this->messageBus->dispatch(new TaskSucceeded($task)),
+            false => $this->messageBus->dispatch(new TaskFailed($task)),
+        };
     }
 }

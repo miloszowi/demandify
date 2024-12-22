@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Querify\Application\Command\ExecuteDemand;
 
-use Querify\Domain\Demand\Demand;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]
 readonly class ExecuteDemand
 {
-    public function __construct(public Demand $demand) {} // todo
+    public function __construct(public UuidInterface $demandUuid) {}
 }

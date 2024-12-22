@@ -26,6 +26,8 @@ class SlackNotificationBlocksFactory
             NotificationType::NEW_DEMAND => $this->createForNewDemand($demand),
             NotificationType::DEMAND_DECLINED => $this->createForDeclinedDemand($demand),
             NotificationType::DEMAND_APPROVED => $this->createForApprovedDemand($demand),
+            NotificationType::TASK_SUCCEEDED => $this->createForTaskSucceeded($demand),
+            NotificationType::TASK_FAILED => $this->createForTaskFailed($demand),
         };
     }
 
@@ -217,6 +219,82 @@ class SlackNotificationBlocksFactory
     /**
      * @return mixed[]
      */
+    public function createForTaskSucceeded(Demand $demand): array
+    {
+        $content = substr($demand->content, 0, 100);
+
+        return [
+            [
+                'type' => 'divider',
+            ],
+            [
+                'type' => 'header',
+                'text' => [
+                    'type' => 'plain_text',
+                    'text' => ':white_check_mark: Demand\'s Task Succeeded',
+                    'emoji' => true,
+                ],
+            ],
+            [
+                'type' => 'section',
+                'fields' => [
+                    [
+                        'type' => 'mrkdwn',
+                        'text' => "*Content:*\n```{$content}…```",
+                    ],
+                    [
+                        'type' => 'mrkdwn',
+                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|View Demand>",
+                    ],
+                ],
+            ],
+            [
+                'type' => 'divider',
+            ],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public function createForTaskFailed(Demand $demand): array
+    {
+        $content = substr($demand->content, 0, 100);
+
+        return [
+            [
+                'type' => 'divider',
+            ],
+            [
+                'type' => 'header',
+                'text' => [
+                    'type' => 'plain_text',
+                    'text' => ':no_entry: Demand\'s Task Failed',
+                    'emoji' => true,
+                ],
+            ],
+            [
+                'type' => 'section',
+                'fields' => [
+                    [
+                        'type' => 'mrkdwn',
+                        'text' => "*Content:*\n```{$content}…```",
+                    ],
+                    [
+                        'type' => 'mrkdwn',
+                        'text' => "*Link:*\n <{$this->appUrl}/demands/{$demand->uuid->toString()}|View Demand>",
+                    ],
+                ],
+            ],
+            [
+                'type' => 'divider',
+            ],
+        ];
+    }
+
+    /**
+     * @return mixed[]
+     */
     public function createForUpdatedDecision(Demand $demand): array
     {
         $blocks = $this->createForNewDemand($demand);
@@ -226,8 +304,8 @@ class SlackNotificationBlocksFactory
             : $demand->approver->email;
 
         $decisionText = match ($demand->status->isDeclined()) {
-            true => ":no_entry: This demand was declined by {$approver}",
-            false => ":white_check_mark: This demand was approved by {$approver} ",
+            true => ":no_entry: declined by {$approver}",
+            false => ":white_check_mark: approved by {$approver} ",
         };
 
         $blocks[4] = [

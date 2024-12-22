@@ -33,7 +33,7 @@ class DemandApprovedHandler
                 )
             );
         }
-        $this->messageBus->dispatch(new ExecuteDemand($event->demand));
+        $this->messageBus->dispatch(new ExecuteDemand($event->demand->uuid));
         $this->messageBus->dispatch(
             new SendDemandNotification(
                 $event->demand->requester->uuid,

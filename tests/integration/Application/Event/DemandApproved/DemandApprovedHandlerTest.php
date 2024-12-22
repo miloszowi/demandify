@@ -55,7 +55,7 @@ final class DemandApprovedHandlerTest extends BaseKernelTestCase
         self::assertSame($demand, $updateNotifications->demand);
 
         self::assertInstanceOf(ExecuteDemand::class, $executeDemand);
-        self::assertSame($demand, $executeDemand->demand);
+        self::assertSame($demand->uuid, $executeDemand->demandUuid);
 
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
         self::assertSame($demand->requester->uuid, $sendNotification->recipientUuid);

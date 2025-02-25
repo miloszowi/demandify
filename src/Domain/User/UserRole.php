@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User;
+namespace Demandify\Domain\User;
 
 enum UserRole: string
 {

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Api\Resource;
+namespace Demandify\Infrastructure\Api\Resource;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
-use Querify\Domain\Demand\Demand as DomainDemand;
-use Querify\Domain\User\UserRole;
-use Querify\Infrastructure\Api\Processor\DemandProcessor;
-use Querify\Infrastructure\Api\Provider\DemandStateProvider;
+use Demandify\Domain\Demand\Demand as DomainDemand;
+use Demandify\Domain\User\UserRole;
+use Demandify\Infrastructure\Api\Processor\DemandProcessor;
+use Demandify\Infrastructure\Api\Provider\DemandStateProvider;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 

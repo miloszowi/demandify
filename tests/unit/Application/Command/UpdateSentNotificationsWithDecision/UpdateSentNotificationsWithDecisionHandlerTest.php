@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Command\UpdateSentNotificationsWithDecision;
+namespace Demandify\Tests\Unit\Application\Command\UpdateSentNotificationsWithDecision;
 
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationService;
 
 /**
  * @internal

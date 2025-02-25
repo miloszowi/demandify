@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Task\Adapter;
+namespace Demandify\Infrastructure\Task\Adapter;
 
 readonly class AdapterResult
 {

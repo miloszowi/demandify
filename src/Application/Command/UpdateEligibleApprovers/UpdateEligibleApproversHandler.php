@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\UpdateEligibleApprovers;
+namespace Demandify\Application\Command\UpdateEligibleApprovers;
 
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

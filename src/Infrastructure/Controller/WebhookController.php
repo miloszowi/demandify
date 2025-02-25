@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Controller;
+namespace Demandify\Infrastructure\Controller;
 
-use Querify\Infrastructure\Webhook\WebhookHandler;
+use Demandify\Infrastructure\Webhook\WebhookHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

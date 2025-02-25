@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User\Exception;
+namespace Demandify\Domain\User\Exception;
 
 class UserAlreadyRegisteredException extends \Exception
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Event\DemandSubmitted;
+namespace Demandify\Application\Event\DemandSubmitted;
 
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Domain\Demand\Event\DemandSubmitted;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Querify\Domain\Notification\NotificationType;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\Notification\NotificationType;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

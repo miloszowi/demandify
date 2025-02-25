@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\UserSocialAccount;
+namespace Demandify\Domain\UserSocialAccount;
 
-use Querify\Domain\User\Email;
+use Demandify\Domain\User\Email;
 use Ramsey\Uuid\UuidInterface;
 
 interface UserSocialAccountRepository

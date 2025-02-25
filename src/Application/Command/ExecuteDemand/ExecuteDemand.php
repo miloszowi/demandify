@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\ExecuteDemand;
+namespace Demandify\Application\Command\ExecuteDemand;
 
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Repository;
+namespace Demandify\Infrastructure\Repository;
 
-use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
-use Querify\Domain\ExternalService\ExternalService;
-use Querify\Domain\ExternalService\ExternalServiceRepository as ExternalRepositoryInterface;
-use Querify\Domain\ExternalService\ExternalServiceType;
-use Querify\Infrastructure\Repository\ExternalService\Exception\InvalidExternalServiceConfiguration;
-use Querify\Infrastructure\Repository\ExternalService\ExternalServiceEnvDTO;
+use Demandify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
+use Demandify\Domain\ExternalService\ExternalService;
+use Demandify\Domain\ExternalService\ExternalServiceRepository as ExternalRepositoryInterface;
+use Demandify\Domain\ExternalService\ExternalServiceType;
+use Demandify\Infrastructure\Repository\ExternalService\Exception\InvalidExternalServiceConfiguration;
+use Demandify\Infrastructure\Repository\ExternalService\ExternalServiceEnvDTO;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 

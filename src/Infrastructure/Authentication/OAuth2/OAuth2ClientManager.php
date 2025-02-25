@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Authentication\OAuth2;
+namespace Demandify\Infrastructure\Authentication\OAuth2;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Authentication\OAuth2\Request\OAuth2AccessRequest;
-use Querify\Infrastructure\Authentication\OAuth2\Response\OAuth2AccessResponse;
-use Querify\Infrastructure\Authentication\OAuth2Authenticator;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Authentication\OAuth2\Request\OAuth2AccessRequest;
+use Demandify\Infrastructure\Authentication\OAuth2\Response\OAuth2AccessResponse;
+use Demandify\Infrastructure\Authentication\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 

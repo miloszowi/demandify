@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Console;
+namespace Demandify\Infrastructure\Console;
 
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Task\DemandExecutor;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Task\DemandExecutor;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

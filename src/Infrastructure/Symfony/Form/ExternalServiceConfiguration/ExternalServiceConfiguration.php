@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration;
+namespace Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration;
 
-use Querify\Domain\User\User;
+use Demandify\Domain\User\User;
 
 class ExternalServiceConfiguration
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\SubmitDemand;
+namespace Demandify\Application\Command\SubmitDemand;
 
 use Symfony\Component\Messenger\Attribute\AsMessage;
 

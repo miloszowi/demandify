@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Infrastructure\Notification;
+namespace Demandify\Tests\Unit\Infrastructure\Notification;
 
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\User\User;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Notification\Client\NotificationClient;
+use Demandify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
+use Demandify\Infrastructure\Notification\NotificationClientResolver;
+use Demandify\Infrastructure\Notification\NotificationService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\User\User;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Notification\Client\NotificationClient;
-use Querify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
-use Querify\Infrastructure\Notification\NotificationClientResolver;
-use Querify\Infrastructure\Notification\NotificationService;
 use Ramsey\Uuid\Uuid;
 
 /**

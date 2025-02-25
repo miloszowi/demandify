@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Webhook;
+namespace Demandify\Infrastructure\Webhook;
 
 use Symfony\Component\HttpFoundation\Request;
 

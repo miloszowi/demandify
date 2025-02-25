@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Doctrine\Repository;
+namespace Demandify\Infrastructure\Doctrine\Repository;
 
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository as DemandRepositoryInterface;
+use Demandify\Domain\Demand\Exception\DemandNotFoundException;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\DemandRepository as DemandRepositoryInterface;
-use Querify\Domain\Demand\Exception\DemandNotFoundException;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareDemandRepository extends ServiceEntityRepository implements DemandRepositoryInterface

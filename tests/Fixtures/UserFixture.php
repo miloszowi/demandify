@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Fixtures;
+namespace Demandify\Tests\Fixtures;
 
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 
 class UserFixture extends Fixture
 {

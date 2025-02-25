@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Infrastructure\Console;
+namespace Demandify\Tests\Unit\Infrastructure\Console;
 
+use Demandify\Application\Command\RegisterUser\RegisterUser;
+use Demandify\Infrastructure\Console\CreateUser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Infrastructure\Console\CreateUser;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

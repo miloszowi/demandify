@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Event\UserRegistered;
+namespace Demandify\Tests\Unit\Application\Event\UserRegistered;
 
+use Demandify\Application\Event\UserRegistered\UserRegisteredHandler;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Event\UserRegistered\UserRegisteredHandler;
 
 /**
  * @internal

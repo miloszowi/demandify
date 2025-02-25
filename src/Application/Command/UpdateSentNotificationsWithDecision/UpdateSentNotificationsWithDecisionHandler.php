@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\UpdateSentNotificationsWithDecision;
+namespace Demandify\Application\Command\UpdateSentNotificationsWithDecision;
 
-use Querify\Domain\Notification\NotificationService;
+use Demandify\Domain\Notification\NotificationService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

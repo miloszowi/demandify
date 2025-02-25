@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Console;
+namespace Demandify\Infrastructure\Console;
 
-use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Domain\User\UserRole;
+use Demandify\Application\Command\RegisterUser\RegisterUser;
+use Demandify\Domain\User\UserRole;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;

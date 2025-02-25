@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Authentication\OAuth2\Clients;
+namespace Demandify\Infrastructure\Authentication\OAuth2\Clients;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Authentication\OAuth2\OAuth2Client;
-use Querify\Infrastructure\Authentication\OAuth2\Response\OAuth2AccessResponse;
-use Querify\Infrastructure\Authentication\OAuth2\Response\OAuth2ResourceOwner;
-use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Querify\Infrastructure\External\Slack\Http\SlackHttpClient;
-use Querify\Infrastructure\External\Slack\SlackConfiguration;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Authentication\OAuth2\OAuth2Client;
+use Demandify\Infrastructure\Authentication\OAuth2\Response\OAuth2AccessResponse;
+use Demandify\Infrastructure\Authentication\OAuth2\Response\OAuth2ResourceOwner;
+use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
+use Demandify\Infrastructure\External\Slack\Http\SlackHttpClient;
+use Demandify\Infrastructure\External\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

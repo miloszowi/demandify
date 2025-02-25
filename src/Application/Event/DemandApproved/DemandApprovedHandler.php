@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Event\DemandApproved;
+namespace Demandify\Application\Event\DemandApproved;
 
-use Querify\Application\Command\ExecuteDemand\ExecuteDemand;
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
-use Querify\Domain\Demand\Event\DemandApproved;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
+use Demandify\Application\Command\ExecuteDemand\ExecuteDemand;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
+use Demandify\Domain\Demand\Event\DemandApproved;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

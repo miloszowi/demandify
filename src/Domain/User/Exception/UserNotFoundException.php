@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User\Exception;
+namespace Demandify\Domain\User\Exception;
 
-use Querify\Domain\User\Email;
+use Demandify\Domain\User\Email;
 use Ramsey\Uuid\UuidInterface;
 
 class UserNotFoundException extends \Exception

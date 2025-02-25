@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Domain\User\Provider;
+namespace Demandify\Tests\Unit\Domain\User\Provider;
 
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Provider\UserProvider;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Provider\UserProvider;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
 
 /**
  * @internal

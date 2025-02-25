@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Controller\User;
+namespace Demandify\Infrastructure\Controller\User;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

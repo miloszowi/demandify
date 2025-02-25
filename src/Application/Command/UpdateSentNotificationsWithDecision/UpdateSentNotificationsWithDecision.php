@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\UpdateSentNotificationsWithDecision;
+namespace Demandify\Application\Command\UpdateSentNotificationsWithDecision;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]

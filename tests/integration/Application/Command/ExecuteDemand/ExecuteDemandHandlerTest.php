@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\ExecuteDemand;
+namespace Demandify\Tests\Integration\Application\Command\ExecuteDemand;
 
+use Demandify\Application\Command\ExecuteDemand\ExecuteDemandHandler;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\ExecuteDemand\ExecuteDemandHandler;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

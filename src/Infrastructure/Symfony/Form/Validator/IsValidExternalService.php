@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\Validator;
+namespace Demandify\Infrastructure\Symfony\Form\Validator;
 
 use Symfony\Component\Validator\Constraint;
 

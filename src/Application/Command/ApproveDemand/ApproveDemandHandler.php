@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\ApproveDemand;
+namespace Demandify\Application\Command\ApproveDemand;
 
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Event\DemandApproved;
-use Querify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Event\DemandApproved;
+use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

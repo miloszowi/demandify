@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\UserSocialAccount;
+namespace Demandify\Domain\UserSocialAccount;
 
 enum UserSocialAccountType: string
 {

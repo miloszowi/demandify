@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\External\Slack\Http\Exception;
+namespace Demandify\Infrastructure\External\Slack\Http\Exception;
 
 class SlackApiException extends \Exception
 {

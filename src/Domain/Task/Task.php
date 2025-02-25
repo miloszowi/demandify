@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Task;
+namespace Demandify\Domain\Task;
 
+use Demandify\Domain\Demand\Demand;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\Demand\Demand;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

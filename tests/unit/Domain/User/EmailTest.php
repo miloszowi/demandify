@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Domain\User;
+namespace Demandify\Tests\Unit\Domain\User;
 
+use Demandify\Domain\User\Email;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\User\Email;
 
 /**
  * @internal

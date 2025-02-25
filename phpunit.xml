@@ -7,7 +7,7 @@
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
     <server name="SYMFONY_PHPUNIT_VERSION" value="11.0"/>
-    <server name="KERNEL_CLASS" value="\Querify\Kernel"/>
+    <server name="KERNEL_CLASS" value="\Demandify\Kernel"/>
   </php>
   <testsuites>
     <testsuite name="Integration Tests">

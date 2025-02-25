@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand\Exception;
+namespace Demandify\Domain\Demand\Exception;
 
-use Querify\Domain\Demand\Status;
-use Querify\Domain\DomainLogicException;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\DomainLogicException;
 
 class InvalidDemandStatusException extends DomainLogicException
 {

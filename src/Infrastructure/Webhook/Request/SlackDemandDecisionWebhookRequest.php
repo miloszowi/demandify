@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Webhook\Request;
+namespace Demandify\Infrastructure\Webhook\Request;
 
-use Querify\Infrastructure\Notification\Client\SlackNotificationClient;
+use Demandify\Infrastructure\Notification\Client\SlackNotificationClient;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 use Webmozart\Assert\Assert;
 

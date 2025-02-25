@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Query\GetUser;
+namespace Demandify\Application\Query\GetUser;
 
 use Symfony\Component\Messenger\Attribute\AsMessage;
 

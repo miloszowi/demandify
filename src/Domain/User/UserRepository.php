@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User;
+namespace Demandify\Domain\User;
 
-use Querify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\Exception\UserNotFoundException;
 use Ramsey\Uuid\UuidInterface;
 
 interface UserRepository

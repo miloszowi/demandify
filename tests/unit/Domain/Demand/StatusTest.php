@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Domain\Demand;
+namespace Demandify\Tests\Unit\Domain\Demand;
 
+use Demandify\Domain\Demand\Exception\InvalidDemandStatusException;
+use Demandify\Domain\Demand\Status;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\Demand\Exception\InvalidDemandStatusException;
-use Querify\Domain\Demand\Status;
 
 /**
  * @internal

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Tests\Querify\Application\Command\SubmitDemand;
+namespace Tests\Demandify\Application\Command\SubmitDemand;
 
+use Demandify\Application\Command\SubmitDemand\SubmitDemand;
+use Demandify\Application\Command\SubmitDemand\SubmitDemandHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\SubmitDemand\SubmitDemand;
-use Querify\Application\Command\SubmitDemand\SubmitDemandHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Event\DemandSubmitted;
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
 
 /**
  * @internal

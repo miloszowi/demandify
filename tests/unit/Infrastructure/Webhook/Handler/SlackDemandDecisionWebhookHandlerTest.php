@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Infrastructure\Webhook\Handler;
+namespace Demandify\Tests\Infrastructure\Webhook\Handler;
 
+use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\DeclineDemand\DeclineDemand;
+use Demandify\Domain\User\User;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\External\Slack\SlackConfiguration;
+use Demandify\Infrastructure\Notification\Client\SlackNotificationClient;
+use Demandify\Infrastructure\Webhook\Handler\SlackDemandDecisionWebhookHandler;
+use Demandify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\ApproveDemand\ApproveDemand;
-use Querify\Application\Command\DeclineDemand\DeclineDemand;
-use Querify\Domain\User\User;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountRepository;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\External\Slack\SlackConfiguration;
-use Querify\Infrastructure\Notification\Client\SlackNotificationClient;
-use Querify\Infrastructure\Webhook\Handler\SlackDemandDecisionWebhookHandler;
-use Querify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;

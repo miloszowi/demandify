@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User;
+namespace Demandify\Domain\User;
 
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;

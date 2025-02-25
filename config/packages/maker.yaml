@@ -1,5 +1,5 @@
 when@dev:
   maker:
-    root_namespace: 'Querify'
+    root_namespace: 'Demandify'
     generate_final_classes: true
     generate_final_entities: false

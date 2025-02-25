@@ -2,11 +2,11 @@ services:
   database:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: querify
+      POSTGRES_DB: demandify
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "querify", "-U", "postgres"]
+      test: ["CMD", "pg_isready", "-d", "demandify", "-U", "postgres"]
       timeout: 5s
       retries: 5
       start_period: 60s

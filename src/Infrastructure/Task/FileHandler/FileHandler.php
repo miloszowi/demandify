@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Task\FileHandler;
+namespace Demandify\Infrastructure\Task\FileHandler;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Infrastructure\Task\Adapter\AdapterResult;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Infrastructure\Task\Adapter\AdapterResult;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 

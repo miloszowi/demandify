@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Doctrine\Repository;
+namespace Demandify\Infrastructure\Doctrine\Repository;
 
+use Demandify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 
 class DoctrineAwareExternalServiceConfigurationRepository extends ServiceEntityRepository implements ExternalServiceConfigurationRepository
 {

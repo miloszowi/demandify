@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Task;
+namespace Demandify\Infrastructure\Task;
 
-use Querify\Domain\ExternalService\ExternalServiceType;
+use Demandify\Domain\ExternalService\ExternalServiceType;
 
 class AdapterFactory
 {

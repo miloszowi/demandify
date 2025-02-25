@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Infrastructure\Repository;
+namespace Demandify\Tests\Unit\Infrastructure\Repository;
 
+use Demandify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
+use Demandify\Domain\ExternalService\ExternalServiceType;
+use Demandify\Infrastructure\Repository\EnvAwareExternalServiceRepository;
+use Demandify\Infrastructure\Repository\ExternalService\Exception\InvalidExternalServiceConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
-use Querify\Domain\ExternalService\ExternalServiceType;
-use Querify\Infrastructure\Repository\EnvAwareExternalServiceRepository;
-use Querify\Infrastructure\Repository\ExternalService\Exception\InvalidExternalServiceConfiguration;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -24,9 +24,9 @@ final class EnvAwareExternalServiceRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $_ENV['EXTERNAL_SERVICE__querify_postgres'] = '{
+        $_ENV['EXTERNAL_SERVICE__demandify_postgres'] = '{
             "type": "postgres",
-            "name": "querify",
+            "name": "demandify",
             "host": "localhost",
             "user": "postgres",
             "password": "postgres",
@@ -47,11 +47,11 @@ final class EnvAwareExternalServiceRepositoryTest extends TestCase
 
     public function testReturnsExternalServiceFromEnvironmentVariable(): void
     {
-        $externalService = $this->repository->getByName('querify_postgres');
+        $externalService = $this->repository->getByName('demandify_postgres');
 
         self::assertSame(ExternalServiceType::POSTGRES, $externalService->type);
-        self::assertSame('querify_postgres', $externalService->name);
-        self::assertSame('querify', $externalService->serviceName);
+        self::assertSame('demandify_postgres', $externalService->name);
+        self::assertSame('demandify', $externalService->serviceName);
         self::assertSame('localhost', $externalService->host);
         self::assertSame('postgres', $externalService->user);
         self::assertSame('postgres', $externalService->password);

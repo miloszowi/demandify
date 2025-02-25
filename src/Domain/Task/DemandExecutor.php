@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Task;
+namespace Demandify\Domain\Task;
 
-use Querify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\Demand;
 
 interface DemandExecutor
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Domain\ExternalService;
+namespace Demandify\Tests\Unit\Domain\ExternalService;
 
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
 /**

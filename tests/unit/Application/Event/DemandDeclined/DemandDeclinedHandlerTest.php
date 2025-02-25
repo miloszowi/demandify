@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Event\DemandDeclined;
+namespace Demandify\Tests\Unit\Application\Event\DemandDeclined;
 
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Event\DemandDeclined\DemandDeclinedHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\Event\DemandDeclined;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Application\Event\DemandDeclined\DemandDeclinedHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\Event\DemandDeclined;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

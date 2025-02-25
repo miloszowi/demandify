@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Notification;
+namespace Demandify\Domain\Notification;
 
 use Ramsey\Uuid\UuidInterface;
 

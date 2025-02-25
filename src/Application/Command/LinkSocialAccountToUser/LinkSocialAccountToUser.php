@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\LinkSocialAccountToUser;
+namespace Demandify\Application\Command\LinkSocialAccountToUser;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]

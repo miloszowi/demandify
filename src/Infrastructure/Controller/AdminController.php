@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Controller;
+namespace Demandify\Infrastructure\Controller;
 
-use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
-use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Querify\Domain\ExternalService\ExternalServiceRepository;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
-use Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfiguration;
-use Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfigurationFormType;
+use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
+use Demandify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\ExternalService\ExternalServiceRepository;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfiguration;
+use Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfigurationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

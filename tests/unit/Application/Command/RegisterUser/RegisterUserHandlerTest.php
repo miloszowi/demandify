@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Command\RegisterUser;
+namespace Demandify\Tests\Unit\Application\Command\RegisterUser;
 
+use Demandify\Application\Command\RegisterUser\RegisterUser;
+use Demandify\Application\Command\RegisterUser\RegisterUserHandler;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Event\UserRegistered;
+use Demandify\Domain\User\Exception\UserAlreadyRegisteredException;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Domain\User\UserRole;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Application\Command\RegisterUser\RegisterUserHandler;
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Event\UserRegistered;
-use Querify\Domain\User\Exception\UserAlreadyRegisteredException;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
-use Querify\Domain\User\UserRole;
 
 /**
  * @internal

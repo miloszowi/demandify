@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\Demand;
+namespace Demandify\Infrastructure\Symfony\Form\Demand;
 
 class Demand
 {

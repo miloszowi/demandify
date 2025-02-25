@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tests\Querify\Infrastructure\Authentication;
+namespace Tests\Demandify\Infrastructure\Authentication;
 
+use Demandify\Domain\User\Provider\UserProvider;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Authentication\OAuth2\OAuth2Client;
+use Demandify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
+use Demandify\Infrastructure\Authentication\OAuth2\Response\OAuth2ResourceOwner;
+use Demandify\Infrastructure\Authentication\OAuth2Authenticator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\User\Provider\UserProvider;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Authentication\OAuth2\OAuth2Client;
-use Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
-use Querify\Infrastructure\Authentication\OAuth2\Response\OAuth2ResourceOwner;
-use Querify\Infrastructure\Authentication\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

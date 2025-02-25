@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\RegisterUser;
+namespace Demandify\Application\Command\RegisterUser;
 
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Event\UserRegistered;
-use Querify\Domain\User\Exception\UserAlreadyRegisteredException;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Event\UserRegistered;
+use Demandify\Domain\User\Exception\UserAlreadyRegisteredException;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

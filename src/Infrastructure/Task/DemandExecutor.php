@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Task;
+namespace Demandify\Infrastructure\Task;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\ExternalService\ExternalServiceRepository;
-use Querify\Domain\Task\DemandExecutor as DemandExecutorInterface;
-use Querify\Domain\Task\Task;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\ExternalService\ExternalServiceRepository;
+use Demandify\Domain\Task\DemandExecutor as DemandExecutorInterface;
+use Demandify\Domain\Task\Task;
 
 class DemandExecutor implements DemandExecutorInterface
 {

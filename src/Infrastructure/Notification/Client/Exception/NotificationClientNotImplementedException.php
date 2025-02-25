@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification\Client\Exception;
+namespace Demandify\Infrastructure\Notification\Client\Exception;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 
 class NotificationClientNotImplementedException extends \Exception
 {

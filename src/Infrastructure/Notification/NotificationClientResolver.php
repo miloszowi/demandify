@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification;
+namespace Demandify\Infrastructure\Notification;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Notification\Client\Exception\NotificationClientNotImplementedException;
-use Querify\Infrastructure\Notification\Client\NotificationClient;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Notification\Client\Exception\NotificationClientNotImplementedException;
+use Demandify\Infrastructure\Notification\Client\NotificationClient;
 
 class NotificationClientResolver
 {

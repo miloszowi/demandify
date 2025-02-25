@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Doctrine\Repository;
+namespace Demandify\Infrastructure\Doctrine\Repository;
 
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
 use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareNotificationRepository extends ServiceEntityRepository implements NotificationRepository

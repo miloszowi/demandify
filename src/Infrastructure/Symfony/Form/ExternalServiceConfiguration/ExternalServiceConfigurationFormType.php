@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\ExternalServiceConfiguration;
+namespace Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration;
 
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

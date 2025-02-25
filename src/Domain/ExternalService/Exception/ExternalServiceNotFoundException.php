@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\ExternalService\Exception;
+namespace Demandify\Domain\ExternalService\Exception;
 
 class ExternalServiceNotFoundException extends \Exception
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\External\Slack\Http;
+namespace Demandify\Infrastructure\External\Slack\Http;
 
-use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Querify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse;
-use Querify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
-use Querify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
-use Querify\Infrastructure\External\Slack\SlackConfiguration;
+use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
+use Demandify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse;
+use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
+use Demandify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
+use Demandify\Infrastructure\External\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;

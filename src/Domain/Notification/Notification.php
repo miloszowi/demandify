@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Notification;
+namespace Demandify\Domain\Notification;
 
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Ramsey\Uuid\UuidInterface;
 
 #[

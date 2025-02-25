@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\UserSocialAccount;
+namespace Demandify\Domain\UserSocialAccount;
 
+use Demandify\Domain\User\User;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\User\User;
 
 #[
     ORM\Entity(repositoryClass: UserSocialAccountRepository::class),

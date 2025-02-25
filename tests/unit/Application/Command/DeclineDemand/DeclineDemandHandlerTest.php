@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Command\DeclineDemand;
+namespace Demandify\Tests\Unit\Application\Command\DeclineDemand;
 
+use Demandify\Application\Command\DeclineDemand\DeclineDemand;
+use Demandify\Application\Command\DeclineDemand\DeclineDemandHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Event\DemandDeclined;
+use Demandify\Domain\Demand\Exception\DemandNotFoundException;
+use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\DeclineDemand\DeclineDemand;
-use Querify\Application\Command\DeclineDemand\DeclineDemandHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Event\DemandDeclined;
-use Querify\Domain\Demand\Exception\DemandNotFoundException;
-use Querify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 
 /**

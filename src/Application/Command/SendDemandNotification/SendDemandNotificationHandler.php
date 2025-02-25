@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\SendDemandNotification;
+namespace Demandify\Application\Command\SendDemandNotification;
 
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationService;
-use Querify\Domain\User\UserRepository;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationService;
+use Demandify\Domain\User\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

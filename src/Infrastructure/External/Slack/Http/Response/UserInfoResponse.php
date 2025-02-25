@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\External\Slack\Http\Response;
+namespace Demandify\Infrastructure\External\Slack\Http\Response;
 
-use Querify\Infrastructure\External\Slack\Http\Response\UserInfo\User;
+use Demandify\Infrastructure\External\Slack\Http\Response\UserInfo\User;
 
 final readonly class UserInfoResponse
 {

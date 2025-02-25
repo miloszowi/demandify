@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User\Event;
+namespace Demandify\Domain\User\Event;
 
-use Querify\Domain\DomainEvent;
+use Demandify\Domain\DomainEvent;
 use Ramsey\Uuid\UuidInterface;
 
 final readonly class UserRegistered implements DomainEvent

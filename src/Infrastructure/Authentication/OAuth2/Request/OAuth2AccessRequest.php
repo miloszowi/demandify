@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Authentication\OAuth2\Request;
+namespace Demandify\Infrastructure\Authentication\OAuth2\Request;
 
 use Symfony\Component\HttpFoundation\Request;
 

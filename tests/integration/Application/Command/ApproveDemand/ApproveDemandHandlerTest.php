@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\ApproveDemand;
+namespace Demandify\Tests\Integration\Application\Command\ApproveDemand;
 
+use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\ApproveDemand\ApproveDemandHandler;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Exception\InvalidDemandStatusException;
+use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Tests\Fixtures\DemandFixture;
+use Demandify\Tests\Fixtures\ExternalServiceConfigurationFixture;
+use Demandify\Tests\Fixtures\UserFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\ApproveDemand\ApproveDemand;
-use Querify\Application\Command\ApproveDemand\ApproveDemandHandler;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Exception\InvalidDemandStatusException;
-use Querify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\UserRepository;
-use Querify\Tests\Fixtures\DemandFixture;
-use Querify\Tests\Fixtures\ExternalServiceConfigurationFixture;
-use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

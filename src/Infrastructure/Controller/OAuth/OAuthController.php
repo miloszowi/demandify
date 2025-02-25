@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Controller\OAuth;
+namespace Demandify\Infrastructure\Controller\OAuth;
 
-use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
-use Querify\Infrastructure\Authentication\OAuth2\Request\OAuth2AccessRequest;
-use Querify\Infrastructure\Authentication\OAuth2Authenticator;
+use Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager;
+use Demandify\Infrastructure\Authentication\OAuth2\Request\OAuth2AccessRequest;
+use Demandify\Infrastructure\Authentication\OAuth2Authenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;

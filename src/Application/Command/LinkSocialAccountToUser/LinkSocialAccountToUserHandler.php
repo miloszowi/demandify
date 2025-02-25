@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\LinkSocialAccountToUser;
+namespace Demandify\Application\Command\LinkSocialAccountToUser;
 
-use Querify\Application\Command\RegisterUser\RegisterUser;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Exception\UserNotFoundException;
-use Querify\Domain\User\UserRepository;
-use Querify\Domain\User\UserRole;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Application\Command\RegisterUser\RegisterUser;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Domain\User\UserRole;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

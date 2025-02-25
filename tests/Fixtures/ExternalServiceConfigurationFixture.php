@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Fixtures;
+namespace Demandify\Tests\Fixtures;
 
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\User\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\User\User;
 
 class ExternalServiceConfigurationFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $externalServiceConfiguration = new ExternalServiceConfiguration(
-            'querify_postgres',
+            'demandify_postgres',
             [$this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class)->uuid]
         );
 

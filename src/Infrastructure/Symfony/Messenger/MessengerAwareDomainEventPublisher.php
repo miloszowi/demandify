@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Messenger;
+namespace Demandify\Infrastructure\Symfony\Messenger;
 
-use Querify\Domain\DomainEvent;
-use Querify\Domain\DomainEventPublisher;
+use Demandify\Domain\DomainEvent;
+use Demandify\Domain\DomainEventPublisher;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class MessengerAwareDomainEventPublisher implements DomainEventPublisher

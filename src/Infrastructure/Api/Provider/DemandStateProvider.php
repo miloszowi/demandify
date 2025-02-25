@@ -1,12 +1,12 @@
 <?php
 
-namespace Querify\Infrastructure\Api\Provider;
+namespace Demandify\Infrastructure\Api\Provider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Exception\DemandNotFoundException;
-use Querify\Infrastructure\Api\Resource\Demand;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Exception\DemandNotFoundException;
+use Demandify\Infrastructure\Api\Resource\Demand;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DemandStateProvider implements ProviderInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Authentication\OAuth2\Response;
+namespace Demandify\Infrastructure\Authentication\OAuth2\Response;
 
 final readonly class OAuth2ResourceOwner
 {

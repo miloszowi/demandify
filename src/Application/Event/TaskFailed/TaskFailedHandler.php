@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Event\TaskFailed;
+namespace Demandify\Application\Event\TaskFailed;
 
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\Task\Event\TaskFailed;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\Task\Event\TaskFailed;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

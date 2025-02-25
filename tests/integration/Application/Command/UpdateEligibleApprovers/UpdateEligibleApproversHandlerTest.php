@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\UpdateEligibleApprovers;
+namespace Demandify\Tests\Integration\Application\Command\UpdateEligibleApprovers;
 
+use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
+use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Tests\Fixtures\ExternalServiceConfigurationFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
-use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Querify\Tests\Fixtures\ExternalServiceConfigurationFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal
@@ -31,17 +31,17 @@ final class UpdateEligibleApproversHandlerTest extends BaseKernelTestCase
 
     public function testUpdatingEliibleApproversIsSuccessful(): void
     {
-        $externalServiceConfiguration = $this->externalServiceConfigurationRepository->getByName('querify_postgres');
+        $externalServiceConfiguration = $this->externalServiceConfigurationRepository->getByName('demandify_postgres');
         $eligibleApproversBeforeUpdate = $externalServiceConfiguration->eligibleApprovers;
 
         $command = new UpdateEligibleApprovers(
-            'querify_postgres',
+            'demandify_postgres',
             []
         );
 
         $this->handler->__invoke($command);
 
-        $updatedExternalServiceConfiguration = $this->externalServiceConfigurationRepository->getByName('querify_postgres');
+        $updatedExternalServiceConfiguration = $this->externalServiceConfigurationRepository->getByName('demandify_postgres');
 
         self::assertCount(0, $updatedExternalServiceConfiguration->eligibleApprovers);
         self::assertNotSame($updatedExternalServiceConfiguration->eligibleApprovers, $eligibleApproversBeforeUpdate);

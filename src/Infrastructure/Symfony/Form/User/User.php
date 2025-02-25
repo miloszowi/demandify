@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\User;
+namespace Demandify\Infrastructure\Symfony\Form\User;
 
 class User
 {

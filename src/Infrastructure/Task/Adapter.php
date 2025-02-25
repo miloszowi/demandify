@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Task;
+namespace Demandify\Infrastructure\Task;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\ExternalService\ExternalService;
-use Querify\Domain\Task\Task;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\ExternalService\ExternalService;
+use Demandify\Domain\Task\Task;
 
 interface Adapter
 {

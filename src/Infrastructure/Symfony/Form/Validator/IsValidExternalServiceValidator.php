@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Symfony\Form\Validator;
+namespace Demandify\Infrastructure\Symfony\Form\Validator;
 
-use Querify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
-use Querify\Domain\ExternalService\ExternalServiceRepository;
+use Demandify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
+use Demandify\Domain\ExternalService\ExternalServiceRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

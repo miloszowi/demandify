@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\UpdateSentNotificationsWithDecision;
+namespace Demandify\Tests\Integration\Application\Command\UpdateSentNotificationsWithDecision;
 
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Tests\Fixtures\NotificationFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Tests\Fixtures\NotificationFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

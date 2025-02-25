@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand;
+namespace Demandify\Domain\Demand;
 
-use Querify\Domain\Demand\Exception\DemandNotFoundException;
-use Querify\Domain\User\User;
+use Demandify\Domain\Demand\Exception\DemandNotFoundException;
+use Demandify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
 interface DemandRepository

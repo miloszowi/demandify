@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\SubmitDemand;
+namespace Demandify\Tests\Integration\Application\Command\SubmitDemand;
 
+use Demandify\Application\Command\SubmitDemand\SubmitDemand;
+use Demandify\Application\Command\SubmitDemand\SubmitDemandHandler;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Tests\Fixtures\UserFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\SubmitDemand\SubmitDemand;
-use Querify\Application\Command\SubmitDemand\SubmitDemandHandler;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Exception\UserNotFoundException;
-use Querify\Domain\User\UserRepository;
-use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

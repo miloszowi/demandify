@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Doctrine\Repository;
+namespace Demandify\Infrastructure\Doctrine\Repository;
 
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\UserSocialAccount\Exception\UserSocialAccountNotFound;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository as UserSocialAccountRepositoryInterface;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
-use Querify\Domain\UserSocialAccount\Exception\UserSocialAccountNotFound;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountRepository as UserSocialAccountRepositoryInterface;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareUserSocialAccountRepository extends ServiceEntityRepository implements UserSocialAccountRepositoryInterface

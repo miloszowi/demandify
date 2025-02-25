@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand;
+namespace Demandify\Domain\Demand;
 
-use Querify\Domain\Demand\Exception\InvalidDemandStatusException;
+use Demandify\Domain\Demand\Exception\InvalidDemandStatusException;
 
 enum Status: string
 {

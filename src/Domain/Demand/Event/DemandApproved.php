@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand\Event;
+namespace Demandify\Domain\Demand\Event;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\DomainEvent;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\DomainEvent;
 
 readonly class DemandApproved implements DomainEvent
 {

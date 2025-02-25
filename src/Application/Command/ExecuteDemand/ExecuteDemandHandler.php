@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\ExecuteDemand;
+namespace Demandify\Application\Command\ExecuteDemand;
 
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Task\DemandExecutor;
-use Querify\Domain\Task\Event\TaskFailed;
-use Querify\Domain\Task\Event\TaskSucceeded;
-use Querify\Domain\Task\TaskRepository;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Task\DemandExecutor;
+use Demandify\Domain\Task\Event\TaskFailed;
+use Demandify\Domain\Task\Event\TaskSucceeded;
+use Demandify\Domain\Task\TaskRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

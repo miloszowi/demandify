@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Infrastructure\Notification;
+namespace Demandify\Tests\Unit\Infrastructure\Notification;
 
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Notification\Client\Exception\NotificationClientNotImplementedException;
+use Demandify\Infrastructure\Notification\Client\NotificationClient;
+use Demandify\Infrastructure\Notification\NotificationClientResolver;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Notification\Client\Exception\NotificationClientNotImplementedException;
-use Querify\Infrastructure\Notification\Client\NotificationClient;
-use Querify\Infrastructure\Notification\NotificationClientResolver;
 
 /**
  * @internal

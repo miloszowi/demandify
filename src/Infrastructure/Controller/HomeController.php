@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Controller;
+namespace Demandify\Infrastructure\Controller;
 
-use Querify\Application\Command\SubmitDemand\SubmitDemand;
-use Querify\Domain\ExternalService\ExternalServiceRepository;
-use Querify\Infrastructure\Symfony\Form\Demand\Demand;
-use Querify\Infrastructure\Symfony\Form\Demand\DemandFormType;
+use Demandify\Application\Command\SubmitDemand\SubmitDemand;
+use Demandify\Domain\ExternalService\ExternalServiceRepository;
+use Demandify\Infrastructure\Symfony\Form\Demand\Demand;
+use Demandify\Infrastructure\Symfony\Form\Demand\DemandFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

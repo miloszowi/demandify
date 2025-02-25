@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\External\Slack\Http\Response\OAuth2Access;
+namespace Demandify\Infrastructure\External\Slack\Http\Response\OAuth2Access;
 
 final readonly class Enterprise
 {

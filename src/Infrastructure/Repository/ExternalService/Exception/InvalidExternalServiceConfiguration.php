@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Repository\ExternalService\Exception;
+namespace Demandify\Infrastructure\Repository\ExternalService\Exception;
 
 class InvalidExternalServiceConfiguration extends \Exception
 {

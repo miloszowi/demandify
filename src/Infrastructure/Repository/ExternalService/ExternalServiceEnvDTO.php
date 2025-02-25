@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Repository\ExternalService;
+namespace Demandify\Infrastructure\Repository\ExternalService;
 
 final readonly class ExternalServiceEnvDTO
 {

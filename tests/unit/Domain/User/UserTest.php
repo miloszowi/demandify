@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Tests\Querify\Domain\User;
+namespace Tests\Demandify\Domain\User;
 
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRole;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRole;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Ramsey\Uuid\UuidInterface;
 
 /**

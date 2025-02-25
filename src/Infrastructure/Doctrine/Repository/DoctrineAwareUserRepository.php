@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Doctrine\Repository;
+namespace Demandify\Infrastructure\Doctrine\Repository;
 
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository as UserRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Exception\UserNotFoundException;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository as UserRepositoryInterface;
 use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareUserRepository extends ServiceEntityRepository implements UserRepositoryInterface

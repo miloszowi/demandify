@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification\Client\Response;
+namespace Demandify\Infrastructure\Notification\Client\Response;
 
 readonly class SendNotificationResponse
 {

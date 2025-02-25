@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification\Content;
+namespace Demandify\Infrastructure\Notification\Content;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Notification\Client\SlackNotificationClient;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Notification\Client\SlackNotificationClient;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class SlackNotificationBlocksFactory

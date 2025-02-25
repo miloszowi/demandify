@@ -3,7 +3,7 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     providers:
         app_user_provider:
-            id: Querify\Domain\User\Provider\UserProvider
+            id: Demandify\Domain\User\Provider\UserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -12,7 +12,7 @@ security:
             lazy: true
             provider: app_user_provider
             custom_authenticators:
-                - Querify\Infrastructure\Authentication\OAuth2Authenticator
+                - Demandify\Infrastructure\Authentication\OAuth2Authenticator
             logout:
                 path: app_logout
                 target: app_login

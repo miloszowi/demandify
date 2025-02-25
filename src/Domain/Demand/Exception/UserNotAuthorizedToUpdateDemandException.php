@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand\Exception;
+namespace Demandify\Domain\Demand\Exception;
 
-use Querify\Domain\DomainLogicException;
-use Querify\Domain\User\User;
+use Demandify\Domain\DomainLogicException;
+use Demandify\Domain\User\User;
 
 class UserNotAuthorizedToUpdateDemandException extends DomainLogicException
 {

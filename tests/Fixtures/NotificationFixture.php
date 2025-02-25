@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Fixtures;
+namespace Demandify\Tests\Fixtures;
 
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 
 class NotificationFixture extends Fixture implements DependentFixtureInterface
 {

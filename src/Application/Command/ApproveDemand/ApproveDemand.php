@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\ApproveDemand;
+namespace Demandify\Application\Command\ApproveDemand;
 
-use Querify\Domain\User\User;
+use Demandify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 

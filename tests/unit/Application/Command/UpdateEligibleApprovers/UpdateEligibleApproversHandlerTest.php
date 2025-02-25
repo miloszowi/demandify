@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace unit\Application\Command\UpdateEligibleApprovers;
 
+use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
+use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
-use Querify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApproversHandler;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Ramsey\Uuid\Uuid;
 
 /**

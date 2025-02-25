@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Application\Event\DemandSubmitted;
+namespace Demandify\Tests\Application\Event\DemandSubmitted;
 
+use Demandify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
+use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\Event\DemandSubmitted;
-use Querify\Domain\ExternalService\ExternalServiceConfiguration;
-use Querify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Notification\Exception;
+namespace Demandify\Domain\Notification\Exception;
 
 use Ramsey\Uuid\UuidInterface;
 

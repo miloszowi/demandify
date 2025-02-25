@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Demand;
+namespace Demandify\Domain\Demand;
 
+use Demandify\Domain\Task\Task;
+use Demandify\Domain\User\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\Task\Task;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

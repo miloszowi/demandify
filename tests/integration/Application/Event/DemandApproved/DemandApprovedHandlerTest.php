@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Event\DemandApproved;
+namespace Demandify\Tests\Integration\Application\Event\DemandApproved;
 
+use Demandify\Application\Command\ExecuteDemand\ExecuteDemand;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
+use Demandify\Application\Event\DemandApproved\DemandApprovedHandler;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Event\DemandApproved;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Tests\Fixtures\NotificationFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\ExecuteDemand\ExecuteDemand;
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
-use Querify\Application\Event\DemandApproved\DemandApprovedHandler;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Event\DemandApproved;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Tests\Fixtures\NotificationFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

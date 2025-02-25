@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\ExternalService;
+namespace Demandify\Domain\ExternalService;
 
-use Querify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
+use Demandify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
 
 interface ExternalServiceConfigurationRepository
 {

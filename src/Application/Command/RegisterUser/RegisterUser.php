@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\RegisterUser;
+namespace Demandify\Application\Command\RegisterUser;
 
-use Querify\Domain\User\UserRole;
+use Demandify\Domain\User\UserRole;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage]

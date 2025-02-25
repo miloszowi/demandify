@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\ExternalService;
+namespace Demandify\Domain\ExternalService;
 
 readonly class ExternalService
 {

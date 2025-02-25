@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Task\Event;
+namespace Demandify\Domain\Task\Event;
 
-use Querify\Domain\DomainEvent;
-use Querify\Domain\Task\Task;
+use Demandify\Domain\DomainEvent;
+use Demandify\Domain\Task\Task;
 
 readonly class TaskSucceeded implements DomainEvent
 {

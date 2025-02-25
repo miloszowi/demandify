@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\UpdateEligibleApprovers;
+namespace Demandify\Application\Command\UpdateEligibleApprovers;
 
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;

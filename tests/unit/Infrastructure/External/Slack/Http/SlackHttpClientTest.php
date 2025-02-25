@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Infrastructure\External\Slack\Http;
+namespace Demandify\Tests\Unit\Infrastructure\External\Slack\Http;
 
+use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
+use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
+use Demandify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
+use Demandify\Infrastructure\External\Slack\Http\SlackHttpClient;
+use Demandify\Infrastructure\External\Slack\SlackConfiguration;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Querify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
-use Querify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
-use Querify\Infrastructure\External\Slack\Http\SlackHttpClient;
-use Querify\Infrastructure\External\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\External\Slack\Http\Response\Chat;
+namespace Demandify\Infrastructure\External\Slack\Http\Response\Chat;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 

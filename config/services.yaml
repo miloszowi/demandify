@@ -10,34 +10,34 @@ services:
             $slackApiHttpClient: '@http_client.slack'
 
     _instanceof:
-        Querify\Infrastructure\Authentication\OAuth2\OAuth2Client:
-            tags: [ 'querify.oauth.client' ]
+        Demandify\Infrastructure\Authentication\OAuth2\OAuth2Client:
+            tags: [ 'demandify.oauth.client' ]
 
-        Querify\Infrastructure\Notification\Client\NotificationClient:
-            tags: [ 'querify.notification.client' ]
+        Demandify\Infrastructure\Notification\Client\NotificationClient:
+            tags: [ 'demandify.notification.client' ]
 
-        Querify\Infrastructure\Webhook\WebhookHandler:
-            tags: [ 'querify.webhook.handler' ]
+        Demandify\Infrastructure\Webhook\WebhookHandler:
+            tags: [ 'demandify.webhook.handler' ]
 
-    Querify\:
+    Demandify\:
         resource: '../src/'
         exclude:
             - '../src/Kernel.php'
 
-    Querify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager:
+    Demandify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager:
         arguments:
-            - !tagged_iterator 'querify.oauth.client'
+            - !tagged_iterator 'demandify.oauth.client'
 
-    Querify\Infrastructure\Notification\NotificationClientResolver:
+    Demandify\Infrastructure\Notification\NotificationClientResolver:
         arguments:
-            - !tagged_iterator 'querify.notification.client'
+            - !tagged_iterator 'demandify.notification.client'
 
-    Querify\Infrastructure\Controller\WebhookController:
+    Demandify\Infrastructure\Controller\WebhookController:
         arguments:
-            - !tagged_iterator 'querify.webhook.handler'
+            - !tagged_iterator 'demandify.webhook.handler'
 
 when@dev:
     services:
-        Querify\Infrastructure\Doctrine\Listener\RemoveCreateSchemaFromMigrationListener:
+        Demandify\Infrastructure\Doctrine\Listener\RemoveCreateSchemaFromMigrationListener:
             tags:
                 - { name: doctrine.event_listener, event: postGenerateSchema }

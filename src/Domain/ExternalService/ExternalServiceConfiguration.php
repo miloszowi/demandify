@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\ExternalService;
+namespace Demandify\Domain\ExternalService;
 
+use Demandify\Domain\User\User;
 use Doctrine\ORM\Mapping as ORM;
-use Querify\Domain\User\User;
 use Ramsey\Uuid\UuidInterface;
 
 #[

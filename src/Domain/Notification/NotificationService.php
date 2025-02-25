@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Notification;
+namespace Demandify\Domain\Notification;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 
 interface NotificationService
 {

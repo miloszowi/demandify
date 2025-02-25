@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\UserSocialAccount\Exception;
+namespace Demandify\Domain\UserSocialAccount\Exception;
 
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 
 class UserSocialAccountNotFound extends \Exception
 {

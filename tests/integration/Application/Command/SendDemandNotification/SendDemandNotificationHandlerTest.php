@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\SendDemandNotification;
+namespace Demandify\Tests\Integration\Application\Command\SendDemandNotification;
 
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotificationHandler;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Status;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
+use Demandify\Tests\Fixtures\DemandFixture;
+use Demandify\Tests\Fixtures\UserFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Application\Command\SendDemandNotification\SendDemandNotificationHandler;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Status;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\UserRepository;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Querify\Tests\Fixtures\DemandFixture;
-use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 

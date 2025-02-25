@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\SubmitDemand;
+namespace Demandify\Application\Command\SubmitDemand;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\DemandRepository;
-use Querify\Domain\Demand\Event\DemandSubmitted;
-use Querify\Domain\DomainEventPublisher;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\UserRepository;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
+use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\UserRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

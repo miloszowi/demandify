@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\Task;
+namespace Demandify\Domain\Task;
 
 interface TaskRepository
 {

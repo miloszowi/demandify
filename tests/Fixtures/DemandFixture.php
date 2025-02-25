@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Fixtures;
+namespace Demandify\Tests\Fixtures;
 
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\User\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\User\User;
 
 class DemandFixture extends Fixture implements DependentFixtureInterface
 {
@@ -20,14 +20,14 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
         $user = $this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class);
         $demand = new Demand(
             $user,
-            'querify_postgres',
+            'demandify_postgres',
             'test content',
             'test reason'
         );
 
         $approvedDemand = new Demand(
             $user,
-            'querify_postgres',
+            'demandify_postgres',
             'test approved content',
             'test approved reason'
         );
@@ -35,7 +35,7 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
 
         $declinedDemand = new Demand(
             $user,
-            'querify_postgres',
+            'demandify_postgres',
             'test declined content',
             'test declined reason'
         );

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Webhook\Handler;
+namespace Demandify\Infrastructure\Webhook\Handler;
 
-use Querify\Application\Command\ApproveDemand\ApproveDemand;
-use Querify\Application\Command\DeclineDemand\DeclineDemand;
-use Querify\Domain\UserSocialAccount\UserSocialAccountRepository;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\External\Slack\SlackConfiguration;
-use Querify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
-use Querify\Infrastructure\Webhook\WebhookHandler;
+use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\DeclineDemand\DeclineDemand;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\External\Slack\SlackConfiguration;
+use Demandify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
+use Demandify\Infrastructure\Webhook\WebhookHandler;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;

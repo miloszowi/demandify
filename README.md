@@ -1,7 +1,8 @@
 <p align="center"> 
-<img src="https://github.com/miloszowi/querify/actions/workflows/app.yml/badge.svg" alt="pipeline status" />
+<img src="https://github.com/miloszowi/demandify/actions/workflows/app.yml/badge.svg" alt="pipeline status" />
 </p>
-<h1 align="center">Querify </h1>
+<h1 align="center">Demandify </h1>
+<p align="center"><img title="logo" alt="logo" src="/docs/logo.png" width="150" height="150"></p>
 <p align="center">Web application to serve production services demands.</p>
 
 
@@ -19,17 +20,17 @@
 ## Quick Start
 Clone the repository
 ```
-$ git clone git@github.com:miloszowi/querify.git
+$ git clone git@github.com:miloszowi/demandify.git
 ```
 run
 ```
 $ docker/start
 ```
-to setup everything at once - querify should be available on localhost.
+to setup everything at once - demandify should be available on localhost.
 
 
 ## Running tests
-Querify uses the following to analyse & test code:
+Demandify uses the following to analyse & test code:
 - **phpunit** for unit, integration & functional tests
 - **phpstan** for static code analysis
 - **csfixer** for detecting code standards

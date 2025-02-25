@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Event\DemandDeclined;
+namespace Demandify\Application\Event\DemandDeclined;
 
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
-use Querify\Domain\Demand\Event\DemandDeclined;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
+use Demandify\Domain\Demand\Event\DemandDeclined;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

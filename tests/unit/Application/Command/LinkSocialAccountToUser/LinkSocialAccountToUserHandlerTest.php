@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Querfiy\Tests\Unit\Application\Command\LinkSocialAccountToUser;
 
+use Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
+use Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
-use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Exception\UserNotFoundException;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Querify\Domain\User\Provider;
+namespace Demandify\Domain\User\Provider;
 
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
-use Querify\Domain\User\UserRepository;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 

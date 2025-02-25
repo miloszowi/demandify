@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Integration\Application\Command\LinkSocialAccountToUser;
+namespace Demandify\Tests\Integration\Application\Command\LinkSocialAccountToUser;
 
+use Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
+use Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\Exception\UserNotFoundException;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Domain\User\UserRole;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Tests\Fixtures\UserFixture;
+use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser;
-use Querify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUserHandler;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\Exception\UserNotFoundException;
-use Querify\Domain\User\UserRepository;
-use Querify\Domain\User\UserRole;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Tests\Fixtures\UserFixture;
-use Querify\Tests\Integration\BaseKernelTestCase;
 
 /**
  * @internal

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Querify\Application\Command\SendDemandNotification;
+namespace Demandify\Application\Command\SendDemandNotification;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\NotificationType;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\NotificationType;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 

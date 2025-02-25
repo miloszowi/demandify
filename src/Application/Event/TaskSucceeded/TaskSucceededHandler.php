@@ -1,10 +1,10 @@
 <?php
 
-namespace Querify\Application\Event\TaskSucceeded;
+namespace Demandify\Application\Event\TaskSucceeded;
 
-use Querify\Application\Command\SendDemandNotification\SendDemandNotification;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\Task\Event\TaskSucceeded;
+use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\Task\Event\TaskSucceeded;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 

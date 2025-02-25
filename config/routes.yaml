@@ -1,7 +1,7 @@
 controllers:
     resource:
         path: ../src/Infrastructure/Controller/
-        namespace: Querify\Infrastructure\Controller
+        namespace: Demandify\Infrastructure\Controller
     type: attribute
 
 api_login_check:

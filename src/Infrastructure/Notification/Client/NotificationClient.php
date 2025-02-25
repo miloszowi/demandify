@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification\Client;
+namespace Demandify\Infrastructure\Notification\Client;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
-use Querify\Domain\UserSocialAccount\UserSocialAccountType;
-use Querify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
+use Demandify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
 
 interface NotificationClient
 {

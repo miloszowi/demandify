@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Querify\Infrastructure\Notification;
+namespace Demandify\Infrastructure\Notification;
 
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationService as NotificationServiceInterface;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationService as NotificationServiceInterface;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 
 class NotificationService implements NotificationServiceInterface
 {

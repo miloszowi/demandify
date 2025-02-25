@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Querify\Tests\Unit\Application\Event\DemandApproved;
+namespace Demandify\Tests\Unit\Application\Event\DemandApproved;
 
+use Demandify\Application\Event\DemandApproved\DemandApprovedHandler;
+use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\Event\DemandApproved;
+use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationRepository;
+use Demandify\Domain\Notification\NotificationType;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Querify\Application\Event\DemandApproved\DemandApprovedHandler;
-use Querify\Domain\Demand\Demand;
-use Querify\Domain\Demand\Event\DemandApproved;
-use Querify\Domain\Notification\Notification;
-use Querify\Domain\Notification\NotificationRepository;
-use Querify\Domain\Notification\NotificationType;
-use Querify\Domain\User\Email;
-use Querify\Domain\User\User;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

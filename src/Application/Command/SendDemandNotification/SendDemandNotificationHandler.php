@@ -24,6 +24,7 @@ class SendDemandNotificationHandler
 
         foreach ($recipient->getSocialAccounts() as $socialAccount) {
             // todo: maybe some bool on user social account to determine if should communicate through this channel?
+            // todo: maybe instead of notification service each social account type should create its own command e.g SendSlackNotification
             $notification = $this->notificationService->send(
                 $command->notificationType,
                 $command->demand,

@@ -10,7 +10,7 @@
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [Running tests](#running-tests)
-- [Naming Conventions](docs/naming-conventions.md)
+- [Naming Conventions](docs/naming_conventions.md)
 
 ## Requirements
 * PHP 8.4 or newer

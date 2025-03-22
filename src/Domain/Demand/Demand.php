@@ -62,23 +62,17 @@ class Demand
     {
         $this->status = $this->status->progress(Status::APPROVED);
         $this->approver = $user;
-
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function declineBy(User $user): void
     {
         $this->status = $this->status->progress(Status::DECLINED);
         $this->approver = $user;
-
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function start(): void
     {
         $this->status = $this->status->progress(Status::IN_PROGRESS);
-
-        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function finish(Task $task): void
@@ -87,7 +81,5 @@ class Demand
             true => $this->status->progress(Status::EXECUTED),
             false => $this->status->progress(Status::FAILED),
         };
-
-        $this->updatedAt = new \DateTimeImmutable();
     }
 }

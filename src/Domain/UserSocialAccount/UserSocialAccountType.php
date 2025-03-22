@@ -6,8 +6,8 @@ namespace Demandify\Domain\UserSocialAccount;
 
 enum UserSocialAccountType: string
 {
-    case SLACK = 'SLACK';
-    case GOOGLE = 'GOOGLE';
+    case SLACK = 'slack';
+    case GOOGLE = 'google';
 
     public function isEqualTo(UserSocialAccountType $type): bool
     {
@@ -16,8 +16,6 @@ enum UserSocialAccountType: string
 
     public static function fromString(string $value): self
     {
-        return self::from(
-            strtoupper($value)
-        );
+        return self::from(strtolower($value));
     }
 }

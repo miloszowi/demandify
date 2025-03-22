@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241221083426 extends AbstractMigration
+final class Version20250322092157 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -38,7 +38,7 @@ final class Version20241221083426 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN task.uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN task.demand_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN task.executed_at IS \'(DC2Type:datetimetz_immutable)\'');
-        $this->addSql('CREATE TABLE "user" (uuid UUID NOT NULL, created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, roles JSON NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE "user" (uuid UUID NOT NULL, created_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, roles JSON NOT NULL, email VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
         $this->addSql('COMMENT ON COLUMN "user".uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "user".created_at IS \'(DC2Type:datetimetz_immutable)\'');

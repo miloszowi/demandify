@@ -28,7 +28,7 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
 
     public function supports(Request $request, string $type): bool
     {
-        return strtoupper($type) === UserSocialAccountType::SLACK->value
+        return strtolower($type) === UserSocialAccountType::SLACK->value
             && null !== $request->get('payload')
             && null !== $request->headers->get('X-Slack-Request-Timestamp')
             && null !== $request->headers->get('X-Slack-Signature');

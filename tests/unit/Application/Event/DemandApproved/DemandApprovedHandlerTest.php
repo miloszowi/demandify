@@ -38,7 +38,7 @@ final class DemandApprovedHandlerTest extends TestCase
     public function testDispatchesCommandsWhenDemandIsApproved(): void
     {
         $notificationMock = $this->createMock(Notification::class);
-        $user = new User(Email::fromString('example@local.host'), 'username');
+        $user = new User(Email::fromString('example@local.host'));
         $demand = new Demand($user, 'some_service', 'content', 'reason');
         $event = new DemandApproved($demand);
 
@@ -60,7 +60,7 @@ final class DemandApprovedHandlerTest extends TestCase
 
     public function testDoesNotDispatchUpdateCommandWhenNoNotificationsWereSent(): void
     {
-        $user = new User(Email::fromString('example@local.host'), 'username');
+        $user = new User(Email::fromString('example@local.host'));
         $demand = new Demand($user, 'some_service', 'content', 'reason');
         $event = new DemandApproved($demand);
 

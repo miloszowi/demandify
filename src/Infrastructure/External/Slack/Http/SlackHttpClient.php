@@ -22,18 +22,18 @@ class SlackHttpClient
         private readonly SerializerInterface $serializer
     ) {}
 
-    public function oauthAccess(string $code): Oauth2AccessResponse
+    public function oauthAccess(string $code, string $redirectUri): Oauth2AccessResponse
     {
         $response = $this->slackApiHttpClient->request(
-            Request::METHOD_GET,
+            Request::METHOD_POST,
             '/api/oauth.v2.access',
             [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
-                'query' => [
+                'body' => [
+                    'redirect_uri' => $redirectUri,
                     'code' => $code,
-                    'redirect_uri' => $this->slackConfiguration->oauthRedirectUri,
                     'grant_type' => 'authorization_code',
                 ],
                 'auth_basic' => [
@@ -137,6 +137,25 @@ class SlackHttpClient
         );
 
         if (false === $response->toArray()['ok']) {
+            throw SlackApiException::fromError((string) $response->toArray()['error']);
+        }
+    }
+
+    public function oauthTest(string $accessToken): void
+    {
+        $response = $this->slackApiHttpClient->request(
+            Request::METHOD_POST,
+            '/api/auth.test',
+            [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Authorization' => 'Bearer '.$accessToken,
+                ],
+            ]
+        );
+
+        if (false === $response->toArray()['ok']) {
+            // todo logging
             throw SlackApiException::fromError((string) $response->toArray()['error']);
         }
     }

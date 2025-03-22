@@ -9,8 +9,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 readonly class SlackConfiguration
 {
     public function __construct(
-        #[Autowire(env: 'SLACK_APP_ID')]
-        public string $appId,
         #[Autowire(env: 'SLACK_CLIENT_ID')]
         public string $clientId,
         #[
@@ -28,12 +26,5 @@ readonly class SlackConfiguration
             Autowire(env: 'SLACK_OAUTH_BOT_TOKEN')
         ]
         public string $oauthBotToken,
-        #[Autowire(env: 'SLACK_OAUTH_REDIRECT_URI')]
-        public string $oauthRedirectUri,
-        #[
-            \SensitiveParameter,
-            Autowire(env: 'SLACK_OAUTH_STATE_HASH_KEY')
-        ]
-        public string $oauthStateHashKey
     ) {}
 }

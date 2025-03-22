@@ -29,7 +29,7 @@ class ExternalServiceConfigurationFormType extends AbstractType
                 'multiple' => true,
                 'required' => false,
                 'choice_value' => static fn (User $user) => $user->uuid,
-                'choice_label' => static fn (User $user) => \sprintf('%s (%s)', $user->name, $user->email),
+                'choice_label' => static fn (User $user) => (string) $user->email,
             ])
             ->add('save', SubmitType::class, ['label' => 'Submit'])
         ;

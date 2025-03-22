@@ -33,13 +33,10 @@ final class SlackHttpClientTest extends TestCase
         $this->serializer = $this->createMock(SerializerInterface::class);
 
         $slackConfiguration = new SlackConfiguration(
-            'some_app_id',
-            'some_client_id',
-            'some_client_secret',
-            'some_signing_secret',
-            'some_oauth_bot_token',
-            'https://redirect.uri',
-            'some_oauth_state_hash_key'
+            'client_id',
+            'client_secret',
+            'signing_secret',
+            'oauth_bot_token',
         );
 
         $this->slackHttpClient = new SlackHttpClient($this->slackApiHttpClient, $slackConfiguration, $this->serializer);
@@ -57,7 +54,7 @@ final class SlackHttpClientTest extends TestCase
         $response->method('getContent')->willReturn($responseContent);
 
         $this->slackApiHttpClient->method('request')
-            ->with(Request::METHOD_GET, '/api/oauth.v2.access', self::anything())
+            ->with(Request::METHOD_POST, '/api/oauth.v2.access', self::anything())
             ->willReturn($response)
         ;
 
@@ -72,7 +69,7 @@ final class SlackHttpClientTest extends TestCase
             ->willReturn($oauthResponse)
         ;
 
-        $result = $this->slackHttpClient->oauthAccess('some_code');
+        $result = $this->slackHttpClient->oauthAccess('some_code', 'https://localhost/oauth/slack/check');
         self::assertSame($oauthResponse, $result);
     }
 
@@ -85,7 +82,7 @@ final class SlackHttpClientTest extends TestCase
         $response->method('getContent')->willReturn($responseContent);
 
         $this->slackApiHttpClient->method('request')
-            ->with(Request::METHOD_GET, '/api/oauth.v2.access', self::anything())
+            ->with(Request::METHOD_POST, '/api/oauth.v2.access', self::anything())
             ->willReturn($response)
         ;
 
@@ -94,7 +91,7 @@ final class SlackHttpClientTest extends TestCase
             ->willReturn(new Oauth2AccessResponse(false, 'invalid_grant'))
         ;
 
-        $this->slackHttpClient->oauthAccess('some_code');
+        $this->slackHttpClient->oauthAccess('some_code', 'https://localhost/oauth/slack/check');
     }
 
     public function testItShouldGetUserInfo(): void

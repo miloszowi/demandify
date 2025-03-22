@@ -30,7 +30,6 @@ class ExecuteDemand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $t = 1;
         $demand = $this->demandRepository->findByUuid(Uuid::fromString($input->getArgument('demandUuid')));
 
         $this->demandExecutor->execute($demand);

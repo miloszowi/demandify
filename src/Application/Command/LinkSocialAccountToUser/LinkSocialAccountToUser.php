@@ -12,7 +12,6 @@ readonly class LinkSocialAccountToUser
 {
     public function __construct(
         public string $userEmail,
-        public string $name,
         public UserSocialAccountType $type,
         public string $externalId,
         /** @var mixed[] */

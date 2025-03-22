@@ -24,15 +24,9 @@ final class ExternalServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->eligibleUser = new User(
-            Email::fromString('eligible.user@local.host'),
-            'test name',
-        );
+        $this->eligibleUser = new User(Email::fromString('eligible.user@local.host'));
         $this->eligibleApproverUuid = $this->eligibleUser->uuid;
-        $this->ineligibleUser = new User(
-            Email::fromString('ineligible.user@local.host'),
-            'test name',
-        );
+        $this->ineligibleUser = new User(Email::fromString('ineligible.user@local.host'));
 
         $this->externalServiceConfiguration = new ExternalServiceConfiguration(
             'TestService',

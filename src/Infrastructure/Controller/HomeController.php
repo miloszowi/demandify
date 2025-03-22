@@ -21,7 +21,7 @@ class HomeController extends AbstractController
         private readonly ExternalServiceRepository $externalServiceRepository,
     ) {}
 
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'app_home')]
     public function index(Request $request): Response
     {
         $demand = new Demand();
@@ -38,7 +38,7 @@ class HomeController extends AbstractController
                 )
             );
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('index.html.twig', [

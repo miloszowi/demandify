@@ -39,7 +39,7 @@ final class DemandDeclinedHandlerTest extends TestCase
     public function testDispatchesCommandsWhenDemandIsDeclined(): void
     {
         $notificationMock = $this->createMock(Notification::class);
-        $user = new User(Email::fromString('example@local.host'), 'username');
+        $user = new User(Email::fromString('example@local.host'));
         $demand = new Demand($user, 'some_service', 'content', 'reason');
         $event = new DemandDeclined($demand);
 
@@ -61,7 +61,7 @@ final class DemandDeclinedHandlerTest extends TestCase
 
     public function testDoesNotDispatchUpdateCommandWhenNoNotificationsWereSent(): void
     {
-        $user = new User(Email::fromString('example@local.host'), 'username');
+        $user = new User(Email::fromString('example@local.host'));
         $demand = new Demand($user, 'some_service', 'content', 'reason');
         $event = new DemandDeclined($demand);
 

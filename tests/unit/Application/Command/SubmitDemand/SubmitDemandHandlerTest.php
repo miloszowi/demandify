@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Demandify\Application\Command\SubmitDemand;
+namespace Demandify\Tests\Unit\Application\Command\SubmitDemand;
 
 use Demandify\Application\Command\SubmitDemand\SubmitDemand;
 use Demandify\Application\Command\SubmitDemand\SubmitDemandHandler;

@@ -116,7 +116,7 @@ final class DeclineDemandHandlerTest extends TestCase
     public function testDecliningByIneligibleUserWillThrowException(): void
     {
         $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
-        $user = new User(Email::fromString('test@local.host'), 'name');
+        $user = new User(Email::fromString('test@local.host'));
         $demand = new Demand($user, 'test', 'test', 'test');
         $command = new DeclineDemand($demand->uuid, $user);
 

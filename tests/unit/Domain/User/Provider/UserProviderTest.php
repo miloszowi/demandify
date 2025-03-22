@@ -30,7 +30,7 @@ final class UserProviderTest extends TestCase
     public function testRefreshesUser(): void
     {
         $email = Email::fromString('example@local.host');
-        $user = new User($email, 'John Doe');
+        $user = new User($email);
         $this->userRepositoryMock->expects(self::once())->method('getByEmail')->with($email)->willReturn($user);
         $this->userProvider = new UserProvider($this->userRepositoryMock);
         self::assertSame($user, $this->userProvider->refreshUser($user));
@@ -49,7 +49,7 @@ final class UserProviderTest extends TestCase
     public function testLoadsUserByIdentifier(): void
     {
         $email = Email::fromString('example@local.host');
-        $user = new User($email, 'John Doe');
+        $user = new User($email);
         $this->userRepositoryMock->expects(self::once())->method('getByEmail')->with($email)->willReturn($user);
         $this->userProvider = new UserProvider($this->userRepositoryMock);
         self::assertSame($user, $this->userProvider->loadUserByIdentifier($user->getUserIdentifier()));

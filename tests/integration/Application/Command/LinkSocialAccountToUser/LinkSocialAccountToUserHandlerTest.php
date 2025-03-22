@@ -38,7 +38,6 @@ final class LinkSocialAccountToUserHandlerTest extends BaseKernelTestCase
     {
         $command = new LinkSocialAccountToUser(
             UserFixture::USER_EMAIL_FIXTURE,
-            'name from slack',
             UserSocialAccountType::SLACK,
             'externalId',
             [
@@ -70,7 +69,6 @@ final class LinkSocialAccountToUserHandlerTest extends BaseKernelTestCase
 
         $command = new LinkSocialAccountToUser(
             $newUserEmail,
-            'name from slack',
             UserSocialAccountType::SLACK,
             'externalId',
             [
@@ -83,8 +81,7 @@ final class LinkSocialAccountToUserHandlerTest extends BaseKernelTestCase
 
         $this->handler->__invoke($command);
         $user = $this->userRepository->getByEmail(Email::fromString($newUserEmail));
-        self::assertSame('name from slack', $user->name);
-        self::assertSame([UserRole::ROLE_USER], $user->getRoles());
+        self::assertSame([UserRole::ROLE_USER->value], $user->getRoles());
 
         $socialAccount = $user->getSocialAccount(UserSocialAccountType::SLACK);
         self::assertCount(1, $user->getSocialAccounts());

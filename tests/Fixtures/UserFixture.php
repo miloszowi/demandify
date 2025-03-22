@@ -19,18 +19,11 @@ class UserFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = new User(
-            Email::fromString(self::USER_EMAIL_FIXTURE),
-            'Name',
-        );
-        $notEligibleUser = new User(
-            Email::fromString(self::USER_NOT_ELIGIBLE_TO_APPROVE),
-            'Name',
-        );
-        $userWithSlackSocialAccount = new User(
-            Email::fromString(self::USER_WITH_SLACK_SOCIAL_ACCOUNT),
-            'Name'
-        );
+        $user = new User(Email::fromString(self::USER_EMAIL_FIXTURE));
+
+        $notEligibleUser = new User(Email::fromString(self::USER_NOT_ELIGIBLE_TO_APPROVE));
+
+        $userWithSlackSocialAccount = new User(Email::fromString(self::USER_WITH_SLACK_SOCIAL_ACCOUNT));
         $userWithSlackSocialAccount->linkSocialAccount(
             new UserSocialAccount(
                 $userWithSlackSocialAccount,

@@ -30,10 +30,8 @@ class ApproveDemandHandler
         }
 
         $demand->approveBy($command->approver);
-
         $this->demandRepository->save($demand);
-        $this->domainEventPublisher->publish(
-            new DemandApproved($demand)
-        );
+
+        $this->domainEventPublisher->publish(new DemandApproved($demand));
     }
 }

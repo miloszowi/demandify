@@ -39,7 +39,7 @@ class User implements UserInterface, EquatableInterface
     public readonly \DateTimeImmutable $updatedAt;
 
     /**
-     * @var UserRole[] $roles
+     * @var string[] $roles
      */
     #[ORM\Column(type: 'json')]
     private array $roles;
@@ -50,13 +50,11 @@ class User implements UserInterface, EquatableInterface
     public function __construct(
         #[ORM\Embedded(class: Email::class, columnPrefix: false)]
         public readonly Email $email,
-        #[ORM\Column(length: 255)]
-        public readonly string $name,
     ) {
         $this->uuid = Uuid::uuid4();
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
-        $this->roles = [UserRole::ROLE_USER];
+        $this->roles = [UserRole::ROLE_USER->value];
         $this->socialAccounts = new ArrayCollection();
     }
 
@@ -67,7 +65,7 @@ class User implements UserInterface, EquatableInterface
 
     public function grantPrivilege(UserRole $role): void
     {
-        if (array_any($this->roles, static fn ($assignedRole) => $role->value === $assignedRole->value)) {
+        if ($this->hasPrivilege($role)) {
             return;
         }
 
@@ -76,17 +74,21 @@ class User implements UserInterface, EquatableInterface
 
     public function hasPrivilege(UserRole $role): bool
     {
-        return array_any($this->roles, static fn ($assignedRole) => $role->value === $assignedRole->value);
+        return \in_array($role->value, $this->roles, true);
     }
 
     public function getSocialAccount(UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
-        return array_find($this->getSocialAccounts()->toArray(), static fn ($socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type));
+        return $this->socialAccounts->findFirst(
+            static fn (int $key, UserSocialAccount $socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type)
+        );
     }
 
     public function hasSocialAccountLinked(UserSocialAccountType $userSocialAccountType): bool
     {
-        return array_any($this->getSocialAccounts()->toArray(), static fn ($socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type));
+        return $this->socialAccounts->exists(
+            static fn (int $key, UserSocialAccount $socialAccount) => $userSocialAccountType->isEqualTo($socialAccount->type)
+        );
     }
 
     public function getSocialAccounts(): Collection

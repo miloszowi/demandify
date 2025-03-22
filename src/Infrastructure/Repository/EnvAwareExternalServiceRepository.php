@@ -15,6 +15,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class EnvAwareExternalServiceRepository implements ExternalRepositoryInterface
 {
+    private const string EXTERNAL_SERVICE_PREFIX = 'EXTERNAL_SERVICE__';
+
     /**
      * @var ExternalServiceEnvDTO[]
      */
@@ -23,8 +25,8 @@ class EnvAwareExternalServiceRepository implements ExternalRepositoryInterface
     public function __construct(private readonly SerializerInterface $serializer)
     {
         foreach ($_ENV as $key => $value) {
-            if (str_starts_with($key, 'EXTERNAL_SERVICE__')) {
-                $normalizedKey = substr($key, \strlen('EXTERNAL_SERVICE__'));
+            if (str_starts_with($key, self::EXTERNAL_SERVICE_PREFIX)) {
+                $normalizedKey = substr($key, \strlen(self::EXTERNAL_SERVICE_PREFIX));
 
                 try {
                     $this->externalServices[$normalizedKey] = $this->serializer->deserialize(
@@ -32,7 +34,7 @@ class EnvAwareExternalServiceRepository implements ExternalRepositoryInterface
                         ExternalServiceEnvDTO::class,
                         JsonEncoder::FORMAT
                     );
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     throw InvalidExternalServiceConfiguration::fromValue($value);
                 }
             }

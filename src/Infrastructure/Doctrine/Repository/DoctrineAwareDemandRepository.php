@@ -67,6 +67,7 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
 
     public function save(Demand $demand): void
     {
+        $demand->updatedAt = new \DateTimeImmutable();
         $this->getEntityManager()->persist($demand);
         $this->getEntityManager()->flush();
     }

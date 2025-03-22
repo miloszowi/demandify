@@ -8,9 +8,10 @@ services:
         autoconfigure: true
         bind:
             $slackApiHttpClient: '@http_client.slack'
+            $googleApiHttpClient: '@http_client.google'
 
     _instanceof:
-        Demandify\Infrastructure\Authentication\OAuth2\OAuth2Client:
+        Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2Client:
             tags: [ 'demandify.oauth.client' ]
 
         Demandify\Infrastructure\Notification\Client\NotificationClient:
@@ -24,7 +25,7 @@ services:
         exclude:
             - '../src/Kernel.php'
 
-    Demandify\Infrastructure\Authentication\OAuth2\OAuth2ClientManager:
+    Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2ClientResolver:
         arguments:
             - !tagged_iterator 'demandify.oauth.client'
 

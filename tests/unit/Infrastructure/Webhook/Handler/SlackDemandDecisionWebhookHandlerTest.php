@@ -37,13 +37,10 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->slackConfiguration = new SlackConfiguration(
-            'test_app_id',
-            'test_client_id',
-            'test_client_secret',
-            'test_signing_secret',
-            'test_oauth_bot_token',
-            'test_oauth_redirect_uri',
-            'test_oauth_state_hash_key'
+            'client_id',
+            'client_secret',
+            'signing_secret',
+            'oauth_bot_token',
         );
         $this->serializer = $this->createMock(SerializerInterface::class);
         $this->messageBus = $this->createMock(MessageBusInterface::class);
@@ -137,7 +134,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
     {
         $request = new Request([], [], [], [], [], [], 'test_content');
         $request->headers->set('X-Slack-Request-Timestamp', '1234567890');
-        $request->headers->set('X-Slack-Signature', 'v0='.hash_hmac('sha256', 'v0:1234567890:test_content', 'test_signing_secret'));
+        $request->headers->set('X-Slack-Signature', 'v0='.hash_hmac('sha256', 'v0:1234567890:test_content', 'signing_secret'));
 
         self::assertTrue($this->handler->isValid($request));
     }

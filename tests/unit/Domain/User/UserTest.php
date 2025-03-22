@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Demandify\Domain\User;
+namespace Demandify\Tests\Unit\Domain\User;
 
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
@@ -23,7 +23,7 @@ final class UserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->user = new User(Email::fromString('example@local.host'), 'John Doe');
+        $this->user = new User(Email::fromString('example@local.host'));
     }
 
     public function testHasAUuid(): void
@@ -39,14 +39,14 @@ final class UserTest extends TestCase
 
     public function testHasADefaultRole(): void
     {
-        self::assertContains(UserRole::ROLE_USER, $this->user->getRoles());
+        self::assertContains(UserRole::ROLE_USER->value, $this->user->getRoles());
     }
 
     public function testCanGrantPrivilege(): void
     {
         $role = UserRole::ROLE_USER;
         $this->user->grantPrivilege($role);
-        self::assertContains($role, $this->user->getRoles());
+        self::assertContains($role->value, $this->user->getRoles());
     }
 
     public function testDoesNotGrantDuplicatePrivilege(): void
@@ -54,7 +54,7 @@ final class UserTest extends TestCase
         $role = UserRole::ROLE_USER;
         $this->user->grantPrivilege($role);
         $this->user->grantPrivilege($role);
-        self::assertContains($role, $this->user->getRoles());
+        self::assertContains($role->value, $this->user->getRoles());
         self::assertCount(1, $this->user->getRoles());
     }
 
@@ -114,16 +114,13 @@ final class UserTest extends TestCase
     public function testCanCompareUsers(): void
     {
         self::assertTrue($this->user->isEqualTo($this->user));
-        $otherUser = new User(Email::fromString('example@local.host'), 'John Doe');
+        $otherUser = new User(Email::fromString('example@local.host'));
         self::assertTrue($this->user->isEqualTo($otherUser));
     }
 
     public function testReturnFalseWhenComparingWithDifferentUser(): void
     {
-        $otherUser = new User(
-            Email::fromString('another@local.host'),
-            'Maria'
-        );
+        $otherUser = new User(Email::fromString('another@local.host'));
         self::assertFalse($this->user->isEqualTo($otherUser));
     }
 }

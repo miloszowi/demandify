@@ -116,7 +116,7 @@ final class ApproveDemandHandlerTest extends TestCase
     public function testApprovingByIneligibleUserWillThrowException(): void
     {
         $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
-        $user = new User(Email::fromString('test@local.host'), 'name');
+        $user = new User(Email::fromString('test@local.host'));
         $demand = new Demand($user, 'test', 'test', 'test');
         $command = new ApproveDemand($demand->uuid, $user);
 

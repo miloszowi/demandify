@@ -94,7 +94,7 @@
             "@auto-scripts"
         ],
         "phpunit": "vendor/bin/phpunit",
-        "phpstan": "vendor/bin/phpstan",
+        "phpstan": "vendor/bin/phpstan --memory-limit=256M",
         "csfixer-check": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer check --allow-risky=yes --diff",
         "csfixer-fix": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --diff",
         "deptrac": "vendor/bin/deptrac --report-uncovered --fail-on-uncovered",

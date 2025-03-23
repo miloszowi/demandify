@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello User!{% endblock %}
+
+{% block body %}
+    {% for demand in demands %}
+        uuid: {{ demand.uuid }}<br>
+        content: {{ demand.content }}<br>
+        reason: {{ demand.reason }}<br>
+        created_at: {{ demand.createdAt|date('Y-m-d H:i:s') }}<br>
+        updated_at: {{ demand.updatedAt|date('Y-m-d H:i:s') }}<br>
+        <br><br>
+
+    {% endfor %}
+{% endblock %}

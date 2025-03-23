@@ -27,5 +27,10 @@ interface DemandRepository
      */
     public function findInStatus(Status $status): array;
 
+    /**
+     * @return Demand[]
+     */
+    public function getPaginatedResultForUser(UuidInterface $uuid, int $page, int $limit): iterable;
+
     public function save(Demand $demand): void;
 }

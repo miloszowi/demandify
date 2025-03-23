@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Demandify\Application\Event\DemandSubmitted;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Demandify\Domain\Notification\NotificationType;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsMessageHandler]
-class DemandSubmittedHandler
+class DemandSubmittedHandler implements DomainEventHandler
 {
     public function __construct(
         private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository,
-        private readonly MessageBusInterface $messageBus
+        private readonly CommandBus $commandBus
     ) {}
 
     public function __invoke(DemandSubmitted $event): void
@@ -29,7 +28,7 @@ class DemandSubmittedHandler
         }
 
         foreach ($externalServiceConfiguration->eligibleApprovers as $approverUuid) {
-            $this->messageBus->dispatch(
+            $this->commandBus->dispatch(
                 new SendDemandNotification($approverUuid, $event->demand, NotificationType::NEW_DEMAND)
             );
         }

@@ -16,8 +16,9 @@ use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-class OAuth2Authenticator extends AbstractAuthenticator implements AuthenticatorInterface
+class OAuth2Authenticator extends AbstractAuthenticator implements AuthenticatorInterface, AuthenticationEntryPointInterface
 {
     public function __construct(
         private readonly OAuth2ClientResolver $clientResolver,
@@ -53,6 +54,11 @@ class OAuth2Authenticator extends AbstractAuthenticator implements Authenticator
     {
         $request->getSession()->remove(AccessToken::class);
 
+        return new RedirectResponse('/login');
+    }
+
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
         return new RedirectResponse('/login');
     }
 }

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Demandify\Application\Command\UpdateEligibleApprovers;
 
+use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
-class UpdateEligibleApproversHandler
+class UpdateEligibleApproversHandler implements CommandHandler
 {
     public function __construct(private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository) {}
 

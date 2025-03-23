@@ -11,6 +11,18 @@ services:
             $googleApiHttpClient: '@http_client.google'
 
     _instanceof:
+        Demandify\Application\Command\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: app.command_bus }
+
+        Demandify\Application\Query\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: app.query_bus }
+
+        Demandify\Application\Event\DomainEventHandler:
+            tags:
+                - { name: messenger.message_handler, bus: app.domain_event_bus }
+
         Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2Client:
             tags: [ 'demandify.oauth.client' ]
 

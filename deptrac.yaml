@@ -34,7 +34,7 @@ deptrac:
           collectors:
               -
                   type: classLike
-                  value: ^(Symfony|Doctrine)\\.*
+                  value: ^(Symfony|Doctrine|Psr)\\.*
         - name: ApiPlatform
           collectors:
               -

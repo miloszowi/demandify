@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Demandify\Infrastructure\Webhook\Handler;
 
 use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\DeclineDemand\DeclineDemand;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
@@ -13,7 +14,6 @@ use Demandify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use Demandify\Infrastructure\Webhook\WebhookHandler;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -22,7 +22,7 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
     public function __construct(
         private readonly SlackConfiguration $slackConfiguration,
         private readonly SerializerInterface $serializer,
-        private readonly MessageBusInterface $messageBus,
+        private readonly CommandBus $commandBus,
         private readonly UserSocialAccountRepository $userSocialAccountRepository,
     ) {}
 
@@ -57,7 +57,7 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
                 $socialAccount->user
             ),
         };
-        $this->messageBus->dispatch($command);
+        $this->commandBus->dispatch($command);
     }
 
     public function isValid(Request $request): bool

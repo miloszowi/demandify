@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Demandify\Application\Command\SubmitDemand;
 
+use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
 use Demandify\Domain\DomainEventPublisher;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
-final class SubmitDemandHandler
+final class SubmitDemandHandler implements CommandHandler
 {
     public function __construct(
         private readonly DemandRepository $demandRepository,

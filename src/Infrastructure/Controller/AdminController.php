@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Controller;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers;
 use Demandify\Domain\ExternalService\Exception\ExternalServiceNotFoundException;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
@@ -15,7 +16,6 @@ use Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalS
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class AdminController extends AbstractController
@@ -24,7 +24,7 @@ class AdminController extends AbstractController
         private readonly ExternalServiceRepository $externalServiceRepository,
         private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository,
         private readonly UserRepository $userRepository,
-        private readonly MessageBusInterface $messageBus,
+        private readonly CommandBus $commandBus,
     ) {}
 
     #[Route('/admin', name: 'admin_index', methods: ['GET'])]
@@ -54,7 +54,7 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->messageBus->dispatch(
+            $this->commandBus->dispatch(
                 new UpdateEligibleApprovers(
                     $service->name,
                     array_map(

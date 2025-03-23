@@ -65,6 +65,18 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
         ;
     }
 
+    public function getPaginatedResultForUser(UuidInterface $uuid, int $page, int $limit): iterable
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.requester = :requester')
+            ->setParameter('requester', $uuid)
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     public function save(Demand $demand): void
     {
         $demand->updatedAt = new \DateTimeImmutable();

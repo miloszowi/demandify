@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Tests\Application\Event\DemandSubmitted;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
@@ -14,8 +15,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @internal
@@ -24,16 +23,16 @@ use Symfony\Component\Messenger\MessageBusInterface;
 final class DemandSubmittedHandlerTest extends TestCase
 {
     private ExternalServiceConfigurationRepository|MockObject $externalServiceConfigurationRepositoryMock;
-    private MessageBusInterface|MockObject $messageBusMock;
+    private CommandBus|MockObject $commandBusMock;
     private DemandSubmittedHandler $handler;
 
     protected function setUp(): void
     {
         $this->externalServiceConfigurationRepositoryMock = $this->createMock(ExternalServiceConfigurationRepository::class);
-        $this->messageBusMock = $this->createMock(MessageBusInterface::class);
+        $this->commandBusMock = $this->createMock(CommandBus::class);
         $this->handler = new DemandSubmittedHandler(
             $this->externalServiceConfigurationRepositoryMock,
-            $this->messageBusMock
+            $this->commandBusMock
         );
     }
 
@@ -53,7 +52,7 @@ final class DemandSubmittedHandlerTest extends TestCase
             ->with($demand->service)
             ->willReturn(null)
         ;
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::never())
             ->method('dispatch')
         ;
@@ -81,12 +80,10 @@ final class DemandSubmittedHandlerTest extends TestCase
             ->willReturn($externalServiceConfiguration)
         ;
 
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::exactly(2))
             ->method('dispatch')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls($mockEnvelope, $mockEnvelope)
         ;
 
         $this->handler->__invoke($event);

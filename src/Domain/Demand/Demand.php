@@ -12,7 +12,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[
-    ORM\Entity(repositoryClass: DemandRepository::class),
+    ORM\Entity,
     ORM\Table(name: '`demand`'),
     ORM\Index(name: 'service_idx', columns: ['service'])
 ]

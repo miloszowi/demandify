@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Demandify\Tests\Infrastructure\Webhook\Handler;
 
 use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\DeclineDemand\DeclineDemand;
 use Demandify\Domain\User\User;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
@@ -18,8 +19,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -30,7 +29,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
 {
     private SlackConfiguration $slackConfiguration;
     private MockObject|SerializerInterface $serializer;
-    private MessageBusInterface|MockObject $messageBus;
+    private CommandBus|MockObject $commandBusMock;
     private MockObject|UserSocialAccountRepository $userSocialAccountRepository;
     private SlackDemandDecisionWebhookHandler $handler;
 
@@ -43,13 +42,13 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
             'oauth_bot_token',
         );
         $this->serializer = $this->createMock(SerializerInterface::class);
-        $this->messageBus = $this->createMock(MessageBusInterface::class);
+        $this->commandBusMock = $this->createMock(CommandBus::class);
         $this->userSocialAccountRepository = $this->createMock(UserSocialAccountRepository::class);
 
         $this->handler = new SlackDemandDecisionWebhookHandler(
             $this->slackConfiguration,
             $this->serializer,
-            $this->messageBus,
+            $this->commandBusMock,
             $this->userSocialAccountRepository,
         );
     }
@@ -86,12 +85,10 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
             ->willReturn($socialAccount)
         ;
 
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBus
+        $this->commandBusMock
             ->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(ApproveDemand::class))
-            ->willReturn($mockEnvelope)
         ;
 
         $this->handler->handle($request);
@@ -119,12 +116,10 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
             ->willReturn($socialAccount)
         ;
 
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBus
+        $this->commandBusMock
             ->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(DeclineDemand::class))
-            ->willReturn($mockEnvelope)
         ;
 
         $this->handler->handle($request);

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Demandify\Application\Command\DeclineDemand;
 
+use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
 use Demandify\Domain\DomainEventPublisher;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
-class DeclineDemandHandler
+class DeclineDemandHandler implements CommandHandler
 {
     public function __construct(
         private readonly DemandRepository $demandRepository,

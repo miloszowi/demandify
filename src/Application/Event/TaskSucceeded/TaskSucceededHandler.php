@@ -1,21 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Demandify\Application\Event\TaskSucceeded;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
+use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Notification\NotificationType;
 use Demandify\Domain\Task\Event\TaskSucceeded;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-use Symfony\Component\Messenger\MessageBusInterface;
 
-#[AsMessageHandler]
-class TaskSucceededHandler
+class TaskSucceededHandler implements DomainEventHandler
 {
-    public function __construct(private readonly MessageBusInterface $messageBus) {}
+    public function __construct(private readonly CommandBus $commandBus) {}
 
     public function __invoke(TaskSucceeded $event): void
     {
-        $this->messageBus->dispatch(
+        $this->commandBus->dispatch(
             new SendDemandNotification(
                 $event->task->demand->requester->uuid,
                 $event->task->demand,

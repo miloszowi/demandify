@@ -1,6 +1,17 @@
 framework:
     messenger:
         failure_transport: failed
+        default_bus: app.command_bus
+
+        buses:
+            app.command_bus:
+                middleware:
+                    - doctrine_transaction
+            app.domain_event_bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - doctrine_transaction
+            app.query_bus: ~
 
         transports:
              async: '%env(MESSENGER_TRANSPORT_DSN)%messages'

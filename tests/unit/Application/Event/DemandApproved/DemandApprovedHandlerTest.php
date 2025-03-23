@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Tests\Unit\Application\Event\DemandApproved;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Event\DemandApproved\DemandApprovedHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\Event\DemandApproved;
@@ -15,8 +16,6 @@ use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @internal
@@ -24,15 +23,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[CoversClass(DemandApprovedHandler::class)]
 final class DemandApprovedHandlerTest extends TestCase
 {
-    private MessageBusInterface|MockObject $messageBusMock;
+    private CommandBus|MockObject $commandBusMock;
     private MockObject|NotificationRepository $notificationRepositoryMock;
     private DemandApprovedHandler $demandApprovedHandler;
 
     protected function setUp(): void
     {
-        $this->messageBusMock = $this->createMock(MessageBusInterface::class);
+        $this->commandBusMock = $this->createMock(CommandBus::class);
         $this->notificationRepositoryMock = $this->createMock(NotificationRepository::class);
-        $this->demandApprovedHandler = new DemandApprovedHandler($this->messageBusMock, $this->notificationRepositoryMock);
+        $this->demandApprovedHandler = new DemandApprovedHandler($this->commandBusMock, $this->notificationRepositoryMock);
     }
 
     public function testDispatchesCommandsWhenDemandIsApproved(): void
@@ -47,12 +46,10 @@ final class DemandApprovedHandlerTest extends TestCase
             ->method('findByDemandUuidAndAction')->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([$notificationMock])
         ;
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::exactly(3))
             ->method('dispatch')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls($mockEnvelope, $mockEnvelope, $mockEnvelope)
         ;
 
         $this->demandApprovedHandler->__invoke($event);
@@ -70,12 +67,10 @@ final class DemandApprovedHandlerTest extends TestCase
             ->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([])
         ;
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::exactly(2))
             ->method('dispatch')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls($mockEnvelope, $mockEnvelope)
         ;
 
         $this->demandApprovedHandler->__invoke($event);

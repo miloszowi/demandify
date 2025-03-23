@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Controller;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\SubmitDemand\SubmitDemand;
 use Demandify\Domain\ExternalService\ExternalServiceRepository;
 use Demandify\Infrastructure\Symfony\Form\Demand\Demand;
@@ -11,13 +12,12 @@ use Demandify\Infrastructure\Symfony\Form\Demand\DemandFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
     public function __construct(
-        private readonly MessageBusInterface $messageBus,
+        private readonly CommandBus $commandBus,
         private readonly ExternalServiceRepository $externalServiceRepository,
     ) {}
 
@@ -29,7 +29,7 @@ class HomeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->messageBus->dispatch(
+            $this->commandBus->dispatch(
                 new SubmitDemand(
                     $this->getUser()->getUserIdentifier(),
                     $form->get('service')->getData(),

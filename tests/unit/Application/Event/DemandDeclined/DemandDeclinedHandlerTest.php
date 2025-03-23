@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Tests\Unit\Application\Event\DemandDeclined;
 
+use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Event\DemandDeclined\DemandDeclinedHandler;
 use Demandify\Domain\Demand\Demand;
@@ -16,8 +17,6 @@ use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @internal
@@ -25,15 +24,15 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[CoversClass(DemandDeclinedHandler::class)]
 final class DemandDeclinedHandlerTest extends TestCase
 {
-    private MessageBusInterface|MockObject $messageBusMock;
+    private CommandBus|MockObject $commandBusMock;
     private MockObject|NotificationRepository $notificationRepositoryMock;
     private DemandDeclinedHandler $demandDeclinedHandler;
 
     protected function setUp(): void
     {
-        $this->messageBusMock = $this->createMock(MessageBusInterface::class);
+        $this->commandBusMock = $this->createMock(CommandBus::class);
         $this->notificationRepositoryMock = $this->createMock(NotificationRepository::class);
-        $this->demandDeclinedHandler = new DemandDeclinedHandler($this->messageBusMock, $this->notificationRepositoryMock);
+        $this->demandDeclinedHandler = new DemandDeclinedHandler($this->commandBusMock, $this->notificationRepositoryMock);
     }
 
     public function testDispatchesCommandsWhenDemandIsDeclined(): void
@@ -48,12 +47,10 @@ final class DemandDeclinedHandlerTest extends TestCase
             ->method('findByDemandUuidAndAction')->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([$notificationMock])
         ;
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::exactly(2))
             ->method('dispatch')
             ->withAnyParameters()
-            ->willReturnOnConsecutiveCalls($mockEnvelope, $mockEnvelope)
         ;
 
         $this->demandDeclinedHandler->__invoke($event);
@@ -71,12 +68,10 @@ final class DemandDeclinedHandlerTest extends TestCase
             ->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([])
         ;
-        $mockEnvelope = new Envelope(new \stdClass());
-        $this->messageBusMock
+        $this->commandBusMock
             ->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(SendDemandNotification::class))
-            ->willReturn($mockEnvelope)
         ;
 
         $this->demandDeclinedHandler->__invoke($event);

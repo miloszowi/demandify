@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Demandify\Application\Command\LinkSocialAccountToUser;
 
+use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
 use Demandify\Domain\UserSocialAccount\Exception\UserSocialAccountAlreadyLinkedException;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
-class LinkSocialAccountToUserHandler
+class LinkSocialAccountToUserHandler implements CommandHandler
 {
     public function __construct(
         private readonly UserRepository $userRepository,

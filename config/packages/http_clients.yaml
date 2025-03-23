@@ -7,7 +7,19 @@ services:
     arguments:
       - { base_uri: 'https://slack.com/api' }
 
+  logging_http_client.slack:
+    class: Demandify\Infrastructure\External\Http\LoggingAwareHttpClient
+    arguments:
+      - '@http_client.slack'
+      - '@logger'
+
   http_client.google:
     class: Symfony\Component\HttpClient\CurlHttpClient
     arguments:
       - { base_uri: 'https://www.googleapis.com' }
+
+  logging_http_client.google:
+    class: Demandify\Infrastructure\External\Http\LoggingAwareHttpClient
+    arguments:
+      - '@http_client.google'
+      - '@logger'

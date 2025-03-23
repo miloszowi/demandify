@@ -7,8 +7,8 @@ services:
         autowire: true
         autoconfigure: true
         bind:
-            $slackApiHttpClient: '@http_client.slack'
-            $googleApiHttpClient: '@http_client.google'
+            $slackApiHttpClient: '@logging_http_client.slack'
+            $googleApiHttpClient: '@logging_http_client.google'
 
     _instanceof:
         Demandify\Application\Command\CommandHandler:

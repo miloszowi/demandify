@@ -6,11 +6,11 @@ namespace Demandify\Tests\Unit\Infrastructure\External\Google\Http;
 
 use Demandify\Infrastructure\External\Google\GoogleConfiguration;
 use Demandify\Infrastructure\External\Google\Http\GoogleHttpClient;
+use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @internal
@@ -18,13 +18,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 #[CoversClass(GoogleHttpClient::class)]
 final class GoogleHttpClientTest extends TestCase
 {
-    private HttpClientInterface|MockObject $googleApiHttpClient;
+    private LoggingAwareHttpClient|MockObject $googleApiHttpClient;
     private MockObject|SerializerInterface $serializer;
     private GoogleHttpClient $googleHttpClient;
 
     protected function setUp(): void
     {
-        $this->googleApiHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->googleApiHttpClient = $this->createMock(LoggingAwareHttpClient::class);
         $this->serializer = $this->createMock(SerializerInterface::class);
 
         $googleConfiguration = new GoogleConfiguration(

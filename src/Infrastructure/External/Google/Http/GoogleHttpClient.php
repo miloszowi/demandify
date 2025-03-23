@@ -8,16 +8,16 @@ use Demandify\Infrastructure\External\Google\GoogleConfiguration;
 use Demandify\Infrastructure\External\Google\Http\Exception\GoogleApiException;
 use Demandify\Infrastructure\External\Google\Http\Response\OAuth2AccessResponse;
 use Demandify\Infrastructure\External\Google\Http\Response\UserInfoResponse;
+use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GoogleHttpClient
 {
     public function __construct(
-        private readonly HttpClientInterface $googleApiHttpClient,
+        private readonly LoggingAwareHttpClient $googleApiHttpClient,
         private readonly GoogleConfiguration $googleConfiguration,
         private readonly SerializerInterface $serializer
     ) {}

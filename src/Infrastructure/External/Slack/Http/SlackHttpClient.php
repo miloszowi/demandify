@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\External\Slack\Http;
 
+use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
 use Demandify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse;
 use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
@@ -12,12 +13,11 @@ use Demandify\Infrastructure\External\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SlackHttpClient
 {
     public function __construct(
-        private readonly HttpClientInterface $slackApiHttpClient,
+        private readonly LoggingAwareHttpClient $slackApiHttpClient,
         private readonly SlackConfiguration $slackConfiguration,
         private readonly SerializerInterface $serializer
     ) {}

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Tests\Unit\Infrastructure\External\Slack\Http;
 
+use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
 use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
 use Demandify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
@@ -14,7 +15,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
@@ -23,13 +23,13 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 #[CoversClass(SlackHttpClient::class)]
 final class SlackHttpClientTest extends TestCase
 {
-    private HttpClientInterface|MockObject $slackApiHttpClient;
+    private LoggingAwareHttpClient|MockObject $slackApiHttpClient;
     private MockObject|SerializerInterface $serializer;
     private SlackHttpClient $slackHttpClient;
 
     protected function setUp(): void
     {
-        $this->slackApiHttpClient = $this->createMock(HttpClientInterface::class);
+        $this->slackApiHttpClient = $this->createMock(LoggingAwareHttpClient::class);
         $this->serializer = $this->createMock(SerializerInterface::class);
 
         $slackConfiguration = new SlackConfiguration(

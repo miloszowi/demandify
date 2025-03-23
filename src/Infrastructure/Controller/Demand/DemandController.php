@@ -37,12 +37,15 @@ class DemandController extends AbstractController
         path: '/demands',
         name: 'app_demand_user_demands',
         methods: [Request::METHOD_GET],
+        condition: 'request.get("page") > 0',
     )]
     public function userDemands(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $demands = $this->queryBus->ask(new GetDemandsSubmittedByUser($user->uuid, 1, 50));
+        $page = (int) $request->get('page', 1);
+
+        $demands = $this->queryBus->ask(new GetDemandsSubmittedByUser($user->uuid, $page, 50));
 
         return $this->render('demand/user_demands.html.twig', [
             'demands' => $demands,

@@ -76,6 +76,8 @@ class OAuthController extends AbstractController
             $userIdentity->accessToken
         );
 
+        $this->addFlash('success', 'You have been successfully authorized.');
+
         return $this->redirect($this->generateUrl('app_home'));
     }
 

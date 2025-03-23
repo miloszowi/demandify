@@ -22,6 +22,7 @@ security:
     access_control:
          - { path: /admin, roles: ROLE_ADMIN }
          - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/demand, roles: ROLE_USER }
          - { attributes: { '_route': 'app_home' }, roles: ROLE_USER }
 
 when@test:

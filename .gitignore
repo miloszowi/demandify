@@ -8,7 +8,7 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-
+.vscode/
 .idea/
 ###> symfony/phpunit-bridge ###
 .phpunit.result.cache

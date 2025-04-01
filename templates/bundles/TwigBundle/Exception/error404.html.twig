@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page not found{% endblock %}
+{% block stylesheets %}
+    <style>
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #747bff;
+            border-color: #747bff;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary i {
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div style="text-align: center; padding: 4rem 1rem;">
+        <h1 style="font-size: 4rem; margin-bottom: 1rem;">404</h1>
+        <h2 style="font-size: 2rem; margin-bottom: 2rem;">Page not found</h2>
+        <p style="color: #666; margin-bottom: 2rem;">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+        <a href="/" class="btn btn-primary">
+            <i class="fas fa-home"></i>
+            Return to Homepage
+        </a>
+    </div>
+{% endblock %}

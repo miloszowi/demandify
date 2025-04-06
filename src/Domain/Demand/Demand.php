@@ -33,6 +33,10 @@ class Demand
     ]
     public ?User $approver = null;
 
+    #[ORM\OneToOne(targetEntity: Task::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'task_uuid', referencedColumnName: 'uuid', unique: false, nullable: true)]
+    public ?Task $task = null;
+
     #[ORM\Column(nullable: false)]
     public readonly \DateTimeImmutable $createdAt;
 
@@ -81,5 +85,7 @@ class Demand
             true => $this->status->progress(Status::EXECUTED),
             false => $this->status->progress(Status::FAILED),
         };
+
+        $this->task = $task;
     }
 }

@@ -1,9 +1,330 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Admin Dashboard | Demandify{% endblock %}
 
 {% block body %}
-   {% for external_service in external_services %}
-      <a href="/admin/services/{{ external_service.name }}">edit {{ external_service.name }}</a>
-   {% endfor %}
+    <style>
+        .admin-header {
+            margin-bottom: 2rem;
+        }
+
+        .admin-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .admin-header p {
+            color: var(--text-secondary);
+            margin: 0.5rem 0 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--primary-color);
+        }
+
+        .stat-card p {
+            margin: 0.5rem 0 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .service-card {
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .service-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .service-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: rgba(100, 108, 255, 0.1);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .service-name {
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .demands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .demands-table th,
+        .demands-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .demands-table th {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+        }
+
+        .status-approved {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        @media (max-width: 1024px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p>Manage services, review demands, and monitor system status</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>{{ external_services|length }}</h3>
+            <p>Active Services</p>
+        </div>
+        <div class="stat-card">
+            <h3>24</h3>
+            <p>Total Demands</p>
+        </div>
+        <div class="stat-card">
+            <h3>8</h3>
+            <p>Pending Review</p>
+        </div>
+        <div class="stat-card">
+            <h3>95%</h3>
+            <p>Approval Rate</p>
+        </div>
+    </div>
+
+    <div class="admin-grid">
+        <!-- Services Management -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Services</h2>
+                <button class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Add Service
+                </button>
+            </div>
+            <div class="services-list">
+                {% for service in external_services %}
+                    <div class="service-card">
+                        <div class="service-info">
+                            <div class="service-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3 class="service-name">{{ service.name }}</h3>
+                        </div>
+                        <div class="service-actions">
+                            <a href="/admin/services/{{ service.name }}" class="btn">
+                                <i class="fas fa-edit"></i>
+                                Edit
+                            </a>
+                            <button class="btn">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recent Demands -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Recent Demands</h2>
+                <button class="btn">
+                    <i class="fas fa-filter"></i>
+                    Filter
+                </button>
+            </div>
+            <table class="demands-table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>Redis</td>
+                        <td>
+                            <span class="status-badge status-pending">
+                                <i class="fas fa-clock"></i>
+                                Pending
+                            </span>
+                        </td>
+                        <td>2024-02-20</td>
+                        <td>
+                            <button class="btn">Review</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>MySQL</td>
+                        <td>
+                            <span class="status-badge status-approved">
+                                <i class="fas fa-check"></i>
+                                Approved
+                            </span>
+                        </td>
+                        <td>2024-02-19</td>
+                        <td>
+                            <button class="btn">View</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Mike Johnson</td>
+                        <td>PostgreSQL</td>
+                        <td>
+                            <span class="status-badge status-rejected">
+                                <i class="fas fa-times"></i>
+                                Rejected
+                            </span>
+                        </td>
+                        <td>2024-02-18</td>
+                        <td>
+                            <button class="btn">View</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

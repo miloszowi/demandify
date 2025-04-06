@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Controller\Demand;
 
+use Demandify\Application\Query\GetDemandsAwaitingDecisionForUser\GetDemandsAwaitingDecisionForUser;
 use Demandify\Application\Query\GetDemandsSubmittedByUser\GetDemandsSubmittedByUser;
 use Demandify\Application\Query\QueryBus;
 use Demandify\Domain\Demand\Demand;
@@ -35,20 +36,39 @@ class DemandController extends AbstractController
 
     #[Route(
         path: '/demands',
-        name: 'app_demand_user_demands',
+        name: 'app_demands',
         methods: [Request::METHOD_GET],
-        condition: 'request.get("page") > 0',
     )]
     public function userDemands(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $page = (int) $request->get('page', 1);
+        $page = max(1, (int) $request->query->get('page', 1));
+        $limit = min(50, max(1, (int) $request->query->get('limit', 10)));
+        $search = $request->query->get('search');
 
-        $demands = $this->queryBus->ask(new GetDemandsSubmittedByUser($user->uuid, $page, 50));
+        $result = $this->queryBus->ask(new GetDemandsSubmittedByUser(
+            $user->uuid,
+            $page,
+            $limit,
+            $search
+        ));
 
-        return $this->render('demand/user_demands.html.twig', [
-            'demands' => $demands,
-        ]);
+        return $this->render('demand/user_demands.html.twig', $result);
+    }
+
+    #[Route(
+        path: '/demands/awaiting-decision',
+        name: 'app_demands_awaiting_decision',
+        methods: [Request::METHOD_GET],
+    )]
+    public function demandAwaitingDecision(Request $request): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $result = $this->queryBus->ask(new GetDemandsAwaitingDecisionForUser($user->uuid));
+
+        return $this->render('demand/demands_awaiting_decision.html.twig', $result);
     }
 }

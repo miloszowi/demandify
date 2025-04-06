@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250322092157 extends AbstractMigration
+final class Version20250405122020 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,14 @@ final class Version20250322092157 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE "demand" (uuid UUID NOT NULL, approver_uuid UUID DEFAULT NULL, requester_uuid UUID NOT NULL, status VARCHAR(15) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, service VARCHAR(255) NOT NULL, content TEXT NOT NULL, reason TEXT NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE "demand" (uuid UUID NOT NULL, approver_uuid UUID DEFAULT NULL, task_uuid UUID DEFAULT NULL, requester_uuid UUID NOT NULL, status VARCHAR(15) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, service VARCHAR(255) NOT NULL, content TEXT NOT NULL, reason TEXT NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE INDEX IDX_428D7973C83C0DB1 ON "demand" (approver_uuid)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_428D7973A2CCC4DD ON "demand" (task_uuid)');
         $this->addSql('CREATE INDEX IDX_428D7973FA1AE32E ON "demand" (requester_uuid)');
         $this->addSql('CREATE INDEX service_idx ON "demand" (service)');
         $this->addSql('COMMENT ON COLUMN "demand".uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "demand".approver_uuid IS \'(DC2Type:uuid)\'');
+        $this->addSql('COMMENT ON COLUMN "demand".task_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "demand".requester_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN "demand".created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('COMMENT ON COLUMN "demand".updated_at IS \'(DC2Type:datetime_immutable)\'');
@@ -47,6 +49,7 @@ final class Version20250322092157 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_99C85C60ABFE1C6F ON "user_social_account" (user_uuid)');
         $this->addSql('COMMENT ON COLUMN "user_social_account".user_uuid IS \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE "demand" ADD CONSTRAINT FK_428D7973C83C0DB1 FOREIGN KEY (approver_uuid) REFERENCES "user" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE "demand" ADD CONSTRAINT FK_428D7973A2CCC4DD FOREIGN KEY (task_uuid) REFERENCES task (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "demand" ADD CONSTRAINT FK_428D7973FA1AE32E FOREIGN KEY (requester_uuid) REFERENCES "user" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE task ADD CONSTRAINT FK_527EDB25FBDF0E0 FOREIGN KEY (demand_uuid) REFERENCES "demand" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE "user_social_account" ADD CONSTRAINT FK_99C85C60ABFE1C6F FOREIGN KEY (user_uuid) REFERENCES "user" (uuid) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -56,6 +59,7 @@ final class Version20250322092157 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE "demand" DROP CONSTRAINT FK_428D7973C83C0DB1');
+        $this->addSql('ALTER TABLE "demand" DROP CONSTRAINT FK_428D7973A2CCC4DD');
         $this->addSql('ALTER TABLE "demand" DROP CONSTRAINT FK_428D7973FA1AE32E');
         $this->addSql('ALTER TABLE task DROP CONSTRAINT FK_527EDB25FBDF0E0');
         $this->addSql('ALTER TABLE "user_social_account" DROP CONSTRAINT FK_99C85C60ABFE1C6F');

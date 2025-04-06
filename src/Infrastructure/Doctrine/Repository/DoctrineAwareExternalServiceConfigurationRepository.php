@@ -9,6 +9,7 @@ use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Ramsey\Uuid\UuidInterface;
 
 class DoctrineAwareExternalServiceConfigurationRepository extends ServiceEntityRepository implements ExternalServiceConfigurationRepository
 {
@@ -42,5 +43,18 @@ class DoctrineAwareExternalServiceConfigurationRepository extends ServiceEntityR
         }
 
         return $configuration;
+    }
+
+    /**
+     * @return ExternalServiceConfiguration[]
+     */
+    public function findEligibleForUser(UuidInterface $userUuid): array
+    {
+        return $this->createQueryBuilder('esc')
+            ->andWhere('esc.eligibleApprovers LIKE :userUuid')
+            ->setParameter('userUuid', '%'.$userUuid.'%')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

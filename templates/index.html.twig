@@ -1,23 +1,430 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Dashboard | Demandify{% endblock %}
 
 {% block body %}
+    {# Add CodeMirror CSS and JS in the head #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/sql/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/redis/redis.min.js"></script>
+
     <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.blue {
+            background: rgba(100, 108, 255, 0.1);
+            color: #646cff;
+        }
+
+        .stat-icon.green {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .stat-icon.purple {
+            background: rgba(168, 85, 247, 0.1);
+            color: #a855f7;
+        }
+
+        .stat-info h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .stat-info p {
+            margin: 0.25rem 0 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .demands-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .demand-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--background-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .demand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(100, 108, 255, 0.1);
+            color: var(--primary-color);
+        }
+
+        .demand-info {
+            flex: 1;
+        }
+
+        .demand-info h4 {
+            margin: 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .demand-info p {
+            margin: 0.25rem 0 0;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+        }
+
+        .status-approved {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group.code-editor {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.code-editor label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* CodeMirror Customization */
+        .CodeMirror {
+            height: 300px !important;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .CodeMirror-focused {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.1);
+        }
+
+        /* Language selector */
+        .language-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .language-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .language-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .language-btn:hover:not(.active) {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
     </style>
 
-    <div class="example-wrapper">
-        <h1>Hello! ✅</h1>
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fas fa-paper-plane"></i>
+            </div>
+            <div class="stat-info">
+                <h3>12</h3>
+                <p>Total Demands</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <h3>8</h3>
+                <p>Approved Demands</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3>3</h3>
+                <p>Pending Demands</p>
+            </div>
+        </div>
     </div>
 
-    {{ form_errors(demandForm) }}
+    <div class="dashboard-grid">
+        <!-- Demand Form -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Submit New Demand</h2>
+            </div>
+            {{ form_start(demandForm, {'attr': {'class': 'demand-form'}}) }}
+                <div class="form-group">
+                    {{ form_label(demandForm.service) }}
+                    {{ form_widget(demandForm.service, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <div class="form-group code-editor">
+                    {{ form_label(demandForm.content) }}
+                    <div class="language-selector">
+                        <button type="button" class="language-btn active" data-mode="sql">SQL</button>
+                        <button type="button" class="language-btn" data-mode="redis">Redis</button>
+                    </div>
+                    {{ form_widget(demandForm.content, {'attr': {'class': 'form-control code-input', 'rows': '10'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(demandForm.reason) }}
+                    {{ form_widget(demandForm.reason, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Demand</button>
+            {{ form_end(demandForm) }}
+        </div>
 
-    {{ form_start(demandForm) }}
-    {{ form_row(demandForm.service) }}
-    {{ form_row(demandForm.content) }}
-    {{ form_row(demandForm.reason) }}
+        <!-- Recent Demands -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Recent Demands</h2>
+            </div>
+            <div class="demands-list">
+                <div class="demand-item">
+                    <div class="demand-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="demand-info">
+                        <h4>Software License Request</h4>
+                        <p>Submitted 2 hours ago</p>
+                    </div>
+                    <span class="status-badge status-pending">Pending</span>
+                </div>
+                <div class="demand-item">
+                    <div class="demand-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div class="demand-info">
+                        <h4>Hardware Upgrade</h4>
+                        <p>Submitted 1 day ago</p>
+                    </div>
+                    <span class="status-badge status-approved">Approved</span>
+                </div>
+                <div class="demand-item">
+                    <div class="demand-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="demand-info">
+                        <h4>Training Request</h4>
+                        <p>Submitted 3 days ago</p>
+                    </div>
+                    <span class="status-badge status-rejected">Rejected</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {{ form_end(demandForm) }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize CodeMirror
+            const contentInput = document.querySelector('.code-input');
+            const editor = CodeMirror.fromTextArea(contentInput, {
+                mode: 'sql',
+                theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dracula' : 'default',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                indentUnit: 4,
+                tabSize: 4,
+                lineWrapping: true,
+                extraKeys: {
+                    "Tab": function(cm) {
+                        if (cm.somethingSelected()) {
+                            cm.indentSelection("add");
+                        } else {
+                            cm.replaceSelection("    ", "end");
+                        }
+                    }
+                }
+            });
+
+            // Language selector functionality
+            const languageBtns = document.querySelectorAll('.language-btn');
+            languageBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    languageBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update editor mode
+                    editor.setOption('mode', this.dataset.mode);
+                });
+            });
+
+            // Update editor theme when system theme changes
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'data-theme') {
+                        const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dracula' : 'default';
+                        editor.setOption('theme', theme);
+                    }
+                });
+            });
+
+            observer.observe(document.documentElement, {
+                attributes: true,
+                attributeFilter: ['data-theme']
+            });
+
+            // Ensure form submission includes editor content
+            const form = document.querySelector('.demand-form');
+            form.addEventListener('submit', function() {
+                contentInput.value = editor.getValue();
+            });
+        });
+    </script>
 {% endblock %}

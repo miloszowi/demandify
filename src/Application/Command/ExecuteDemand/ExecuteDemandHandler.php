@@ -10,14 +10,12 @@ use Demandify\Domain\DomainEventPublisher;
 use Demandify\Domain\Task\DemandExecutor;
 use Demandify\Domain\Task\Event\TaskFailed;
 use Demandify\Domain\Task\Event\TaskSucceeded;
-use Demandify\Domain\Task\TaskRepository;
 
 class ExecuteDemandHandler implements CommandHandler
 {
     public function __construct(
         private readonly DemandExecutor $demandExecutor,
         private readonly DemandRepository $demandRepository,
-        private readonly TaskRepository $taskRepository,
         private readonly DomainEventPublisher $domainEventPublisher,
     ) {}
 
@@ -32,7 +30,6 @@ class ExecuteDemandHandler implements CommandHandler
 
         $demand->finish($task);
         $this->demandRepository->save($demand);
-        $this->taskRepository->save($task);
 
         match ($task->success) {
             true => $this->domainEventPublisher->publish(new TaskSucceeded($task)),

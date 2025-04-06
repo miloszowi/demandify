@@ -221,7 +221,7 @@
         <div class="demands-toolbar">
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search demands..." value="{{ search }}">
+                <input type="text" placeholder="Search demands..." value="{{ app.request.query.get('search') }}">
             </div>
             <div class="filter-group">
                 <button class="btn">
@@ -260,14 +260,14 @@
                             <td>{{ demand.content|slice(0, 50) }}...</td>
                             <td>{{ demand.reason|slice(0, 50) }}...</td>
                             <td>
-                                <span class="status-badge status-{{ demand.status.value|lower }}">
-                                    <i class="fas fa-{% if demand.status.value == 'PENDING' %}clock{% elseif demand.status.value == 'APPROVED' %}check{% else %}times{% endif %}"></i>
-                                    {{ demand.status.value|capitalize }}
+                                <span class="status-badge status-{{ demand.status|lower }}">
+                                    <i class="fas fa-{% if demand.status == 'PENDING' %}clock{% elseif demand.status == 'APPROVED' %}check{% else %}times{% endif %}"></i>
+                                    {{ demand.status|capitalize }}
                                 </span>
                             </td>
                             <td>{{ demand.createdAt|date('Y-m-d H:i') }}</td>
                             <td>
-                                <a href="{{ path('app_demand_view', {id: demand.uuid}) }}" class="btn">View</a>
+                                <button class="btn">View</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -279,15 +279,15 @@
                     Showing {{ (page - 1) * limit + 1 }} to {{ min(page * limit, total) }} of {{ total }} demands
                 </div>
                 <div class="pagination-controls">
-                    <button class="page-btn" {{ page <= 1 ? 'disabled' : '' }} onclick="window.location.href='{{ path('app_demands', {page: page - 1, limit: limit, search: search}) }}'">
+                    <button class="page-btn" {{ page <= 1 ? 'disabled' : '' }} onclick="window.location.href='{{ path('app_demands', {page: page - 1, limit: limit}) }}'">
                         <i class="fas fa-chevron-left"></i>
                     </button>
                     {% for i in max(1, page - 2)..min(totalPages, page + 2) %}
-                        <button class="page-btn {{ page == i ? 'active' : '' }}" onclick="window.location.href='{{ path('app_demands', {page: i, limit: limit, search: search}) }}'">
+                        <button class="page-btn {{ page == i ? 'active' : '' }}" onclick="window.location.href='{{ path('app_demands', {page: i, limit: limit}) }}'">
                             {{ i }}
                         </button>
                     {% endfor %}
-                    <button class="page-btn" {{ page >= totalPages ? 'disabled' : '' }} onclick="window.location.href='{{ path('app_demands', {page: page + 1, limit: limit, search: search}) }}'">
+                    <button class="page-btn" {{ page >= totalPages ? 'disabled' : '' }} onclick="window.location.href='{{ path('app_demands', {page: page + 1, limit: limit}) }}'">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
@@ -296,7 +296,6 @@
     </div>
 
     <script>
-        // Handle search input
         const searchInput = document.querySelector('.search-box input');
         let timeout = null;
         
@@ -307,7 +306,7 @@
                 searchParams.set('search', this.value);
                 searchParams.set('page', '1');
                 window.location.href = `${window.location.pathname}?${searchParams.toString()}`;
-            }, 500);
+            }, 100);
         });
     </script>
-{% endblock %}
+{% endblock %} 

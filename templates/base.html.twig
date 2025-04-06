@@ -1,172 +1,400 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="light">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="{{ asset('docs/logo.png') }}">
+        <link rel="icon" href="{{ asset('images/logo.png') }}">
+
+        <!-- Immediate theme initialization to prevent flickering -->
+        <script>
+            // Get the saved theme or default to light
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        </script>
+
         {% block stylesheets %}
         {% endblock %}
         {% block head_css %}
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         {% endblock %}
         {% block head_js %}
-            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
         {% endblock %}
 
         <style>
-            :root {
-                --primary-bg: #0a0a0a;
-                --secondary-bg: #1a1a1a;
-                --accent-color: #646cff;
-                --text-color: #ffffff;
-                --nav-width: 400px;
-                --nav-height: 48px;
+            :root[data-theme="light"] {
+                --primary-color: #646cff;
+                --background-color: #f8f9fa;
+                --card-bg: #ffffff;
+                --text-primary: #2c3e50;
+                --text-secondary: #6c757d;
+                --border-color: rgba(0, 0, 0, 0.1);
+                --hover-bg: rgba(100, 108, 255, 0.08);
+                --shadow-color: rgba(0, 0, 0, 0.05);
+                --sidebar-width: 250px;
+                --sidebar-width-collapsed: 72px;
+                --border-radius: 12px;
+                --header-height: 70px;
+            }
+
+            :root[data-theme="dark"] {
+                --primary-color: #646cff;
+                --background-color: #0a0a0a;
+                --card-bg: #1a1a1a;
+                --text-primary: #ffffff;
+                --text-secondary: rgba(255, 255, 255, 0.7);
+                --border-color: rgba(255, 255, 255, 0.1);
+                --hover-bg: rgba(100, 108, 255, 0.15);
+                --shadow-color: rgba(0, 0, 0, 0.3);
+                --sidebar-width: 250px;
+                --sidebar-width-collapsed: 72px;
+                --border-radius: 12px;
+                --header-height: 70px;
             }
 
             body {
-                background-color: var(--primary-bg);
-                color: var(--text-color);
-                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                background-color: var(--background-color);
+                color: var(--text-primary);
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 min-height: 100vh;
                 margin: 0;
-                line-height: 1.6;
-            }
-
-            .site-header {
-                position: fixed;
-                top: 1.5rem;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 1000;
-            }
-
-            .navbar {
-                background: rgba(32, 32, 32, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 12px;
-                padding: 0.75rem 1.25rem;
-                min-width: var(--nav-width);
-                display: flex;
-                align-items: center;
-            }
-
-            .logo {
-                width: 24px;
-                height: 24px;
-                object-fit: contain;
-                opacity: 0.9;
-            }
-
-            .navbar-nav {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                gap: 1.25rem;
-                margin: 0;
                 padding: 0;
+                display: flex;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            /* Sidebar Styles */
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: var(--sidebar-width);
+                background: var(--card-bg);
+                padding: 1.5rem 0;
+                box-shadow: 0 0 20px var(--shadow-color);
+                border-right: 1px solid var(--border-color);
+                z-index: 10;
+                transition: width 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                flex-shrink: 0;
+            }
+
+            .sidebar.collapsed {
+                width: var(--sidebar-width-collapsed);
+            }
+
+            .sidebar-logo {
+                padding: 0 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .sidebar-logo img {
+                width: 32px;
+                height: 32px;
+                flex-shrink: 0;
+            }
+
+            .sidebar-logo h4 {
+                margin: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                transition: opacity 0.3s ease;
+            }
+
+            .collapsed .sidebar-logo h4 {
+                opacity: 0;
+                width: 0;
+            }
+
+            .nav-menu {
                 list-style: none;
-                width: 100%;
+                padding: 0;
+                margin: 0;
+                flex-grow: 1;
             }
 
             .nav-item {
-                display: flex;
-                align-items: center;
+                margin-bottom: 0.5rem;
+                padding: 0 0.75rem;
             }
 
             .nav-link {
-                color: rgba(255, 255, 255, 0.7) !important;
-                text-decoration: none;
-                font-size: 0.875rem;
-                font-weight: 500;
-                padding: 0.375rem 0.5rem;
-                transition: all 0.2s ease;
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
+                padding: 0.75rem;
+                color: var(--text-secondary);
+                text-decoration: none;
+                border-radius: var(--border-radius);
+                transition: all 0.3s ease;
                 white-space: nowrap;
             }
 
             .nav-link:hover {
-                color: rgba(255, 255, 255, 1) !important;
+                background: var(--hover-bg);
+                color: var(--primary-color);
             }
 
             .nav-link i {
-                font-size: 0.875rem;
-                width: 16px;
+                width: 24px;
+                margin-right: 1rem;
+                font-size: 1.2rem;
                 text-align: center;
             }
 
-            .nav-link span {
-                font-size: 0.875rem;
+            .collapsed .nav-link {
+                justify-content: center;
+                padding: 0.75rem;
             }
 
-            .flash-notice {
-                position: fixed;
-                top: calc(var(--nav-height) + 2rem);
-                left: 50%;
-                transform: translateX(-50%);
-                background: var(--accent-color);
-                color: white;
-                padding: 0.75rem 1.5rem;
-                border-radius: 99px;
-                font-size: 0.9rem;
-                z-index: 1000;
+            .collapsed .nav-link i {
+                margin-right: 0;
+            }
+
+            .collapsed .nav-link span {
+                display: none;
+            }
+
+            /* Main Content Area */
+            .main-content {
+                flex: 1;
+                margin-left: var(--sidebar-width);
+                padding: 2rem;
+                min-height: 100vh;
+                transition: all 0.3s ease;
+                position: relative;
+                z-index: 5;
+                background-color: var(--background-color);
+                width: calc(100% - var(--sidebar-width));
+            }
+
+            .main-content.collapsed {
+                margin-left: var(--sidebar-width-collapsed);
+                width: calc(100% - var(--sidebar-width-collapsed));
+            }
+
+            /* For non-authenticated pages */
+            main:not(.main-content) {
+                flex: 1;
+                padding: 2rem;
+                width: 100%;
+                min-height: 100vh;
+                background-color: var(--background-color);
+                position: relative;
+                z-index: 5;
+            }
+
+            /* Toggle Button */
+            .sidebar-toggle {
+                position: relative;
+                margin: 1rem auto 0;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                color: var(--text-primary);
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 0 2px 8px var(--shadow-color);
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
-                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                justify-content: center;
+                font-size: 12px;
+                transition: transform 0.3s ease;
             }
 
-            .content {
-                padding: calc(var(--nav-height) + 2rem) 2rem 2rem;
-                max-width: 1200px;
-                margin: 0 auto;
+            .sidebar-toggle:hover {
+                background: var(--hover-bg);
             }
 
-            footer {
-                text-align: center;
-                padding: 2rem;
-                color: #666;
-                font-size: 0.9rem;
+            .collapsed .sidebar-toggle {
+                transform: rotate(180deg);
             }
 
+            /* Card Styles */
+            .dashboard-card {
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                padding: 1.5rem;
+                box-shadow: 0 0 20px var(--shadow-color);
+                margin-bottom: 1.5rem;
+                border: 1px solid var(--border-color);
+            }
+
+            .stats-card {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .stats-icon {
+                width: 48px;
+                height: 48px;
+                border-radius: 50%;
+                background: rgba(100, 108, 255, 0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--primary-color);
+            }
+
+            .stats-info h3 {
+                margin: 0;
+                font-size: 1.5rem;
+                color: var(--text-primary);
+            }
+
+            .stats-info p {
+                margin: 0;
+                color: var(--text-secondary);
+                font-size: 0.875rem;
+            }
+
+            /* Chart Container */
+            .chart-container {
+                background: var(--card-bg);
+                border-radius: var(--border-radius);
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            /* Responsive Design */
             @media (max-width: 768px) {
-                :root {
-                    --nav-width: 320px;
-                }
-                
-                .navbar {
-                    padding: 0.5rem 0.75rem;
+                .sidebar {
+                    transform: translateX(-100%);
+                    transition: transform 0.3s ease;
                 }
 
-                .navbar-nav {
-                    gap: 0.75rem;
+                .sidebar.active {
+                    transform: translateX(0);
                 }
 
-                .nav-link span {
-                    display: none;
+                .main-content {
+                    margin-left: 0;
                 }
 
-                .nav-link i {
-                    font-size: 1rem;
+                .theme-toggle {
+                    bottom: 1rem;
+                    right: 1rem;
                 }
+            }
+
+            /* Theme Toggle Button */
+            .theme-toggle {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background: var(--card-bg);
+                border: 1px solid var(--border-color);
+                color: var(--text-primary);
+                padding: 0.75rem;
+                border-radius: 50%;
+                cursor: pointer;
+                box-shadow: 0 4px 12px var(--shadow-color);
+                z-index: 1000;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .theme-toggle:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px var(--shadow-color);
+            }
+
+            .theme-toggle i {
+                font-size: 1.25rem;
             }
         </style>
         {% block javascripts %}
         {% endblock %}
+
+        <script>
+            // Immediate theme initialization code...
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Get saved sidebar state
+                const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+                
+                // Initialize sidebar state
+                if (isSidebarCollapsed) {
+                    document.querySelector('.sidebar')?.classList.add('collapsed');
+                    document.querySelector('.main-content')?.classList.add('collapsed');
+                }
+
+                // Create sidebar toggle button
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'sidebar-toggle';
+                toggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                
+                // Add toggle button to sidebar
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar) {
+                    sidebar.appendChild(toggleBtn);
+                }
+
+                // Toggle sidebar
+                toggleBtn.addEventListener('click', function() {
+                    const sidebar = document.querySelector('.sidebar');
+                    const mainContent = document.querySelector('.main-content');
+                    const isCollapsed = sidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('collapsed');
+                    
+                    // Save state
+                    localStorage.setItem('sidebarCollapsed', isCollapsed);
+                });
+
+                // Theme toggle functionality...
+                // Function to toggle theme
+                function toggleTheme() {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    
+                    // Update button icon
+                    const icon = document.querySelector('.theme-toggle i');
+                    icon.className = newTheme === 'light' 
+                        ? 'fas fa-moon' 
+                        : 'fas fa-sun';
+                }
+
+                // Create and append the theme toggle button
+                const button = document.createElement('button');
+                button.className = 'theme-toggle';
+                button.innerHTML = `<i class="${savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun'}"></i>`;
+                button.addEventListener('click', toggleTheme);
+                document.body.appendChild(button);
+            });
+        </script>
     </head>
     <body>
-        <header class="site-header">
-            <nav class="navbar">
-                {# <img src="{{ asset('docs/logo.png') }}" alt="Logo" class="logo"> #}
-                <ul class="navbar-nav">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <!-- Sidebar -->
+            <nav class="sidebar{% if app.request.cookies.get('sidebarCollapsed') == 'true' %} collapsed{% endif %}">
+                <div class="sidebar-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo">
+                    <h4>Demandify</h4>
+                </div>
+                <ul class="nav-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i><span>Home</span></a>
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/demands"><i class="fas fa-list-check"></i><span>Demands</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/demands/awaiting-decision"><i class="fas fa-list-check"></i><span>Demands Awaiting Decision</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/profile"><i class="fas fa-user"></i><span>Profile</span></a>
@@ -181,21 +409,23 @@
                     </li>
                 </ul>
             </nav>
-        </header>
 
-        {% for message in app.flashes('success') %}
-            <div class="flash-notice">
-                <i class="fas fa-check-circle"></i>
-                {{ message }}
-            </div>
-        {% endfor %}
+            <!-- Main Content -->
+            <main class="main-content{% if app.request.cookies.get('sidebarCollapsed') == 'true' %} collapsed{% endif %}">
+        {% else %}
+            <main>
+        {% endif %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i>
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
 
-        <main class="content">
-            {% block body %}{% endblock %}
-        </main>
-
-        <footer>
-            <p>&copy; {{ "now"|date("Y") }} Demandify</p>
-        </footer>
+                {% block body %}{% endblock %}
+            </main>
     </body>
 </html>

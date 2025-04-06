@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-#[ORM\Entity(repositoryClass: TaskRepository::class)]
+#[ORM\Entity]
 readonly class Task
 {
     #[

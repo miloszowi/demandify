@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demands Awaiting Decision{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1>Demands Awaiting Decision</h1>
+
+        {% if demands is empty %}
+            <div class="alert alert-info">
+                No demands are currently awaiting your decision.
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Requester</th>
+                            <th>Content</th>
+                            <th>Reason</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for demand in demands %}
+                            <tr>
+                                <td>{{ demand.service }}</td>
+                                <td>{{ demand.requester.email }}</td>
+                                <td>{{ demand.content }}</td>
+                                <td>{{ demand.reason }}</td>
+                                <td>{{ demand.createdAt|date('Y-m-d H:i:s') }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <form method="POST" action="{{ path('app_demand_approve', {'id': demand.uuid}) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                Approve
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ path('app_demand_decline', {'id': demand.uuid}) }}" class="d-inline ms-2">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                Decline
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

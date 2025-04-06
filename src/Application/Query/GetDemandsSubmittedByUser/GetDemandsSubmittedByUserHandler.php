@@ -15,10 +15,15 @@ class GetDemandsSubmittedByUserHandler implements QueryHandler
     public function __construct(private readonly DemandRepository $demandRepository) {}
 
     /**
-     * @return Demand[]
+     * @return array{demands: Demand[], total: int, page: int, limit: int, totalPages: int, search: ?string}
      */
-    public function __invoke(GetDemandsSubmittedByUser $query): iterable
+    public function __invoke(GetDemandsSubmittedByUser $query): array
     {
-        return $this->demandRepository->getPaginatedResultForUser($query->userUuid, $query->page, $query->limit);
+        return $this->demandRepository->findPaginatedForUser(
+            $query->userUuid,
+            $query->page,
+            $query->limit,
+            $query->search
+        );
     }
 }

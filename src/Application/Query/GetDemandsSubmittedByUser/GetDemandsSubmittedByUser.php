@@ -12,6 +12,7 @@ readonly class GetDemandsSubmittedByUser implements Query
     public function __construct(
         public UuidInterface $userUuid,
         public int $page,
-        public int $limit
+        public int $limit,
+        public ?string $search = null
     ) {}
 }

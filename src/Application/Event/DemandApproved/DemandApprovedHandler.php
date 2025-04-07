@@ -12,7 +12,9 @@ use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandApproved;
 use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationType;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class DemandApprovedHandler implements DomainEventHandler
 {
     public function __construct(

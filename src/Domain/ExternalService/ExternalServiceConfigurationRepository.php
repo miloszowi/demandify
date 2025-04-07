@@ -21,5 +21,5 @@ interface ExternalServiceConfigurationRepository
     /**
      * @return ExternalServiceConfiguration[]
      */
-    public function findEligibleForUser(UuidInterface $userUuid): array;
+    public function findForUser(UuidInterface $userUuid): array;
 }

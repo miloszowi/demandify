@@ -1,0 +1,213 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demands Awaiting Decision | Demandify{% endblock %}
+
+{% block body %}
+    <style>
+        .demands-header {
+            margin-bottom: 2rem;
+        }
+
+        .demands-header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .demands-header p {
+            color: var(--text-secondary);
+            margin: 0.5rem 0 0;
+        }
+
+        .demands-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .demands-toolbar {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .demands-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .demands-table th,
+        .demands-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .demands-table th {
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .demands-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--background-color);
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-success {
+            background: #22c55e;
+            color: white;
+            border-color: #22c55e;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .btn-success:hover,
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.875rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+    </style>
+
+    <div class="demands-header">
+        <h1>Demands Awaiting Decision</h1>
+        <p>Review and make decisions on demands that require your approval</p>
+    </div>
+
+    <div class="demands-container">
+        <div class="demands-toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search demands...">
+            </div>
+        </div>
+
+        {% if demands is empty %}
+            <div class="empty-state">
+                <i class="fas fa-check-circle"></i>
+                <h3>No demands awaiting decision</h3>
+                <p>There are currently no demands that require your approval.</p>
+            </div>
+        {% else %}
+            <table class="demands-table">
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Requester</th>
+                        <th>Content</th>
+                        <th>Reason</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for demand in demands %}
+                        <tr>
+                            <td>{{ demand.service }}</td>
+                            <td>{{ demand.requester.email }}</td>
+                            <td>{{ demand.content|slice(0, 50) }}...</td>
+                            <td>{{ demand.reason|slice(0, 50) }}...</td>
+                            <td>{{ demand.createdAt|date('Y-m-d H:i') }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <form method="POST" action="{{ path('app_demand_approve', {'id': demand.uuid}) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-check"></i>
+                                            Approve
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="{{ path('app_demand_decline', {'id': demand.uuid}) }}" class="d-inline">
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-times"></i>
+                                            Decline
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% endblock %} 

@@ -10,7 +10,10 @@ use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Demandify\Domain\Notification\NotificationType;
+use Ramsey\Uuid\Uuid;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class DemandSubmittedHandler implements DomainEventHandler
 {
     public function __construct(
@@ -29,7 +32,7 @@ class DemandSubmittedHandler implements DomainEventHandler
 
         foreach ($externalServiceConfiguration->eligibleApprovers as $approverUuid) {
             $this->commandBus->dispatch(
-                new SendDemandNotification($approverUuid, $event->demand, NotificationType::NEW_DEMAND)
+                new SendDemandNotification(Uuid::fromString($approverUuid), $event->demand, NotificationType::NEW_DEMAND)
             );
         }
     }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Controller\Demand;
 
+use Demandify\Application\Command\ApproveDemand\ApproveDemand;
+use Demandify\Application\Command\CommandBus;
+use Demandify\Application\Command\DeclineDemand\DeclineDemand;
 use Demandify\Application\Query\GetDemandsAwaitingDecisionForUser\GetDemandsAwaitingDecisionForUser;
 use Demandify\Application\Query\GetDemandsSubmittedByUser\GetDemandsSubmittedByUser;
 use Demandify\Application\Query\QueryBus;
@@ -18,7 +21,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DemandController extends AbstractController
 {
-    public function __construct(private readonly QueryBus $queryBus) {}
+    public function __construct(
+        private readonly QueryBus $queryBus,
+        private readonly CommandBus $commandBus,
+    ) {}
 
     #[Route(
         path: '/demand/{id}',
@@ -58,17 +64,47 @@ class DemandController extends AbstractController
     }
 
     #[Route(
-        path: '/demands/awaiting-decision',
-        name: 'app_demands_awaiting_decision',
+        path: '/review-demands',
+        name: 'app_review_demands',
         methods: [Request::METHOD_GET],
     )]
-    public function demandAwaitingDecision(Request $request): Response
+    public function reviewDemands(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
-        $result = $this->queryBus->ask(new GetDemandsAwaitingDecisionForUser($user->uuid));
+        $demands = $this->queryBus->ask(new GetDemandsAwaitingDecisionForUser($user->uuid));
 
-        return $this->render('demand/demands_awaiting_decision.html.twig', $result);
+        return $this->render('demand/review_demands.html.twig', ['demands' =>$demands]);
+    }
+
+    #[Route(
+        path: '/demand/{id}/approve',
+        name: 'app_demand_approve',
+        requirements: ['id' => Requirement::UUID],
+        methods: [Request::METHOD_POST],
+    )]
+    public function approveDemand(Demand $demand): Response
+    {
+        $this->commandBus->dispatch(
+            new ApproveDemand($demand->uuid, $this->getUser())
+        );
+
+        return $this->redirectToRoute('app_review_demands');
+    }
+
+    #[Route(
+        path: '/demand/{id}/decline',
+        name: 'app_demand_decline',
+        requirements: ['id' => Requirement::UUID],
+        methods: [Request::METHOD_POST],
+    )]
+    public function declineDemand(Demand $demand): Response
+    {
+        $this->commandBus->dispatch(
+            new DeclineDemand($demand->uuid, $this->getUser())
+        );
+
+        return $this->redirectToRoute('app_review_demands');
     }
 }

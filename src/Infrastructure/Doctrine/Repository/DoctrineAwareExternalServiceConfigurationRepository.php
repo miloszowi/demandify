@@ -48,11 +48,11 @@ class DoctrineAwareExternalServiceConfigurationRepository extends ServiceEntityR
     /**
      * @return ExternalServiceConfiguration[]
      */
-    public function findEligibleForUser(UuidInterface $userUuid): array
+    public function findForUser(UuidInterface $userUuid): array
     {
         return $this->createQueryBuilder('esc')
             ->andWhere('esc.eligibleApprovers LIKE :userUuid')
-            ->setParameter('userUuid', '%'.$userUuid.'%')
+            ->setParameter('userUuid', '%'.$userUuid->toString().'%')
             ->getQuery()
             ->getResult()
         ;

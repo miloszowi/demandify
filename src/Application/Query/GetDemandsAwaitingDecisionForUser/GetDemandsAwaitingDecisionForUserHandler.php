@@ -23,7 +23,7 @@ class GetDemandsAwaitingDecisionForUserHandler implements QueryHandler
      */
     public function __invoke(GetDemandsAwaitingDecisionForUser $query): array
     {
-        $eligibleServices = $this->externalServiceConfigurationRepository->findEligibleForUser($query->userUuid);
+        $eligibleServices = $this->externalServiceConfigurationRepository->findForUser($query->userUuid);
 
         return $this->demandRepository->findDemandsAwaitingDecisionForServices(
             $query->userUuid,

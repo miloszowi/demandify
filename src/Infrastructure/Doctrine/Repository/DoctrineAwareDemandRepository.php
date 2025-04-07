@@ -87,6 +87,11 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
     {
         $demand->updatedAt = new \DateTimeImmutable();
         $this->getEntityManager()->persist($demand);
+
+        if (null !== $demand->task) {
+            $this->getEntityManager()->persist($demand->task);
+        }
+        
         $this->getEntityManager()->flush();
     }
 
@@ -151,10 +156,11 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
         $serviceNames = array_map(static fn (ExternalServiceConfiguration $service) => $service->externalServiceName, $services);
 
         return $this->createQueryBuilder('d')
-            ->andWhere('d.approver = :approver')
             ->andWhere('d.service IN (:services)')
-            ->setParameter('approver', $userUuid)
+            ->andWhere('d.approver IS NULL')
+            ->andWhere('d.status = :status')
             ->setParameter('services', $serviceNames)
+            ->setParameter('status', Status::NEW)
             ->getQuery()
             ->getResult()
         ;

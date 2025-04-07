@@ -7,7 +7,10 @@ namespace Demandify\Application\Command\UpdateEligibleApprovers;
 use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
+use Ramsey\Uuid\UuidInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class UpdateEligibleApproversHandler implements CommandHandler
 {
     public function __construct(private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository) {}
@@ -15,11 +18,12 @@ class UpdateEligibleApproversHandler implements CommandHandler
     public function __invoke(UpdateEligibleApprovers $command): void
     {
         $configuration = $this->externalServiceConfigurationRepository->findByName($command->externalServiceName);
+        $desiredUserUuidsState = \array_map(static fn (UuidInterface $uuid) => $uuid->toString(), $command->desiredUserUuidsState);
 
         if (null !== $configuration) {
-            $configuration->eligibleApprovers = $command->desiredUserUuidsState;
+            $configuration->eligibleApprovers = $desiredUserUuidsState;
         } else {
-            $configuration = new ExternalServiceConfiguration($command->externalServiceName, $command->desiredUserUuidsState);
+            $configuration = new ExternalServiceConfiguration($command->externalServiceName, $desiredUserUuidsState);
         }
 
         $this->externalServiceConfigurationRepository->save($configuration);

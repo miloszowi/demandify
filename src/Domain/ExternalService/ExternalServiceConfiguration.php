@@ -6,7 +6,7 @@ namespace Demandify\Domain\ExternalService;
 
 use Demandify\Domain\User\User;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\UuidInterface;
+use Ramsey\Uuid\Uuid;
 
 #[
     ORM\Entity,
@@ -21,14 +21,17 @@ class ExternalServiceConfiguration
         ]
         public readonly string $externalServiceName,
         /**
-         * @var UuidInterface[]
+         * @var string[]
          */
-        #[ORM\Column(type: 'uuid_array')]
+        #[ORM\Column(type: 'simple_array')]
         public array $eligibleApprovers,
     ) {}
 
     public function isUserEligible(User $user): bool
     {
-        return array_any($this->eligibleApprovers, static fn ($eligibleApprover) => $eligibleApprover->equals($user->uuid));
+        return array_any(
+            $this->eligibleApprovers,
+            static fn (string $eligibleApprover) => $user->uuid->equals(Uuid::fromString($eligibleApprover))
+        );
     }
 }

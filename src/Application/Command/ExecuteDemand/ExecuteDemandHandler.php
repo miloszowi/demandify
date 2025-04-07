@@ -10,7 +10,9 @@ use Demandify\Domain\DomainEventPublisher;
 use Demandify\Domain\Task\DemandExecutor;
 use Demandify\Domain\Task\Event\TaskFailed;
 use Demandify\Domain\Task\Event\TaskSucceeded;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class ExecuteDemandHandler implements CommandHandler
 {
     public function __construct(

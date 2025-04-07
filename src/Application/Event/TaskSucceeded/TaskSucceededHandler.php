@@ -9,7 +9,9 @@ use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Notification\NotificationType;
 use Demandify\Domain\Task\Event\TaskSucceeded;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class TaskSucceededHandler implements DomainEventHandler
 {
     public function __construct(private readonly CommandBus $commandBus) {}

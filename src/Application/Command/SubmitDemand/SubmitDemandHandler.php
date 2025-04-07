@@ -11,7 +11,9 @@ use Demandify\Domain\Demand\Event\DemandSubmitted;
 use Demandify\Domain\DomainEventPublisher;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final class SubmitDemandHandler implements CommandHandler
 {
     public function __construct(

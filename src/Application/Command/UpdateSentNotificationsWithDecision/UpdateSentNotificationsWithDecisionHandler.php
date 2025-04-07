@@ -6,7 +6,9 @@ namespace Demandify\Application\Command\UpdateSentNotificationsWithDecision;
 
 use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\Notification\NotificationService;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class UpdateSentNotificationsWithDecisionHandler implements CommandHandler
 {
     public function __construct(private readonly NotificationService $notificationService) {}

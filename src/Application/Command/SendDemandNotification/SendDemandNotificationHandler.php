@@ -8,7 +8,9 @@ use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationService;
 use Demandify\Domain\User\UserRepository;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 class SendDemandNotificationHandler implements CommandHandler
 {
     public function __construct(

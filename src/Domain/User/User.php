@@ -118,4 +118,12 @@ class User implements UserInterface, EquatableInterface
     {
         return $user->getUserIdentifier() === $this->getUserIdentifier();
     }
+
+    public function isAdmin(): bool
+    {
+        return \in_array(
+            UserRole::ROLE_ADMIN->value,
+            $this->roles
+        );
+    }
 }

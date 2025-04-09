@@ -28,14 +28,12 @@ class ExecuteDemandHandler implements CommandHandler
         $demand->start();
         $this->demandRepository->save($demand);
 
-        $task = $this->demandExecutor->execute($demand);
-
-        $demand->finish($task);
+        $demand->execute($this->demandExecutor);
         $this->demandRepository->save($demand);
 
-        match ($task->success) {
-            true => $this->domainEventPublisher->publish(new TaskSucceeded($task)),
-            false => $this->domainEventPublisher->publish(new TaskFailed($task)),
+        match ($demand->task->success) {
+            true => $this->domainEventPublisher->publish(new TaskSucceeded($demand->task)),
+            false => $this->domainEventPublisher->publish(new TaskFailed($demand->task)),
         };
     }
 }

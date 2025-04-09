@@ -248,7 +248,8 @@
                     {% if demand.task.resultPath %}
                         <div class="task-result">
                             <h3>Results</h3>
-                            <pre>{{ include(demand.task.resultPath) }}</pre>
+{#                            <pre>{{ include(demand.task.resultPath) }}</pre>#}
+                            <pre>{{ demand.task.resultPath }}</pre>
                         </div>
                     {% endif %}
                 </div>

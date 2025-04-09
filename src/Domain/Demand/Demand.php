@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Domain\Demand;
 
+use Demandify\Domain\Task\DemandExecutor;
 use Demandify\Domain\Task\Task;
 use Demandify\Domain\User\User;
 use Doctrine\DBAL\Types\Types;
@@ -77,6 +78,18 @@ class Demand
     public function start(): void
     {
         $this->status = $this->status->progress(Status::IN_PROGRESS);
+    }
+
+    public function execute(DemandExecutor $demandExecutor): void
+    {
+        $task = $demandExecutor->execute($this);
+
+        $this->status = match ($task->success) {
+            true => $this->status->progress(Status::EXECUTED),
+            false => $this->status->progress(Status::FAILED),
+        };
+
+        $this->task = $task;
     }
 
     public function finish(Task $task): void

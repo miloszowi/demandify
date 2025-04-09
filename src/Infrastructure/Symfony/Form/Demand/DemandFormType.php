@@ -42,7 +42,6 @@ class DemandFormType extends AbstractType
                     new NotBlank(),
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Submit'])
         ;
     }
 }

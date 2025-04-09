@@ -40,5 +40,6 @@ interface DemandRepository
      */
     public function findDemandsAwaitingDecisionForServices(UuidInterface $userUuid, array $services): array;
 
+
     public function save(Demand $demand): void;
 }

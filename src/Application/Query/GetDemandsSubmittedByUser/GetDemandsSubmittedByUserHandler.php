@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Demandify\Application\Query\GetDemandsSubmittedByUser;
 
 use Demandify\Application\Query\QueryHandler;
-use Demandify\Domain\Demand\Demand;
+use Demandify\Application\Query\ReadModel\DemandsSubmittedByUser;
 use Demandify\Domain\Demand\DemandRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -14,16 +14,22 @@ class GetDemandsSubmittedByUserHandler implements QueryHandler
 {
     public function __construct(private readonly DemandRepository $demandRepository) {}
 
-    /**
-     * @return array{demands: Demand[], total: int, page: int, limit: int, totalPages: int, search: ?string}
-     */
-    public function __invoke(GetDemandsSubmittedByUser $query): array
+    public function __invoke(GetDemandsSubmittedByUser $query): DemandsSubmittedByUser
     {
-        return $this->demandRepository->findPaginatedForUser(
+        $repositoryOutput = $this->demandRepository->findPaginatedForUser(
             $query->userUuid,
             $query->page,
             $query->limit,
             $query->search
+        );
+
+        return new DemandsSubmittedByUser(
+            $repositoryOutput['demands'],
+            $repositoryOutput['total'],
+            $repositoryOutput['page'],
+            $repositoryOutput['limit'],
+            $repositoryOutput['totalPages'],
+            (string)$repositoryOutput['search'],
         );
     }
 }

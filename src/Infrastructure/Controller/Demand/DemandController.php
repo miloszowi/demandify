@@ -10,8 +10,10 @@ use Demandify\Application\Command\DeclineDemand\DeclineDemand;
 use Demandify\Application\Query\GetDemandsAwaitingDecisionForUser\GetDemandsAwaitingDecisionForUser;
 use Demandify\Application\Query\GetDemandsSubmittedByUser\GetDemandsSubmittedByUser;
 use Demandify\Application\Query\QueryBus;
+use Demandify\Application\Query\ReadModel\DemandsSubmittedByUser;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\User\User;
+use Demandify\Infrastructure\Authentication\Voter\DemandVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +34,7 @@ class DemandController extends AbstractController
         requirements: ['id' => Requirement::UUID],
         methods: [Request::METHOD_GET],
     )]
-    #[IsGranted('view', subject: 'demand')]
+    #[IsGranted(DemandVoter::VIEW, subject: 'demand')]
     public function view(Demand $demand): Response
     {
         return $this->render('demand/view.html.twig', [
@@ -53,6 +55,7 @@ class DemandController extends AbstractController
         $limit = min(50, max(1, (int) $request->query->get('limit', 10)));
         $search = $request->query->get('search');
 
+        /** @var DemandsSubmittedByUser */
         $result = $this->queryBus->ask(new GetDemandsSubmittedByUser(
             $user->uuid,
             $page,
@@ -60,7 +63,14 @@ class DemandController extends AbstractController
             $search
         ));
 
-        return $this->render('demand/user_demands.html.twig', $result);
+        return $this->render('demand/user_demands.html.twig', [
+            'demands' => $result->demands,
+            'total' => $result->total,
+            'page' => $result->page,
+            'limit' => $result->limit,
+            'totalPages' => $result->totalPages,
+            'search' => $result->search
+        ]);
     }
 
     #[Route(
@@ -68,14 +78,14 @@ class DemandController extends AbstractController
         name: 'app_review_demands',
         methods: [Request::METHOD_GET],
     )]
-    public function reviewDemands(Request $request): Response
+    public function reviewDemands(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         $demands = $this->queryBus->ask(new GetDemandsAwaitingDecisionForUser($user->uuid));
 
-        return $this->render('demand/review_demands.html.twig', ['demands' =>$demands]);
+        return $this->render('demand/review_demands.html.twig', ['demands' => $demands]);
     }
 
     #[Route(
@@ -84,6 +94,7 @@ class DemandController extends AbstractController
         requirements: ['id' => Requirement::UUID],
         methods: [Request::METHOD_POST],
     )]
+    #[IsGranted(DemandVoter::DECISION, subject: 'demand')]
     public function approveDemand(Demand $demand): Response
     {
         $this->commandBus->dispatch(
@@ -99,6 +110,7 @@ class DemandController extends AbstractController
         requirements: ['id' => Requirement::UUID],
         methods: [Request::METHOD_POST],
     )]
+    #[IsGranted(DemandVoter::DECISION, subject: 'demand')]
     public function declineDemand(Demand $demand): Response
     {
         $this->commandBus->dispatch(

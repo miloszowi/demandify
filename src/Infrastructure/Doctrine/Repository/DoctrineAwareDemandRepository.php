@@ -72,25 +72,14 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
         ;
     }
 
-    public function getTotalDemandsForUser(UuidInterface $uuid): int
-    {
-        return (int) $this->createQueryBuilder('d')
-            ->select('COUNT(d.uuid)')
-            ->andWhere('d.requester = :requester')
-            ->setParameter('requester', $uuid)
-            ->getQuery()
-            ->getSingleScalarResult()
-        ;
-    }
-
     public function save(Demand $demand): void
     {
         $demand->updatedAt = new \DateTimeImmutable();
         $this->getEntityManager()->persist($demand);
 
-        if (null !== $demand->task) {
-            $this->getEntityManager()->persist($demand->task);
-        }
+//        if (null !== $demand->task) {
+//            $this->getEntityManager()->persist($demand->task);
+//        }
         
         $this->getEntityManager()->flush();
     }

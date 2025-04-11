@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Demandify\Domain\Task;
 
-use Demandify\Domain\Demand\Demand;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -22,11 +21,6 @@ class Task
     public readonly ?\DateTimeImmutable $executedAt;
 
     public function __construct(
-        #[
-            ORM\OneToOne(targetEntity: Demand::class),
-            ORM\JoinColumn(name: 'demand_uuid', referencedColumnName: 'uuid')
-        ]
-        public readonly Demand $demand,
         #[ORM\Column(type: 'boolean', nullable: false)]
         public readonly bool $success,
         #[ORM\Column(type: 'integer', nullable: false)]

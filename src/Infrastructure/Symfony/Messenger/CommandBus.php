@@ -9,7 +9,7 @@ use Demandify\Application\Command\CommandBus as CommandBusInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class CommandBus implements CommandBusInterface
+class CommandBus implements CommandBusInterface
 {
     public function __construct(
         private readonly MessageBusInterface $commandBus,

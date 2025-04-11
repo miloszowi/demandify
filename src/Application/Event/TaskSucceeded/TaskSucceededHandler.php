@@ -20,8 +20,8 @@ class TaskSucceededHandler implements DomainEventHandler
     {
         $this->commandBus->dispatch(
             new SendDemandNotification(
-                $event->task->demand->requester->uuid,
-                $event->task->demand,
+                $event->demand->requester->uuid,
+                $event->demand,
                 NotificationType::TASK_SUCCEEDED
             )
         );

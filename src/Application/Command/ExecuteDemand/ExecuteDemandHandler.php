@@ -32,8 +32,8 @@ class ExecuteDemandHandler implements CommandHandler
         $this->demandRepository->save($demand);
 
         match ($demand->task->success) {
-            true => $this->domainEventPublisher->publish(new TaskSucceeded($demand->task)),
-            false => $this->domainEventPublisher->publish(new TaskFailed($demand->task)),
+            true => $this->domainEventPublisher->publish(new TaskSucceeded($demand)),
+            false => $this->domainEventPublisher->publish(new TaskFailed($demand)),
         };
     }
 }

@@ -24,7 +24,7 @@ class ExternalServiceConfiguration
          * @var string[]
          */
         #[ORM\Column(type: 'simple_array', nullable: true)]
-        public array $eligibleApprovers,
+        public ?array $eligibleApprovers,
     ) {}
 
     public function isUserEligible(User $user): bool

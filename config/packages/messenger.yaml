@@ -22,7 +22,6 @@ framework:
             Demandify\Application\Command\ExecuteDemand\ExecuteDemand: async
             Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision: async
             Demandify\Application\Command\SendDemandNotification\SendDemandNotification: async
-            Demandify\Domain\User\Event\UserRegistered: async
             Demandify\Domain\Demand\Event\DemandApproved: async
             Demandify\Domain\Demand\Event\DemandDeclined: async
             Demandify\Domain\Demand\Event\DemandSubmitted: async

@@ -45,7 +45,7 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($approvedDemand);
         $this->setReference(self::APPROVED_DEMAND_FIXTURE_KEY, $approvedDemand);
         $manager->persist($declinedDemand);
-        $this->setReference(self::DECLINED_DEMAND_FIXTURE_KEY, $approvedDemand);
+        $this->setReference(self::DECLINED_DEMAND_FIXTURE_KEY, $declinedDemand);
         $manager->flush();
     }
 

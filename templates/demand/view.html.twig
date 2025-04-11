@@ -1,259 +1,98 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ demand.service }} Demand | Demandify{% endblock %}
-
-{% block styles %}
-    <style>
-        .demand-view {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .demand-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .demand-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .demand-status {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            font-size: 0.875rem;
-            gap: 0.5rem;
-        }
-
-        .status-new { background-color: rgba(100, 108, 255, 0.1); color: var(--primary-color); }
-        .status-pending { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
-        .status-approved { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
-        .status-declined { background-color: rgba(220, 53, 69, 0.1); color: #dc3545; }
-        .status-in-progress { background-color: rgba(23, 162, 184, 0.1); color: #17a2b8; }
-        .status-executed { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
-        .status-failed { background-color: rgba(220, 53, 69, 0.1); color: #dc3545; }
-
-        .demand-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .demand-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: 0 0 20px var(--shadow-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .demand-card h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .demand-card p {
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
-
-        .demand-card pre {
-            background-color: var(--background-color);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            overflow-x: auto;
-            margin: 0;
-            font-family: monospace;
-            border: 1px solid var(--border-color);
-        }
-
-        .task-section {
-            margin-top: 2rem;
-        }
-
-        .task-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            box-shadow: 0 0 20px var(--shadow-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .task-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .task-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 0;
-        }
-
-        .task-status {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            font-size: 0.875rem;
-            gap: 0.5rem;
-        }
-
-        .task-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
-        .task-failure { background-color: rgba(220, 53, 69, 0.1); color: #dc3545; }
-
-        .task-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .task-detail {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .task-detail label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .task-detail span {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .task-result {
-            margin-top: 1rem;
-        }
-
-        .task-result h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .task-result pre {
-            background-color: var(--background-color);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            overflow-x: auto;
-            margin: 0;
-            font-family: monospace;
-            border: 1px solid var(--border-color);
-        }
-
-        .task-error {
-            color: #dc3545;
-            background-color: rgba(220, 53, 69, 0.1);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            margin-top: 1rem;
-            border: 1px solid rgba(220, 53, 69, 0.2);
-        }
-
-        .task-error strong {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .task-error pre {
-            margin: 0;
-            font-family: monospace;
-            white-space: pre-wrap;
-        }
-    </style>
-{% endblock %}
+{% block title %}Demand Details{% endblock %}
 
 {% block body %}
-    <div class="demand-view">
-        <div class="demand-header">
-            <h1 class="demand-title">{{ demand.service }} Demand</h1>
-            <span class="demand-status status-{{ demand.status.value|lower }}">
-                <i class="fas fa-{% if demand.status.value == 'PENDING' %}clock{% elseif demand.status.value == 'APPROVED' %}check{% elseif demand.status.value == 'DECLINED' %}times{% elseif demand.status.value == 'IN_PROGRESS' %}spinner{% elseif demand.status.value == 'EXECUTED' %}check-double{% else %}exclamation{% endif %}"></i>
-                {{ demand.status.value|capitalize }}
-            </span>
-        </div>
+    <div class="dashboard-card">
+        <h2 class="mb-4">Demand Details</h2>
 
-        <div class="demand-details">
-            <div class="demand-card">
-                <h3>Request Details</h3>
-                <p><strong>Requester:</strong> {{ demand.requester.email }}</p>
-                <p><strong>Created:</strong> {{ demand.createdAt|date('Y-m-d H:i:s') }}</p>
-                <p><strong>Last Updated:</strong> {{ demand.updatedAt|date('Y-m-d H:i:s') }}</p>
-                {% if demand.approver %}
-                    <p><strong>Approver:</strong> {{ demand.approver.email }}</p>
-                {% endif %}
-            </div>
+        <dl class="row">
+            <dt class="col-sm-3">UUID</dt>
+            <dd class="col-sm-9">{{ demand.uuid }}</dd>
 
-            <div class="demand-card">
-                <h3>Content</h3>
-                <pre>{{ demand.content }}</pre>
-            </div>
+            <dt class="col-sm-3">Service</dt>
+            <dd class="col-sm-9">{{ demand.service }}</dd>
 
-            <div class="demand-card">
-                <h3>Reason</h3>
-                <p>{{ demand.reason }}</p>
-            </div>
-        </div>
+            <dt class="col-sm-3">Content</dt>
+            <dd class="col-sm-9">
+                <pre class="bg-dark text-light p-3 rounded" style="overflow-x: auto;">
+<span class="sql">{{ demand.content }}</span>
+                </pre>
+            </dd>
 
-        {% if demand.task %}
-            <div class="task-section">
-                <div class="task-card">
-                    <div class="task-header">
-                        <h2>Task Execution</h2>
-                        <span class="task-status {% if demand.task.success %}task-success{% else %}task-failure{% endif %}">
-                            <i class="fas fa-{% if demand.task.success %}check{% else %}times{% endif %}"></i>
-                            {{ demand.task.success ? 'Success' : 'Failed' }}
-                        </span>
-                    </div>
+            <dt class="col-sm-3">Reason</dt>
+            <dd class="col-sm-9">{{ demand.reason }}</dd>
 
-                    <div class="task-details">
-                        <div class="task-detail">
-                            <label>Executed At</label>
-                            <span>{{ demand.task.executedAt|date('Y-m-d H:i:s') }}</span>
-                        </div>
-                        <div class="task-detail">
-                            <label>Execution Time</label>
-                            <span>{{ demand.task.executionTime }}ms</span>
-                        </div>
-                    </div>
-
-                    {% if demand.task.errorMessage %}
-                        <div class="task-error">
-                            <strong>Error:</strong>
-                            <pre>{{ demand.task.errorMessage }}</pre>
-                        </div>
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                <span class="badge
+                    {% if demand.status.value == 'NEW' %}bg-secondary
+                    {% elseif demand.status.value == 'APPROVED' %}bg-primary
+                    {% elseif demand.status.value == 'IN_PROGRESS' %}bg-info
+                    {% elseif demand.status.value == 'FAILED' %}bg-danger
+                    {% elseif demand.status.value == 'DECLINED' %}bg-warning
+                    {% elseif demand.status.value == 'EXECUTED' %}bg-success
                     {% endif %}
+                ">
+                    {{ demand.status.value }}
+                </span>
+            </dd>
+            {% if demand.approver %}
+                <dt class="col-sm-3">Approver</dt>
+                <dd class="col-sm-9">{{ demand.approver.email }}</dd>
+            {% endif %}
+            <dt class="col-sm-3">Created At</dt>
+            <dd class="col-sm-9">{{ demand.createdAt|date('Y-m-d H:i:s') }}</dd>
 
-                    {% if demand.task.resultPath %}
-                        <div class="task-result">
-                            <h3>Results</h3>
-                            <a href="{{ url('app_demand_task_view', {'id': demand.uuid}) }}">View output</a>
-                            <a href="{{ url('app_demand_task_download', {'id': demand.uuid}) }}">Download output</a>
-                        </div>
+            <dt class="col-sm-3">Updated At</dt>
+            <dd class="col-sm-9">{{ demand.updatedAt|date('Y-m-d H:i:s') }}</dd>
+        </dl>
+
+        {% if demand.task is defined and demand.task %}
+            <hr>
+            <h4>Task</h4>
+            <dl class="row">
+                <dt class="col-sm-3">Executed At</dt>
+                <dd class="col-sm-9">{{ demand.task.executedAt|date('Y-m-d H:i:s') }}</dd>
+
+                <dt class="col-sm-3">Success</dt>
+                <dd class="col-sm-9">
+                    {% if demand.task.success %}
+                        <span class="badge bg-success">Yes</span>
+                    {% else %}
+                        <span class="badge bg-danger">No</span>
                     {% endif %}
+                </dd>
+
+                <dt class="col-sm-3">Execution Time</dt>
+                <dd class="col-sm-9">{{ demand.task.executionTime }} ms</dd>
+            </dl>
+
+            {% if demand.task.success %}
+                <div class="mt-4 d-flex gap-3">
+                    <a href="{{ path('app_demand_task_view', {id: demand.uuid}) }}" class="btn btn-outline-primary">
+                        View Output
+                    </a>
+                    <a href="{{ path('app_demand_task_download', {id: demand.uuid}) }}" class="btn btn-outline-success">
+                        Download Output
+                    </a>
                 </div>
-            </div>
+            {% else %}
+                <div class="alert alert-danger mt-4">
+                    <strong>Error:</strong> {{ demand.task.errorMessage }}
+                </div>
+            {% endif %}
         {% endif %}
     </div>
+
+    <style>
+        .sql {
+            color: #f1f1f1;
+            font-family: monospace;
+        }
+        pre {
+            background: #1e1e1e;
+            border: 1px solid #333;
+        }
+    </style>
 {% endblock %}

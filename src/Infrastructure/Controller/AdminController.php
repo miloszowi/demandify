@@ -70,7 +70,7 @@ class AdminController extends AbstractController
                 \sprintf('Succesfully edited %s service', $service->name)
             );
 
-            return $this->redirectToRoute('admin_index');
+            return $this->redirectToRoute('app_admin');
         }
 
         return $this->render(
@@ -90,7 +90,7 @@ class AdminController extends AbstractController
         $service = $this->externalServiceConfigurationRepository->findByName($service);
         $eligibleApprovers = array_map(
             static fn (string $eligibleApprover) => Uuid::fromString($eligibleApprover),
-            $service->eligibleApprovers
+            $service->eligibleApprovers ?? []
         );
 
         if (null === $service) {

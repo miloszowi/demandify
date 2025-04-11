@@ -15,6 +15,7 @@ use Doctrine\Persistence\ObjectManager;
 class NotificationFixture extends Fixture implements DependentFixtureInterface
 {
     public const string NOTIFICATION_IDENTIFIER = '123456789.123456789';
+    public const string DECLINED_DEMAND_NOTIFICATION_IDENTIFIER = 'declined.123456789.123456789';
 
     public function load(ObjectManager $manager): void
     {
@@ -32,7 +33,22 @@ class NotificationFixture extends Fixture implements DependentFixtureInterface
             UserSocialAccountType::SLACK,
         );
 
+        $declinedDemandNotification = new Notification(
+            $this->getReference(DemandFixture::DECLINED_DEMAND_FIXTURE_KEY, Demand::class)->uuid,
+            NotificationType::NEW_DEMAND,
+            self::DECLINED_DEMAND_NOTIFICATION_IDENTIFIER,
+            'content sent to user',
+            [
+                [
+                    'some_attachment' => 'some attachment value',
+                ],
+            ],
+            'channel',
+            UserSocialAccountType::SLACK,
+        );
+
         $manager->persist($notification);
+        $manager->persist($declinedDemandNotification);
         $manager->flush();
     }
 

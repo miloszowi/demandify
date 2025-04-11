@@ -324,7 +324,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Get saved sidebar state
                 const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-                
+
                 // Initialize sidebar state
                 if (isSidebarCollapsed) {
                     document.querySelector('.sidebar')?.classList.add('collapsed');
@@ -335,7 +335,7 @@
                 const toggleBtn = document.createElement('button');
                 toggleBtn.className = 'sidebar-toggle';
                 toggleBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-                
+
                 // Add toggle button to sidebar
                 const sidebar = document.querySelector('.sidebar');
                 if (sidebar) {
@@ -348,7 +348,7 @@
                     const mainContent = document.querySelector('.main-content');
                     const isCollapsed = sidebar.classList.toggle('collapsed');
                     mainContent.classList.toggle('collapsed');
-                    
+
                     // Save state
                     localStorage.setItem('sidebarCollapsed', isCollapsed);
                 });
@@ -358,14 +358,14 @@
                 function toggleTheme() {
                     const currentTheme = document.documentElement.getAttribute('data-theme');
                     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                    
+
                     document.documentElement.setAttribute('data-theme', newTheme);
                     localStorage.setItem('theme', newTheme);
-                    
+
                     // Update button icon
                     const icon = document.querySelector('.theme-toggle i');
-                    icon.className = newTheme === 'light' 
-                        ? 'fas fa-moon' 
+                    icon.className = newTheme === 'light'
+                        ? 'fas fa-moon'
                         : 'fas fa-sun';
                 }
 

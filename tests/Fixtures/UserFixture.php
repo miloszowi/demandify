@@ -36,6 +36,7 @@ class UserFixture extends Fixture
         $manager->persist($notEligibleUser);
         $manager->persist($userWithSlackSocialAccount);
         $this->addReference(self::USER_EMAIL_FIXTURE, $user);
+        $this->addReference(self::USER_WITH_SLACK_SOCIAL_ACCOUNT, $userWithSlackSocialAccount);
         $manager->flush();
     }
 }

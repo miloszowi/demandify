@@ -34,7 +34,6 @@ class Postgres implements Adapter
             $result = $connection->executeQuery($demand->content);
         } catch (\Exception $e) {
             return new Task(
-                $demand,
                 success: false,
                 executionTime: (int) ((microtime(true) - $start) * 1000),
                 errorMessage: $e->getMessage(),
@@ -53,7 +52,6 @@ class Postgres implements Adapter
         );
 
         return new Task(
-            $demand,
             success: true,
             executionTime: $executionTime,
             resultPath: $this->fileHandler->save($demand, $adapterResult),

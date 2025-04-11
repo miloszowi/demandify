@@ -1,6 +1,5 @@
 <?php
 
-use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
@@ -28,6 +27,5 @@ return [
     TwigExtraBundle::class => ['all' => true],
     DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
     NelmioCorsBundle::class => ['all' => true],
-    ApiPlatformBundle::class => ['all' => true],
     MonologBundle::class => ['all' => true],
 ];

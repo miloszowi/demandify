@@ -248,8 +248,8 @@
                     {% if demand.task.resultPath %}
                         <div class="task-result">
                             <h3>Results</h3>
-{#                            <pre>{{ include(demand.task.resultPath) }}</pre>#}
-                            <pre>{{ demand.task.resultPath }}</pre>
+                            <a href="{{ url('app_demand_task_view', {'id': demand.uuid}) }}">View output</a>
+                            <a href="{{ url('app_demand_task_download', {'id': demand.uuid}) }}">Download output</a>
                         </div>
                     {% endif %}
                 </div>

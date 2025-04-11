@@ -23,7 +23,7 @@ class ExternalServiceConfiguration
         /**
          * @var string[]
          */
-        #[ORM\Column(type: 'simple_array')]
+        #[ORM\Column(type: 'simple_array', nullable: true)]
         public array $eligibleApprovers,
     ) {}
 

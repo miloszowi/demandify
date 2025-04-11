@@ -123,7 +123,8 @@ class User implements UserInterface, EquatableInterface
     {
         return \in_array(
             UserRole::ROLE_ADMIN->value,
-            $this->roles
+            $this->roles,
+            true
         );
     }
 }

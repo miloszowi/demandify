@@ -91,14 +91,4 @@ class Demand
 
         $this->task = $task;
     }
-
-    public function finish(Task $task): void
-    {
-        $this->status = match ($task->success) {
-            true => $this->status->progress(Status::EXECUTED),
-            false => $this->status->progress(Status::FAILED),
-        };
-
-        $this->task = $task;
-    }
 }

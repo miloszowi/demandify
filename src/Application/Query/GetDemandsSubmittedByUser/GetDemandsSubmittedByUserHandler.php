@@ -29,7 +29,7 @@ class GetDemandsSubmittedByUserHandler implements QueryHandler
             $repositoryOutput['page'],
             $repositoryOutput['limit'],
             $repositoryOutput['totalPages'],
-            (string)$repositoryOutput['search'],
+            $repositoryOutput['search'],
         );
     }
 }

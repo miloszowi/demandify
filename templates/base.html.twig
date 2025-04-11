@@ -388,24 +388,24 @@
                 </div>
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                        <a class="nav-link" href="{{ url('app_home') }}"><i class="fas fa-home"></i><span>Dashboard</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/demands"><i class="fas fa-list-check"></i><span>Demands</span></a>
+                        <a class="nav-link" href="{{ url('app_demands') }}"><i class="fas fa-list-check"></i><span>Demands</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/review-demands"><i class="fas fa-list-check"></i><span>Review Demands</span></a>
+                        <a class="nav-link" href="{{ url('app_review_demands') }}"><i class="fas fa-list-check"></i><span>Review Demands</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/profile"><i class="fas fa-user"></i><span>Profile</span></a>
+                        <a class="nav-link" href="{{ url('app_profile') }}"><i class="fas fa-user"></i><span>Profile</span></a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin"><i class="fas fa-shield"></i><span>Admin</span></a>
+                        <a class="nav-link" href="{{ url('app_admin') }}"><i class="fas fa-shield"></i><span>Admin</span></a>
                     </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        <a class="nav-link" href="{{ url('app_logout') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
                     </li>
                 </ul>
             </nav>

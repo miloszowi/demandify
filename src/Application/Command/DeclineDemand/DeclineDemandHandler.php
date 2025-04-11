@@ -11,7 +11,6 @@ use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
 use Demandify\Domain\DomainEventPublisher;
-use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

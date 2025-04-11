@@ -30,7 +30,7 @@ final class ExternalServiceTest extends TestCase
 
         $this->externalServiceConfiguration = new ExternalServiceConfiguration(
             'TestService',
-            [$this->eligibleApproverUuid]
+            [$this->eligibleApproverUuid->toString()]
         );
     }
 

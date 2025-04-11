@@ -76,11 +76,6 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
     {
         $demand->updatedAt = new \DateTimeImmutable();
         $this->getEntityManager()->persist($demand);
-
-//        if (null !== $demand->task) {
-//            $this->getEntityManager()->persist($demand->task);
-//        }
-        
         $this->getEntityManager()->flush();
     }
 
@@ -120,6 +115,7 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
         $total = (int) $countQb->getQuery()->getSingleScalarResult();
 
         $demands = $qb->setFirstResult(($page - 1) * $limit)
+            ->select('d.uuid', 'd.service', 'd.content', 'd.reason', 'd.status', 'd.createdAt')
             ->setMaxResults($limit)
             ->getQuery()
             ->getResult()

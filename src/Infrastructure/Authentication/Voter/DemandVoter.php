@@ -13,16 +13,14 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class DemandVoter extends Voter
 {
-    public const VIEW = 'view';
-    public const DECISION = 'decision';
+    public const string VIEW = 'view';
+    public const string DECISION = 'decision';
 
-    public function __construct(private readonly QueryBus $queryBus)
-    {
-    }
+    public function __construct(private readonly QueryBus $queryBus) {}
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return \in_array($attribute, [self::VIEW, self::DECISION]) && $subject instanceof Demand;
+        return \in_array($attribute, [self::VIEW, self::DECISION], true) && $subject instanceof Demand;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -40,7 +38,8 @@ class DemandVoter extends Voter
             self::VIEW => $demand->requester->uuid->equals($user->uuid)
                 || $demand->approver?->uuid->equals($user->uuid)
                 || $user->isAdmin(),
-            self::DECISION => $this->queryBus->ask(new IsUserEligibleToDecisionForExternalService($user, $demand->service))
+            self::DECISION => $this->queryBus->ask(new IsUserEligibleToDecisionForExternalService($user, $demand->service)),
+            default => false
         };
     }
 }

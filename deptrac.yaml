@@ -35,11 +35,6 @@ deptrac:
               -
                   type: classLike
                   value: ^(Symfony|Doctrine|Psr)\\.*
-        - name: ApiPlatform
-          collectors:
-              -
-                 type: classLike
-                 value: ^ApiPlatform\\.*
         - name: InfrastructureVendor
           collectors:
               -
@@ -58,5 +53,4 @@ deptrac:
           - Domain
           - Application
           - DomainVendor
-          - ApiPlatform
           - InfrastructureVendor

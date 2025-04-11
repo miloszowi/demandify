@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Demandify\Tests\Application\Event\DemandSubmitted;
+namespace Demandify\Tests\Unit\Application\Event\DemandSubmitted;
 
 use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
@@ -71,7 +71,7 @@ final class DemandSubmittedHandlerTest extends TestCase
         $event = new DemandSubmitted($demand);
 
         $externalServiceConfiguration = $this->createMock(ExternalServiceConfiguration::class);
-        $externalServiceConfiguration->eligibleApprovers = [Uuid::uuid4(), Uuid::uuid4()];
+        $externalServiceConfiguration->eligibleApprovers = [Uuid::uuid4()->toString(), Uuid::uuid4()->toString()];
 
         $this->externalServiceConfigurationRepositoryMock
             ->expects(self::once())

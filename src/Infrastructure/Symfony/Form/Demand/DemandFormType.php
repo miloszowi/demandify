@@ -8,7 +8,6 @@ use Demandify\Domain\ExternalService\ExternalServiceRepository;
 use Demandify\Infrastructure\Symfony\Form\Validator\IsValidExternalService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 

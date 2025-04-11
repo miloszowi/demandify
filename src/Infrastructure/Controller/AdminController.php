@@ -13,6 +13,7 @@ use Demandify\Domain\User\User;
 use Demandify\Domain\User\UserRepository;
 use Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfiguration;
 use Demandify\Infrastructure\Symfony\Form\ExternalServiceConfiguration\ExternalServiceConfigurationFormType;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ class AdminController extends AbstractController
         private readonly CommandBus $commandBus,
     ) {}
 
-    #[Route('/admin', name: 'admin_index', methods: ['GET'])]
+    #[Route('/admin', name: 'app_admin', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render(
@@ -87,11 +88,15 @@ class AdminController extends AbstractController
     {
         // todo - make this execute in one query
         $service = $this->externalServiceConfigurationRepository->findByName($service);
+        $eligibleApprovers = array_map(
+            static fn (string $eligibleApprover) => Uuid::fromString($eligibleApprover),
+            $service->eligibleApprovers
+        );
 
         if (null === $service) {
             return [];
         }
 
-        return $this->userRepository->findByUuids($service->eligibleApprovers);
+        return $this->userRepository->findByUuids($eligibleApprovers);
     }
 }

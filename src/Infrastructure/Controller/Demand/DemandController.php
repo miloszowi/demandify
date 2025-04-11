@@ -7,8 +7,8 @@ namespace Demandify\Infrastructure\Controller\Demand;
 use Demandify\Application\Command\ApproveDemand\ApproveDemand;
 use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\DeclineDemand\DeclineDemand;
-use Demandify\Application\Query\GetDemandsAwaitingDecisionForUser\GetDemandsAwaitingDecisionForUser;
 use Demandify\Application\Query\GetDemandsSubmittedByUser\GetDemandsSubmittedByUser;
+use Demandify\Application\Query\GetDemandsToBeReviewedForUser\GetDemandsToBeReviewedForUser;
 use Demandify\Application\Query\QueryBus;
 use Demandify\Application\Query\ReadModel\DemandsSubmittedByUser;
 use Demandify\Domain\Demand\Demand;
@@ -69,12 +69,12 @@ class DemandController extends AbstractController
             'page' => $result->page,
             'limit' => $result->limit,
             'totalPages' => $result->totalPages,
-            'search' => $result->search
+            'search' => $result->search,
         ]);
     }
 
     #[Route(
-        path: '/review-demands',
+        path: '/demands/review',
         name: 'app_review_demands',
         methods: [Request::METHOD_GET],
     )]
@@ -83,7 +83,7 @@ class DemandController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $demands = $this->queryBus->ask(new GetDemandsAwaitingDecisionForUser($user->uuid));
+        $demands = $this->queryBus->ask(new GetDemandsToBeReviewedForUser($user->uuid));
 
         return $this->render('demand/review_demands.html.twig', ['demands' => $demands]);
     }
@@ -97,8 +97,10 @@ class DemandController extends AbstractController
     #[IsGranted(DemandVoter::DECISION, subject: 'demand')]
     public function approveDemand(Demand $demand): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $this->commandBus->dispatch(
-            new ApproveDemand($demand->uuid, $this->getUser())
+            new ApproveDemand($demand->uuid, $user)
         );
 
         return $this->redirectToRoute('app_review_demands');
@@ -113,8 +115,10 @@ class DemandController extends AbstractController
     #[IsGranted(DemandVoter::DECISION, subject: 'demand')]
     public function declineDemand(Demand $demand): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $this->commandBus->dispatch(
-            new DeclineDemand($demand->uuid, $this->getUser())
+            new DeclineDemand($demand->uuid, $user)
         );
 
         return $this->redirectToRoute('app_review_demands');

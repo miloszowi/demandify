@@ -6,14 +6,13 @@ namespace Demandify\Tests\Unit\Application\Command\DeclineDemand;
 
 use Demandify\Application\Command\DeclineDemand\DeclineDemand;
 use Demandify\Application\Command\DeclineDemand\DeclineDemandHandler;
+use Demandify\Application\Query\QueryBus;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Demand\Exception\DemandNotFoundException;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
 use Demandify\Domain\DomainEventPublisher;
-use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
-use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -29,19 +28,19 @@ final class DeclineDemandHandlerTest extends TestCase
 {
     private DemandRepository|MockObject $demandRepositoryMock;
     private DomainEventPublisher|MockObject $domainEventPublisherMock;
-    private ExternalServiceConfigurationRepository|MockObject $externalServiceConfigRepoMock;
+    private MockObject|QueryBus $queryBus;
     private DeclineDemandHandler $handler;
 
     protected function setUp(): void
     {
         $this->demandRepositoryMock = $this->createMock(DemandRepository::class);
         $this->domainEventPublisherMock = $this->createMock(DomainEventPublisher::class);
-        $this->externalServiceConfigRepoMock = $this->createMock(ExternalServiceConfigurationRepository::class);
+        $this->queryBus = $this->createMock(QueryBus::class);
 
         $this->handler = new DeclineDemandHandler(
             $this->demandRepositoryMock,
             $this->domainEventPublisherMock,
-            $this->externalServiceConfigRepoMock
+            $this->queryBus
         );
     }
 
@@ -53,30 +52,20 @@ final class DeclineDemandHandlerTest extends TestCase
     public function testDeclinesDemandAndPublishesEvent(): void
     {
         $userMock = $this->createMock(User::class);
-        $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
         $demand = new Demand($userMock, 'test', 'test', 'test');
-
         $command = new DeclineDemand($demand->uuid, $userMock);
-
-        $externalServiceConfigMock
-            ->expects(self::once())
-            ->method('isUserEligible')
-            ->with($userMock)
-            ->willReturn(true)
-        ;
-
-        $this->externalServiceConfigRepoMock
-            ->expects(self::once())
-            ->method('getByName')
-            ->with($demand->service)
-            ->willReturn($externalServiceConfigMock)
-        ;
 
         $this->demandRepositoryMock
             ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
+        ;
+
+        $this->queryBus
+            ->expects(self::once())
+            ->method('ask')
+            ->willReturn(true)
         ;
 
         $this->demandRepositoryMock
@@ -115,30 +104,21 @@ final class DeclineDemandHandlerTest extends TestCase
 
     public function testDecliningByIneligibleUserWillThrowException(): void
     {
-        $externalServiceConfigMock = $this->createMock(ExternalServiceConfiguration::class);
         $user = new User(Email::fromString('test@local.host'));
         $demand = new Demand($user, 'test', 'test', 'test');
         $command = new DeclineDemand($demand->uuid, $user);
-
-        $externalServiceConfigMock
-            ->expects(self::once())
-            ->method('isUserEligible')
-            ->with($user)
-            ->willReturn(false)
-        ;
-
-        $this->externalServiceConfigRepoMock
-            ->expects(self::once())
-            ->method('getByName')
-            ->with($demand->service)
-            ->willReturn($externalServiceConfigMock)
-        ;
 
         $this->demandRepositoryMock
             ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
+        ;
+
+        $this->queryBus
+            ->expects(self::once())
+            ->method('ask')
+            ->willReturn(false)
         ;
 
         $this->demandRepositoryMock

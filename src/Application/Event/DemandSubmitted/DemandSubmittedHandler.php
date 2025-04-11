@@ -32,7 +32,11 @@ class DemandSubmittedHandler implements DomainEventHandler
 
         foreach ($externalServiceConfiguration->eligibleApprovers as $approverUuid) {
             $this->commandBus->dispatch(
-                new SendDemandNotification(Uuid::fromString($approverUuid), $event->demand, NotificationType::NEW_DEMAND)
+                new SendDemandNotification(
+                    Uuid::fromString($approverUuid),
+                    $event->demand,
+                    NotificationType::NEW_DEMAND
+                )
             );
         }
     }

@@ -18,7 +18,7 @@ class UpdateEligibleApproversHandler implements CommandHandler
     public function __invoke(UpdateEligibleApprovers $command): void
     {
         $configuration = $this->externalServiceConfigurationRepository->findByName($command->externalServiceName);
-        $desiredUserUuidsState = \array_map(static fn (UuidInterface $uuid) => $uuid->toString(), $command->desiredUserUuidsState);
+        $desiredUserUuidsState = array_map(static fn (UuidInterface $uuid) => $uuid->toString(), $command->desiredUserUuidsState);
 
         if (null !== $configuration) {
             $configuration->eligibleApprovers = $desiredUserUuidsState;

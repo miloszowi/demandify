@@ -57,7 +57,6 @@ enum Status: string
         return $status;
     }
 
-
     public function isInApprovedFlow(): bool
     {
         return \in_array(

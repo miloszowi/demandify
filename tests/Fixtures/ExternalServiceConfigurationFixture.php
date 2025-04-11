@@ -16,7 +16,7 @@ class ExternalServiceConfigurationFixture extends Fixture implements DependentFi
     {
         $externalServiceConfiguration = new ExternalServiceConfiguration(
             'demandify_postgres',
-            [$this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class)->uuid]
+            [$this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class)->uuid->toString()]
         );
 
         $manager->persist($externalServiceConfiguration);

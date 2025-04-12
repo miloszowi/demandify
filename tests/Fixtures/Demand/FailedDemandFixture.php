@@ -6,7 +6,7 @@ namespace Demandify\Tests\Fixtures\Demand;
 
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\User\User;
-use Demandify\Tests\Fakes\FakeDemandExecutor;
+use Demandify\Tests\Doubles\Fakes\FakeDemandExecutor;
 use Demandify\Tests\Fixtures\UserFixture;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

@@ -7,7 +7,9 @@ namespace Demandify\Tests\Unit\Domain\Demand;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\Exception\InvalidDemandStatusException;
 use Demandify\Domain\Demand\Status;
+use Demandify\Domain\Task\Task;
 use Demandify\Domain\User\User;
+use Demandify\Tests\Doubles\Fakes\FakeDemandExecutor;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\UuidInterface;
@@ -48,7 +50,7 @@ final class DemandTest extends TestCase
         self::assertNull($this->demand->approver);
     }
 
-    public function testCanBeApprovedBy(): void
+    public function testCanBeApproved(): void
     {
         $approver = $this->createMock(User::class);
 
@@ -59,7 +61,7 @@ final class DemandTest extends TestCase
         self::assertInstanceOf(\DateTimeImmutable::class, $this->demand->updatedAt);
     }
 
-    public function testCanBeDeclinedBy(): void
+    public function testCanBeDeclined(): void
     {
         $approver = $this->createMock(User::class);
 
@@ -98,5 +100,52 @@ final class DemandTest extends TestCase
 
         $this->expectException(InvalidDemandStatusException::class);
         $this->demand->declineBy($approver);
+    }
+
+    public function testCanBeStarted(): void
+    {
+        $approvedDemand = new Demand(
+            $this->createMock(User::class),
+            'Sample Service',
+            'This is a test content',
+            'This is a test reason'
+        );
+        $approvedDemand->approveBy($this->createMock(User::class));
+        $approvedDemand->start();
+
+        self::assertSame(Status::IN_PROGRESS, $approvedDemand->status);
+    }
+
+    public function testCanNotBeStartedIfNotApproved(): void
+    {
+        $this->expectException(InvalidDemandStatusException::class);
+        $this->demand->start();
+    }
+
+    public function testCanBeExecuted(): void
+    {
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'Sample Service',
+            'This is a success content',
+            'This is a success reason'
+        );
+
+        $demand->approveBy($this->createMock(User::class));
+        $demand->start();
+        $demand->execute(new FakeDemandExecutor());
+
+        self::assertSame(Status::EXECUTED, $demand->status);
+        $fakeTaskResult = FakeDemandExecutor::getSuccessResult();
+
+        self::assertInstanceOf(Task::class, $demand->task);
+        self::assertSame($fakeTaskResult->success, $demand->task->success);
+        self::assertSame(
+            $fakeTaskResult->executedAt->format('Y-m-d H:i:s'),
+            $demand->task->executedAt->format('Y-m-d H:i:s')
+        );
+        self::assertSame($fakeTaskResult->resultPath, $demand->task->resultPath);
+        self::assertSame($fakeTaskResult->executionTime, $demand->task->executionTime);
+        self::assertSame($fakeTaskResult->errorMessage, $demand->task->errorMessage);
     }
 }

@@ -65,8 +65,8 @@
         "psr-4": {
             "Demandify\\Tests\\": "tests/",
             "spec\\Demandify\\": "tests/",
-            "Demandify\\Tests\\Integration\\": "tests/integration/",
-            "Demandify\\Tests\\Unit\\": "tests/unit/"
+            "Demandify\\Tests\\Integration\\": "tests/Integration/",
+            "Demandify\\Tests\\Unit\\": "tests/Unit/"
         }
     },
     "replace": {

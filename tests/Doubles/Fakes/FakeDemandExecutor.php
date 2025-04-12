@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Demandify\Tests\Fakes;
+namespace Demandify\Tests\Doubles\Fakes;
 
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Task\DemandExecutor;
@@ -13,26 +13,32 @@ class FakeDemandExecutor implements DemandExecutor
     public function execute(Demand $demand): Task
     {
         if (str_contains($demand->content, 'failed')) {
-            return new Task(
-                false,
-                1,
-                'some error message'
-            );
+            return self::getFailedResult();
         }
 
         if (str_contains($demand->content, 'success')) {
-            return new Task(
-                true,
-                1,
-                'some success message',
-                'result path'
-            );
+            return self::getSuccessResult();
         }
 
+        return self::getFailedResult();
+    }
+
+    public static function getFailedResult(): Task
+    {
         return new Task(
             false,
             1,
             'some error message'
+        );
+    }
+
+    public static function getSuccessResult(): Task
+    {
+        return new Task(
+            true,
+            1,
+            'some success message',
+            'result path'
         );
     }
 }

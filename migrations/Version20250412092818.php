@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250411091419 extends AbstractMigration
+final class Version20250412092818 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -69,16 +69,10 @@ final class Version20250411091419 extends AbstractMigration
             COMMENT ON COLUMN "notifications".created_at IS '(DC2Type:datetimetz_immutable)'
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE task (uuid UUID NOT NULL, demand_uuid UUID DEFAULT NULL, executed_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, success BOOLEAN NOT NULL, execution_time INT NOT NULL, error_message TEXT DEFAULT NULL, result_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))
-        SQL);
-        $this->addSql(<<<'SQL'
-            CREATE UNIQUE INDEX UNIQ_527EDB25FBDF0E0 ON task (demand_uuid)
+            CREATE TABLE task (uuid UUID NOT NULL, executed_at TIMESTAMP(0) WITH TIME ZONE NOT NULL, success BOOLEAN NOT NULL, execution_time INT NOT NULL, error_message TEXT DEFAULT NULL, result_path VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))
         SQL);
         $this->addSql(<<<'SQL'
             COMMENT ON COLUMN task.uuid IS '(DC2Type:uuid)'
-        SQL);
-        $this->addSql(<<<'SQL'
-            COMMENT ON COLUMN task.demand_uuid IS '(DC2Type:uuid)'
         SQL);
         $this->addSql(<<<'SQL'
             COMMENT ON COLUMN task.executed_at IS '(DC2Type:datetimetz_immutable)'
@@ -99,7 +93,7 @@ final class Version20250411091419 extends AbstractMigration
             COMMENT ON COLUMN "user".updated_at IS '(DC2Type:datetimetz_immutable)'
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE "user_social_account" (type VARCHAR(255) NOT NULL, user_uuid UUID NOT NULL, external_id VARCHAR(255) NOT NULL, extra_data JSON NOT NULL, PRIMARY KEY(user_uuid, type))
+            CREATE TABLE "user_social_account" (type VARCHAR(255) NOT NULL, user_uuid UUID NOT NULL, is_notifiable BOOLEAN DEFAULT false NOT NULL, external_id VARCHAR(255) NOT NULL, extra_data JSON NOT NULL, PRIMARY KEY(user_uuid, type))
         SQL);
         $this->addSql(<<<'SQL'
             CREATE INDEX IDX_99C85C60ABFE1C6F ON "user_social_account" (user_uuid)
@@ -117,9 +111,6 @@ final class Version20250411091419 extends AbstractMigration
             ALTER TABLE "demand" ADD CONSTRAINT FK_428D7973FA1AE32E FOREIGN KEY (requester_uuid) REFERENCES "user" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
         $this->addSql(<<<'SQL'
-            ALTER TABLE task ADD CONSTRAINT FK_527EDB25FBDF0E0 FOREIGN KEY (demand_uuid) REFERENCES "demand" (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE
-        SQL);
-        $this->addSql(<<<'SQL'
             ALTER TABLE "user_social_account" ADD CONSTRAINT FK_99C85C60ABFE1C6F FOREIGN KEY (user_uuid) REFERENCES "user" (uuid) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE
         SQL);
     }
@@ -135,9 +126,6 @@ final class Version20250411091419 extends AbstractMigration
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE "demand" DROP CONSTRAINT FK_428D7973FA1AE32E
-        SQL);
-        $this->addSql(<<<'SQL'
-            ALTER TABLE task DROP CONSTRAINT FK_527EDB25FBDF0E0
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE "user_social_account" DROP CONSTRAINT FK_99C85C60ABFE1C6F

@@ -12,6 +12,7 @@ use Demandify\Domain\Demand\Status;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
 use Demandify\Tests\Fixtures\DemandFixture;
+use Demandify\Tests\Fixtures\ExternalServiceConfiguration\ExternalServiceConfigurationWithoutEligibleApproversFixture;
 use Demandify\Tests\Fixtures\ExternalServiceConfigurationFixture;
 use Demandify\Tests\Fixtures\UserFixture;
 use Demandify\Tests\Integration\BaseKernelTestCase;
@@ -55,7 +56,7 @@ final class DemandSubmittedHandlerTest extends BaseKernelTestCase
 
     public function testItDoesNothingIfThereAreNoApprovers(): void
     {
-        $this->load([new DemandFixture()]);
+        $this->load([new DemandFixture(), new ExternalServiceConfigurationWithoutEligibleApproversFixture()]);
         $demand = $this->demandRepository->findInStatus(Status::NEW)[0];
         $event = new DemandSubmitted($demand);
         $this->handler->__invoke($event);

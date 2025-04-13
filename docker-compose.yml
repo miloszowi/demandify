@@ -17,6 +17,11 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 10
     ports:
       - 5672:5672
       - 15672:15672

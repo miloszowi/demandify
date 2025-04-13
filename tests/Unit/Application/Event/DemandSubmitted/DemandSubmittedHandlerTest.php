@@ -46,12 +46,20 @@ final class DemandSubmittedHandlerTest extends TestCase
         );
         $event = new DemandSubmitted($demand);
 
+        $externalServiceConfigurationMock = $this->createMock(ExternalServiceConfiguration::class);
+        $externalServiceConfigurationMock
+            ->expects(self::once())
+            ->method('hasEligibleApprovers')
+            ->willReturn(false)
+        ;
+
         $this->externalServiceConfigurationRepositoryMock
             ->expects(self::once())
-            ->method('findByName')
+            ->method('getByName')
             ->with($demand->service)
-            ->willReturn(null)
+            ->willReturn($externalServiceConfigurationMock)
         ;
+
         $this->commandBusMock
             ->expects(self::never())
             ->method('dispatch')
@@ -71,11 +79,16 @@ final class DemandSubmittedHandlerTest extends TestCase
         $event = new DemandSubmitted($demand);
 
         $externalServiceConfiguration = $this->createMock(ExternalServiceConfiguration::class);
+        $externalServiceConfiguration
+            ->expects(self::once())
+            ->method('hasEligibleApprovers')
+            ->willReturn(true)
+        ;
         $externalServiceConfiguration->eligibleApprovers = [Uuid::uuid4()->toString(), Uuid::uuid4()->toString()];
 
         $this->externalServiceConfigurationRepositoryMock
             ->expects(self::once())
-            ->method('findByName')
+            ->method('getByName')
             ->with($demand->service)
             ->willReturn($externalServiceConfiguration)
         ;

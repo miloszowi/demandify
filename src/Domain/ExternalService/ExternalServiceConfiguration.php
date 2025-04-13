@@ -34,4 +34,9 @@ class ExternalServiceConfiguration
             static fn (string $eligibleApprover) => $user->uuid->equals(Uuid::fromString($eligibleApprover))
         );
     }
+
+    public function hasEligibleApprovers(): bool
+    {
+        return !empty($this->eligibleApprovers);
+    }
 }

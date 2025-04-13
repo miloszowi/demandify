@@ -9,6 +9,10 @@ pretty_print_section "wait for database"
 source ./docker/wait-for-container
 waitContainer "database"
 
+pretty_print_section "wait for database"
+source ./docker/wait-for-container
+waitContainer "rabbitmq"
+
 pretty_print_section "install dependencies"
 docker-compose exec php composer install --no-cache
 

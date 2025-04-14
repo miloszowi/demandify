@@ -11,7 +11,7 @@ interface NotificationRepository
     /**
      * @return Notification[]
      */
-    public function findByDemandUuidAndAction(UuidInterface $demandUuid, NotificationType $notificationType): array;
+    public function findByDemandAndType(UuidInterface $demandUuid, NotificationType $notificationType): array;
 
     public function findByNotificationIdentifier(string $notificationIdentifier): ?Notification;
 

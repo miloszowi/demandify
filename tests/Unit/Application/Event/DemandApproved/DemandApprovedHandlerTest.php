@@ -43,7 +43,7 @@ final class DemandApprovedHandlerTest extends TestCase
 
         $this->notificationRepositoryMock
             ->expects(self::once())
-            ->method('findByDemandUuidAndAction')->with($event->demand->uuid, NotificationType::NEW_DEMAND)
+            ->method('findByDemandAndType')->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([$notificationMock])
         ;
         $this->commandBusMock
@@ -63,7 +63,7 @@ final class DemandApprovedHandlerTest extends TestCase
 
         $this->notificationRepositoryMock
             ->expects(self::once())
-            ->method('findByDemandUuidAndAction')
+            ->method('findByDemandAndType')
             ->with($event->demand->uuid, NotificationType::NEW_DEMAND)
             ->willReturn([])
         ;

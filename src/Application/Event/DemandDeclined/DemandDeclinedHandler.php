@@ -23,7 +23,7 @@ class DemandDeclinedHandler implements DomainEventHandler
 
     public function __invoke(DemandDeclined $event): void
     {
-        $notifications = $this->notificationRepository->findByDemandUuidAndAction($event->demand->uuid, NotificationType::NEW_DEMAND);
+        $notifications = $this->notificationRepository->findByDemandAndType($event->demand->uuid, NotificationType::NEW_DEMAND);
 
         if (!empty($notifications)) {
             $this->commandBus->dispatch(

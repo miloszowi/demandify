@@ -29,14 +29,12 @@ class Notification
         ]
         public readonly NotificationType $type,
         #[ORM\Column(type: 'string', nullable: false)]
-        public readonly string $notificationIdentifier,
-        #[ORM\Column(type: 'text')]
-        public readonly string $content,
-        /** @var mixed[] $attachments */
-        #[ORM\Column(type: 'json')]
-        public readonly array $attachments,
+        public readonly string $recipient,
         #[ORM\Column(type: 'string', nullable: false)]
-        public readonly string $channel,
+        public readonly string $notificationIdentifier,
+        /** @var mixed[] $options */
+        #[ORM\Column(type: 'json')]
+        public readonly array $options,
         #[ORM\Column(nullable: false)]
         public readonly UserSocialAccountType $socialAccountType
     ) {

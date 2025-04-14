@@ -10,6 +10,7 @@ use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Demandify\Infrastructure\External\Slack\Http\SlackHttpClient;
 use Demandify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
 use Demandify\Infrastructure\Notification\Content\SlackNotificationBlocksFactory;
+use Symfony\Component\Notifier\Message\ChatMessage;
 
 class SlackNotificationClient implements NotificationClient
 {
@@ -19,6 +20,7 @@ class SlackNotificationClient implements NotificationClient
     public function __construct(
         private readonly SlackHttpClient $slackHttpClient,
         private readonly SlackNotificationBlocksFactory $slackNotificationBlocksFactory,
+
     ) {}
 
     public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): SendNotificationResponse

@@ -16,7 +16,7 @@ class UpdateSentNotificationsWithDecisionHandler implements CommandHandler
     public function __invoke(UpdateSentNotificationsWithDecision $command): void
     {
         foreach ($command->notifications as $notification) {
-            $this->notificationService->update($notification, $command->demand);
+            $this->notificationService->updateWithDecision($notification, $command->demand);
         }
     }
 }

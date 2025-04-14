@@ -9,7 +9,7 @@ use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 
 interface NotificationService
 {
-    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): Notification;
+    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): void;
 
-    public function update(Notification $notification, Demand $demand): void;
+    public function updateWithDecision(Notification $notification, Demand $demand): void;
 }

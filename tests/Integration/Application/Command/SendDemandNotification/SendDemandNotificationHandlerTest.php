@@ -77,7 +77,7 @@ final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
 
         $this->handler->__invoke($command);
 
-        $notifications = $this->notificationRepository->findByDemandUuidAndAction($demand->uuid, NotificationType::NEW_DEMAND);
+        $notifications = $this->notificationRepository->findByDemandAndType($demand->uuid, NotificationType::NEW_DEMAND);
         self::assertCount(1, $notifications);
         $notification = $notifications[0];
         self::assertSame('some channel', $notification->channel);
@@ -122,7 +122,7 @@ final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
         $this->handler->__invoke($command);
         self::assertCount(
             0,
-            $this->notificationRepository->findByDemandUuidAndAction($demand->uuid, NotificationType::NEW_DEMAND)
+            $this->notificationRepository->findByDemandAndType($demand->uuid, NotificationType::NEW_DEMAND)
         );
     }
 }

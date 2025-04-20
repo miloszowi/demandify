@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker-compose exec -d php bin/console m:consume async notification task
+echo "started consumers, to stop them execute docker/stop-consumers"

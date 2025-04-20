@@ -18,17 +18,18 @@ class FailedDemandFixture extends Fixture implements DependentFixtureInterface
     {
         $user = $this->getReference(UserFixture::USER_EMAIL_FIXTURE, User::class);
 
-        $successfulDemand = new Demand(
+        $failedDemand = new Demand(
             $user,
             'demandify_postgres',
             'test failed content',
             'test failed reason'
         );
-        $successfulDemand->approveBy($user);
-        $successfulDemand->start();
-        $successfulDemand->execute(new FakeDemandExecutor());
+        $failedDemand->approveBy($user);
+        $failedDemand->start();
+        $failedDemand->execute(new FakeDemandExecutor());
+        $failedDemand->releaseEvents();
 
-        $manager->persist($successfulDemand);
+        $manager->persist($failedDemand);
         $manager->flush();
     }
 

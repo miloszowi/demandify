@@ -9,36 +9,69 @@ use Demandify\Domain\Notification\Notification;
 use Demandify\Domain\Notification\NotificationService as NotificationServiceInterface;
 use Demandify\Domain\Notification\NotificationType;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
+use Demandify\Infrastructure\Symfony\Notifier\DemandNotificationSubject;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Notifier\ChatterInterface;
+use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
+use Symfony\Component\Notifier\Message\ChatMessage;
 
 class NotificationService implements NotificationServiceInterface
 {
-    public function __construct(private readonly NotificationClientResolver $notificationClientImplementationResolver) {}
+    public function __construct(
+        private readonly NotificationOptionsFactory $notificationOptionsFactory,
+        private readonly ChatterInterface $chatter,
+        private readonly LoggerInterface $logger,
+    ) {}
 
-    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): Notification
+    public function send(NotificationType $notificationType, Demand $demand, UserSocialAccount $userSocialAccount): void
     {
-        $notificationClient = $this->notificationClientImplementationResolver->get($userSocialAccount->type);
-
-        $notificationResponse = $notificationClient->send(
-            $notificationType,
-            $demand,
-            $userSocialAccount
+        $chatMessage = new ChatMessage(
+            (string) (new DemandNotificationSubject($demand->uuid, $notificationType))
         );
 
-        return new Notification(
-            $demand->uuid,
-            $notificationType,
-            $notificationResponse->notificationIdentifier,
-            $notificationResponse->content,
-            $notificationResponse->attachments,
-            $notificationResponse->channel,
-            $userSocialAccount->type,
-        );
+        $chatMessageOptions = $this->notificationOptionsFactory->create($demand, $notificationType, $userSocialAccount);
+        $chatMessage->options($chatMessageOptions);
+
+        /*
+         * Persistence of those messages are handled by other listener as we do not receive
+         * SentMessageObject directly out of $chatter->send()
+         * @see \Demandify\Infrastructure\Symfony\Listener\Notifier\SentMessageListener
+         */
+        try {
+            $this->chatter->send($chatMessage);
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error(
+                'Failed to send notification',
+                [
+                    'exception_message' => $e->getMessage(),
+                    'notification_type' => $notificationType->value,
+                    'demand_id' => $demand->uuid,
+                ]
+            );
+        }
     }
 
-    public function update(Notification $notification, Demand $demand): void
+    public function updateWithDecision(Notification $notification, Demand $demand): void
     {
-        $notificationClient = $this->notificationClientImplementationResolver->get($notification->socialAccountType);
+        $chatMessage = new ChatMessage(
+            (string) (new DemandNotificationSubject($demand->uuid, NotificationType::DEMAND_DECIDED))
+        );
 
-        $notificationClient->update($notification, $demand);
+        $chatMessage->options(
+            $this->notificationOptionsFactory->createForDecision($notification, $demand->approver, $demand->status)
+        );
+
+        try {
+            $this->chatter->send($chatMessage);
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error(
+                'Failed to send updated notification',
+                [
+                    'exception_message' => $e->getMessage(),
+                    'notification_type' => NotificationType::DEMAND_DECIDED->value,
+                    'demand_id' => $demand->uuid,
+                ]
+            );
+        }
     }
 }

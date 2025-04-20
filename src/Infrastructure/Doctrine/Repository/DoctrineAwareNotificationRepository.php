@@ -18,7 +18,7 @@ class DoctrineAwareNotificationRepository extends ServiceEntityRepository implem
         parent::__construct($registry, Notification::class);
     }
 
-    public function findByDemandUuidAndAction(UuidInterface $demandUuid, NotificationType $notificationType): array
+    public function findByDemandAndType(UuidInterface $demandUuid, NotificationType $notificationType): array
     {
         return $this->createQueryBuilder('n')
             ->andWhere('n.demandUuid = :uuid')

@@ -9,15 +9,17 @@ use Demandify\Domain\Notification\Notification;
 use Demandify\Domain\Notification\NotificationType;
 use Demandify\Domain\User\User;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
-use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
-use Demandify\Infrastructure\Notification\Client\NotificationClient;
-use Demandify\Infrastructure\Notification\Client\Response\SendNotificationResponse;
-use Demandify\Infrastructure\Notification\NotificationClientResolver;
+use Demandify\Infrastructure\Notification\NotificationOptionsFactory;
 use Demandify\Infrastructure\Notification\NotificationService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Notifier\ChatterInterface;
+use Symfony\Component\Notifier\Exception\TransportException;
+use Symfony\Component\Notifier\Message\ChatMessage;
+use Symfony\Component\Notifier\Message\MessageOptionsInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @internal
@@ -25,83 +27,138 @@ use Ramsey\Uuid\Uuid;
 #[CoversClass(NotificationService::class)]
 final class NotificationServiceTest extends TestCase
 {
-    private MockObject|NotificationClientResolver $notificationClientResolver;
-    private NotificationService $notificationService;
-    private MockObject|NotificationClient $notificationClient;
+    private MockObject|NotificationOptionsFactory $optionsFactory;
+    private ChatterInterface|MockObject $chatter;
+    private LoggerInterface|MockObject $logger;
+    private NotificationService $service;
 
     protected function setUp(): void
     {
-        $this->notificationClientResolver = $this->createMock(NotificationClientResolver::class);
-        $this->notificationClient = $this->createMock(NotificationClient::class);
-        $this->notificationService = new NotificationService($this->notificationClientResolver);
+        $this->optionsFactory = $this->createMock(NotificationOptionsFactory::class);
+        $this->chatter = $this->createMock(ChatterInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
+
+        $this->service = new NotificationService(
+            $this->optionsFactory,
+            $this->chatter,
+            $this->logger
+        );
     }
 
-    public function testSend(): void // todo naming
+    public function testSend(): void
     {
-        $notificationType = NotificationType::NEW_DEMAND;
-        $requester = $this->createMock(User::class);
-        $demand = new Demand($requester, 'service_name', 'content', 'reason');
-        $userSocialAccount = new UserSocialAccount($requester, UserSocialAccountType::SLACK, 'external_id', []);
-
-        $notificationResponse = new SendNotificationResponse(
-            'channel',
-            'identifier',
-            'content',
-            [],
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
         );
 
-        $this->notificationClientResolver
+        $notificationType = NotificationType::NEW_DEMAND;
+        $userAccount = self::createStub(UserSocialAccount::class);
+        $options = $this->createMock(MessageOptionsInterface::class);
+
+        $this->optionsFactory
             ->expects(self::once())
-            ->method('get')
-            ->with(UserSocialAccountType::SLACK)
-            ->willReturn($this->notificationClient)
+            ->method('create')
+            ->with($demand, $notificationType, $userAccount)
+            ->willReturn($options)
         ;
 
-        $this->notificationClient
+        $this->chatter
             ->expects(self::once())
             ->method('send')
-            ->with($notificationType, $demand, $userSocialAccount)
-            ->willReturn($notificationResponse)
+            ->with(self::callback(static function (ChatMessage $message) use ($demand, $options) {
+                return str_contains($message->getSubject(), $demand->uuid->toString())
+                    && $message->getOptions() === $options;
+            }))
         ;
 
-        $notification = $this->notificationService->send($notificationType, $demand, $userSocialAccount);
-
-        self::assertInstanceOf(Notification::class, $notification);
-        self::assertSame($demand->uuid, $notification->demandUuid);
-        self::assertSame($notificationType, $notification->type);
-        self::assertSame('identifier', $notification->notificationIdentifier);
-        self::assertSame('content', $notification->content);
-        self::assertSame([], $notification->attachments);
-        self::assertSame('channel', $notification->channel);
-        self::assertSame(UserSocialAccountType::SLACK, $notification->socialAccountType);
+        $this->service->send($notificationType, $demand, $userAccount);
     }
 
-    public function testUpdate(): void // todo naming
+    public function testLogsErrorOnException(): void
     {
-        $demand = $this->createMock(Demand::class);
-        $notification = new Notification(
-            Uuid::uuid4(),
-            NotificationType::NEW_DEMAND,
-            'identifier',
-            'content',
-            [],
-            'channel',
-            UserSocialAccountType::SLACK
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
         );
 
-        $this->notificationClientResolver
+        $notificationType = NotificationType::NEW_DEMAND;
+        $userAccount = self::createStub(UserSocialAccount::class);
+        $options = $this->createMock(MessageOptionsInterface::class);
+
+        $this->optionsFactory
             ->expects(self::once())
-            ->method('get')
-            ->with(UserSocialAccountType::SLACK)
-            ->willReturn($this->notificationClient)
+            ->method('create')
+            ->with($demand, $notificationType, $userAccount)
+            ->willReturn($options)
         ;
 
-        $this->notificationClient
+        $this->chatter
             ->expects(self::once())
-            ->method('update')
-            ->with($notification, $demand)
+            ->method('send')
+            ->willThrowException(
+                new TransportException(
+                    'some error',
+                    $this->createMock(ResponseInterface::class)
+                )
+            )
         ;
 
-        $this->notificationService->update($notification, $demand);
+        $this->logger
+            ->expects(self::once())
+            ->method('error')
+            ->with(
+                'Failed to send notification',
+                self::arrayHasKey('exception_message')
+            )
+        ;
+
+        $this->service->send($notificationType, $demand, $userAccount);
+    }
+
+    public function testUpdateWithDecisionLogsErrorOnException(): void
+    {
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
+        );
+        $demand->approveBy($this->createMock(User::class));
+
+        $options = $this->createMock(MessageOptionsInterface::class);
+        $notificationMock = $this->createMock(Notification::class);
+        $this->optionsFactory
+            ->expects(self::once())
+            ->method('createForDecision')
+            ->with($notificationMock, $demand->approver, $demand->status)
+            ->willReturn($options)
+        ;
+
+        $this->chatter
+            ->expects(self::once())
+            ->method('send')
+            ->willThrowException(
+                new TransportException(
+                    'some error',
+                    $this->createMock(ResponseInterface::class)
+                )
+            )
+        ;
+
+        $this->logger
+            ->expects(self::once())
+            ->method('error')
+            ->with(
+                'Failed to send updated notification',
+                self::arrayHasKey('exception_message')
+            )
+        ;
+
+        $this->service->updateWithDecision($notificationMock, $demand);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Webhook\Request;
 
-use Demandify\Infrastructure\Notification\Client\SlackNotificationClient;
+use Demandify\Infrastructure\Notification\Options\NotificationOptionsFactory;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 use Webmozart\Assert\Assert;
 
@@ -20,11 +20,14 @@ readonly class SlackDemandDecisionWebhookRequest
     ) {
         Assert::uuid($this->demandUuid);
         Assert::notEmpty($this->slackUserId);
-        Assert::oneOf($this->decision, [SlackNotificationClient::APPROVE_CALLBACK_KEY, SlackNotificationClient::DECLINE_CALLBACK_KEY]);
+        Assert::oneOf(
+            $this->decision,
+            [NotificationOptionsFactory::APPROVE_CALLBACK_KEY, NotificationOptionsFactory::DECLINE_CALLBACK_KEY]
+        );
     }
 
     public function isApproved(): bool
     {
-        return SlackNotificationClient::APPROVE_CALLBACK_KEY === $this->decision;
+        return NotificationOptionsFactory::APPROVE_CALLBACK_KEY === $this->decision;
     }
 }

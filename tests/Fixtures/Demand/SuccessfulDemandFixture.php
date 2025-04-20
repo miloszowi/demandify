@@ -27,6 +27,7 @@ class SuccessfulDemandFixture extends Fixture implements DependentFixtureInterfa
         $successfulDemand->approveBy($user);
         $successfulDemand->start();
         $successfulDemand->execute(new FakeDemandExecutor());
+        $successfulDemand->releaseEvents();
 
         $manager->persist($successfulDemand);
         $manager->flush();

@@ -22,28 +22,26 @@ class NotificationFixture extends Fixture implements DependentFixtureInterface
         $notification = new Notification(
             $this->getReference(DemandFixture::APPROVED_DEMAND_FIXTURE_KEY, Demand::class)->uuid,
             NotificationType::NEW_DEMAND,
+            'recipient',
             self::NOTIFICATION_IDENTIFIER,
-            'content sent to user',
             [
                 [
                     'some_attachment' => 'some attachment value',
                 ],
             ],
-            'channel',
             UserSocialAccountType::SLACK,
         );
 
         $declinedDemandNotification = new Notification(
             $this->getReference(DemandFixture::DECLINED_DEMAND_FIXTURE_KEY, Demand::class)->uuid,
             NotificationType::NEW_DEMAND,
+            'recipient2',
             self::DECLINED_DEMAND_NOTIFICATION_IDENTIFIER,
-            'content sent to user',
             [
                 [
                     'some_attachment' => 'some attachment value',
                 ],
             ],
-            'channel',
             UserSocialAccountType::SLACK,
         );
 

@@ -45,11 +45,12 @@ final class DemandApprovedHandlerTest extends BaseKernelTestCase
 
         $this->handler->__invoke($event);
 
-        self::assertCount(3, $this->getAsyncTransport()->getSent());
+        self::assertCount(2, $this->getAsyncTransport()->getSent());
+        self::assertCount(1, $this->getTransport('task')->getSent());
         $sentMessages = $this->getAsyncTransport()->getSent();
         $updateNotifications = $sentMessages[0]->getMessage();
-        $executeDemand = $sentMessages[1]->getMessage();
-        $sendNotification = $sentMessages[2]->getMessage();
+        $sendNotification = $sentMessages[1]->getMessage();
+        $executeDemand = $this->getTransport('task')->getSent()[0]->getMessage();
 
         self::assertInstanceOf(UpdateSentNotificationsWithDecision::class, $updateNotifications);
         self::assertSame($demand, $updateNotifications->demand);

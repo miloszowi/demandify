@@ -8,9 +8,7 @@ use Demandify\Application\Command\CommandHandler;
 use Demandify\Application\Query\IsUserEligibleToDecisionForExternalService\IsUserEligibleToDecisionForExternalService;
 use Demandify\Application\Query\QueryBus;
 use Demandify\Domain\Demand\DemandRepository;
-use Demandify\Domain\Demand\Event\DemandApproved;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Demandify\Domain\DomainEventPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,7 +16,6 @@ class ApproveDemandHandler implements CommandHandler
 {
     public function __construct(
         private readonly DemandRepository $demandRepository,
-        private readonly DomainEventPublisher $domainEventPublisher,
         private readonly QueryBus $queryBus,
     ) {}
 
@@ -35,7 +32,5 @@ class ApproveDemandHandler implements CommandHandler
 
         $demand->approveBy($command->approver);
         $this->demandRepository->save($demand);
-
-        $this->domainEventPublisher->publish(new DemandApproved($demand));
     }
 }

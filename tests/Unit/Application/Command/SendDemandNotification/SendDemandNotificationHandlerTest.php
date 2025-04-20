@@ -7,8 +7,6 @@ namespace Demandify\Tests\Unit\Application\Command\SendDemandNotification;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotificationHandler;
 use Demandify\Domain\Demand\Demand;
-use Demandify\Domain\Notification\Notification;
-use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationService;
 use Demandify\Domain\Notification\NotificationType;
 use Demandify\Domain\User\User;
@@ -29,27 +27,30 @@ final class SendDemandNotificationHandlerTest extends TestCase
 {
     private MockObject|UserRepository $userRepositoryMock;
     private MockObject|NotificationService $notificationServiceMock;
-    private MockObject|NotificationRepository $notificationRepositoryMock;
     private SendDemandNotificationHandler $sendDemandNotificationHandler;
 
     protected function setUp(): void
     {
         $this->userRepositoryMock = $this->createMock(UserRepository::class);
         $this->notificationServiceMock = $this->createMock(NotificationService::class);
-        $this->notificationRepositoryMock = $this->createMock(NotificationRepository::class);
-        $this->sendDemandNotificationHandler = new SendDemandNotificationHandler($this->userRepositoryMock, $this->notificationServiceMock, $this->notificationRepositoryMock);
+        $this->sendDemandNotificationHandler = new SendDemandNotificationHandler($this->userRepositoryMock, $this->notificationServiceMock);
     }
 
-    public function testSendsNotificationsAndSaves(): void
+    public function testSendsNotifications(): void
     {
         $recipientMock = $this->createMock(User::class);
-        $notificationMock = $this->createMock(Notification::class);
         $demandMock = $this->createMock(Demand::class);
         $notificationCommand = new SendDemandNotification(
             Uuid::uuid4(),
             $demandMock,
             NotificationType::NEW_DEMAND
         );
+        $userSocialAccount = new UserSocialAccount(
+            $recipientMock,
+            UserSocialAccountType::SLACK,
+            'externalId',
+        );
+        $userSocialAccount->setNotifiable(true);
 
         $this->userRepositoryMock
             ->expects(self::once())
@@ -62,13 +63,7 @@ final class SendDemandNotificationHandlerTest extends TestCase
             ->method('getSocialAccounts')
             ->willReturn(
                 new ArrayCollection(
-                    [
-                        new UserSocialAccount(
-                            $recipientMock,
-                            UserSocialAccountType::SLACK,
-                            'externalId',
-                        ),
-                    ],
+                    [$userSocialAccount],
                 )
             )
         ;
@@ -77,12 +72,47 @@ final class SendDemandNotificationHandlerTest extends TestCase
             ->expects(self::once())
             ->method('send')
             ->with($notificationCommand->notificationType, $notificationCommand->demand, self::isInstanceOf(UserSocialAccount::class))
-            ->willReturn($notificationMock)
         ;
-        $this->notificationRepositoryMock
+
+        $this->sendDemandNotificationHandler->__invoke($notificationCommand);
+    }
+
+    public function testDoesNotSendForNotNotifiableSocialAccounts(): void
+    {
+        $recipientMock = $this->createMock(User::class);
+        $demandMock = $this->createMock(Demand::class);
+        $notificationCommand = new SendDemandNotification(
+            Uuid::uuid4(),
+            $demandMock,
+            NotificationType::NEW_DEMAND
+        );
+        $userSocialAccount = new UserSocialAccount(
+            $recipientMock,
+            UserSocialAccountType::SLACK,
+            'externalId',
+        );
+        $userSocialAccount->setNotifiable(false);
+
+        $this->userRepositoryMock
             ->expects(self::once())
-            ->method('save')
-            ->with($notificationMock)
+            ->method('getByUuid')
+            ->with($notificationCommand->recipientUuid)
+            ->willReturn($recipientMock)
+        ;
+        $recipientMock
+            ->expects(self::once())
+            ->method('getSocialAccounts')
+            ->willReturn(
+                new ArrayCollection(
+                    [$userSocialAccount],
+                )
+            )
+        ;
+
+        $this->notificationServiceMock
+            ->expects(self::never())
+            ->method('send')
+            ->withAnyParameters()
         ;
 
         $this->sendDemandNotificationHandler->__invoke($notificationCommand);
@@ -91,7 +121,6 @@ final class SendDemandNotificationHandlerTest extends TestCase
     public function testHandlesNoSocialAccounts(): void
     {
         $recipientMock = $this->createMock(User::class);
-        $notificationMock = $this->createMock(Notification::class);
         $demandMock = $this->createMock(Demand::class);
         $notificationCommand = new SendDemandNotification(
             Uuid::uuid4(),
@@ -114,12 +143,6 @@ final class SendDemandNotificationHandlerTest extends TestCase
             ->expects(self::never())
             ->method('send')
             ->with($notificationCommand->notificationType, $notificationCommand->demand, self::isInstanceOf(UserSocialAccount::class))
-            ->willReturn($notificationMock)
-        ;
-        $this->notificationRepositoryMock
-            ->expects(self::never())
-            ->method('save')
-            ->with($notificationMock)
         ;
 
         $this->sendDemandNotificationHandler->__invoke($notificationCommand);

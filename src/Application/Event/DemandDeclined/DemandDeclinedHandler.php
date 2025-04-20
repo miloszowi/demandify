@@ -9,31 +9,21 @@ use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
 use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandDeclined;
-use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationType;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class DemandDeclinedHandler implements DomainEventHandler
 {
-    public function __construct(
-        private readonly CommandBus $commandBus,
-        private readonly NotificationRepository $notificationRepository,
-    ) {}
+    public function __construct(private readonly CommandBus $commandBus) {}
 
     public function __invoke(DemandDeclined $event): void
     {
-        $notifications = $this->notificationRepository->findByDemandUuidAndAction($event->demand->uuid, NotificationType::NEW_DEMAND);
-
-        if (!empty($notifications)) {
-            $this->commandBus->dispatch(
-                new UpdateSentNotificationsWithDecision(
-                    $notifications,
-                    $event->demand,
-                )
-            );
-        }
-
+        $this->commandBus->dispatch(
+            new UpdateSentNotificationsWithDecision(
+                $event->demand,
+            )
+        );
         $this->commandBus->dispatch(
             new SendDemandNotification(
                 $event->demand->requester->uuid,

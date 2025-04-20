@@ -7,6 +7,7 @@ namespace Demandify\Domain\Notification;
 enum NotificationType: string
 {
     case NEW_DEMAND = 'new_demand';
+    case DEMAND_DECIDED = 'demand_decided';
     case DEMAND_APPROVED = 'demand_approved';
     case DEMAND_DECLINED = 'demand_declined';
     case TASK_SUCCEEDED = 'task_succeeded';

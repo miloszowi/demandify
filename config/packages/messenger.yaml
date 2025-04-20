@@ -16,15 +16,19 @@ framework:
         transports:
              async: '%env(MESSENGER_TRANSPORT_DSN)%messages'
              failed: '%env(MESSENGER_TRANSPORT_DSN)%failed'
+             notification: '%env(MESSENGER_TRANSPORT_DSN)%notification'
+             task: '%env(MESSENGER_TRANSPORT_DSN)%task'
              sync: 'sync://'
 
         routing:
-            Demandify\Application\Command\ExecuteDemand\ExecuteDemand: async
+            Demandify\Application\Command\ExecuteDemand\ExecuteDemand: task
             Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision: async
             Demandify\Application\Command\SendDemandNotification\SendDemandNotification: async
+            Demandify\Application\Command\UpdateSocialAccountNotifiability\UpdateSocialAccountNotifiability: sync
             Demandify\Domain\Demand\Event\DemandApproved: async
             Demandify\Domain\Demand\Event\DemandDeclined: async
             Demandify\Domain\Demand\Event\DemandSubmitted: async
+            Symfony\Component\Notifier\Message\ChatMessage: notification
 
 
 when@test:
@@ -33,3 +37,5 @@ when@test:
             transports:
                 async: 'in-memory://'
                 failed: 'in-memory://'
+                notification: 'in-memory://'
+                task: 'in-memory://'

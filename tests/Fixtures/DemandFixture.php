@@ -24,6 +24,7 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
             'test content',
             'test reason'
         );
+        $demand->releaseEvents();
 
         $approvedDemand = new Demand(
             $user,
@@ -32,6 +33,7 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
             'test approved reason'
         );
         $approvedDemand->approveBy($user);
+        $approvedDemand->releaseEvents();
 
         $declinedDemand = new Demand(
             $user,
@@ -40,6 +42,7 @@ class DemandFixture extends Fixture implements DependentFixtureInterface
             'test declined reason'
         );
         $declinedDemand->declineBy($user);
+        $declinedDemand->releaseEvents();
 
         $manager->persist($demand);
         $manager->persist($approvedDemand);

@@ -49,7 +49,7 @@ class SlackOAuth2Client implements OAuth2Client
                 UserSocialAccountType::SLACK,
                 $user->user->profile->email,
                 $oauthAccessResponse->authedUser->accessToken,
-                PHP_INT_MAX // TODO: CHANGE THIS
+                PHP_INT_MAX // TODO: CHANGE THIS - SLACK DOES NOT PROVIDE expires_in
             ),
             $user->user->profile->email,
             $user->user->id,

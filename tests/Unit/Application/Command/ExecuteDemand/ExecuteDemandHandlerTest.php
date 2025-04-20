@@ -8,9 +8,8 @@ use Demandify\Application\Command\ExecuteDemand\ExecuteDemand;
 use Demandify\Application\Command\ExecuteDemand\ExecuteDemandHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
-use Demandify\Domain\DomainEventPublisher;
+use Demandify\Domain\Demand\Exception\DemandNotFoundException;
 use Demandify\Domain\Task\DemandExecutor;
-use Demandify\Domain\Task\Event\TaskSucceeded;
 use Demandify\Domain\Task\Task;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -26,18 +25,15 @@ final class ExecuteDemandHandlerTest extends TestCase
     private ExecuteDemandHandler $handler;
     private DemandExecutor|MockObject $demandExecutor;
     private DemandRepository|MockObject $demandRepository;
-    private DomainEventPublisher|MockObject $domainEventPublisher;
 
     protected function setUp(): void
     {
         $this->demandExecutor = $this->createMock(DemandExecutor::class);
         $this->demandRepository = $this->createMock(DemandRepository::class);
-        $this->domainEventPublisher = $this->createMock(DomainEventPublisher::class);
 
         $this->handler = new ExecuteDemandHandler(
             $this->demandExecutor,
             $this->demandRepository,
-            $this->domainEventPublisher,
         );
     }
 
@@ -55,6 +51,12 @@ final class ExecuteDemandHandlerTest extends TestCase
             ->willReturn($demandMock)
         ;
 
+        $this->demandRepository
+            ->expects(self::exactly(2))
+            ->method('save')
+            ->with($demandMock)
+        ;
+
         $demandMock
             ->expects(self::once())
             ->method('start')
@@ -66,11 +68,26 @@ final class ExecuteDemandHandlerTest extends TestCase
             ->with($this->demandExecutor)
         ;
 
-        $this->domainEventPublisher
+        $this->handler->__invoke(new ExecuteDemand($demandUuid));
+    }
+
+    public function testItThrowsExceptionIfDemandDoesNotExist(): void
+    {
+        $demandUuid = Uuid::uuid4();
+
+        $this->demandRepository
             ->expects(self::once())
-            ->method('publish')
-            ->with(self::isInstanceOf(TaskSucceeded::class))
+            ->method('getByUuid')
+            ->with($demandUuid)
+            ->willThrowException(DemandNotFoundException::fromUuid($demandUuid))
         ;
+
+        $this->demandRepository
+            ->expects(self::never())
+            ->method('save')
+        ;
+
+        self::expectException(DemandNotFoundException::class);
 
         $this->handler->__invoke(new ExecuteDemand($demandUuid));
     }

@@ -11,6 +11,8 @@ interface UserSocialAccountRepository
 {
     public function findByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount;
 
+    public function getByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): UserSocialAccount;
+
     public function getByExternalIdAndType(string $externalId, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount;
 
     public function findByEmailAndType(Email $email, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount;

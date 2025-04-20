@@ -27,8 +27,8 @@ services:
         Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2Client:
             tags: [ 'demandify.oauth.client' ]
 
-        Demandify\Infrastructure\Notification\Client\NotificationClient:
-            tags: [ 'demandify.notification.client' ]
+        Demandify\Infrastructure\Notification\Options\NotificationOptionsFactory:
+            tags: [ 'demandify.notification_options.factory' ]
 
         Demandify\Infrastructure\Webhook\WebhookHandler:
             tags: [ 'demandify.webhook.handler' ]
@@ -42,9 +42,9 @@ services:
         arguments:
             - !tagged_iterator 'demandify.oauth.client'
 
-    Demandify\Infrastructure\Notification\NotificationClientResolver:
+    Demandify\Infrastructure\Notification\NotificationOptionsFactory:
         arguments:
-            - !tagged_iterator 'demandify.notification.client'
+            - !tagged_iterator 'demandify.notification_options.factory'
 
     Demandify\Infrastructure\Controller\WebhookController:
         arguments:

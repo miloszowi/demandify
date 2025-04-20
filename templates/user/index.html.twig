@@ -215,6 +215,17 @@
                                 <i class="fas fa-check-circle"></i>
                                 Connected
                             </span>
+                            <form method="post" action="{{ path('app_profile_toggle_social_account_notifiability', {type: social_account_type.value | lower}) }}">
+                                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                                    <input
+                                            type="checkbox"
+                                            name="notifiability"
+                                            onchange="this.form.submit()"
+                                            {% if user.getSocialAccount(social_account_type).isNotifiable() %} checked {% endif %}
+                                    >
+                                    Notifications enabled
+                                </label>
+                            </form>
                         {% else %}
                             <a href="/oauth/{{ social_account_type.value | lower }}" class="connect-link">
                                 <i class="fas fa-plus"></i>

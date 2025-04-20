@@ -32,11 +32,13 @@
         "symfony/http-client": "7.2.*",
         "symfony/mailer": "7.2.*",
         "symfony/monolog-bundle": "^3.10",
+        "symfony/notifier": "7.2.*",
         "symfony/property-access": "7.2.*",
         "symfony/property-info": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/security-bundle": "7.2.*",
         "symfony/serializer": "7.2.*",
+        "symfony/slack-notifier": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/uid": "7.2.*",
         "symfony/validator": "7.2.*",
@@ -90,7 +92,7 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "phpunit": "vendor/bin/phpunit",
+        "phpunit": "vendor/bin/phpunit --testdox",
         "phpstan": "vendor/bin/phpstan --memory-limit=256M",
         "csfixer-check": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer check --allow-risky=yes --diff",
         "csfixer-fix": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/friendsofphp/php-cs-fixer/php-cs-fixer fix --allow-risky=yes --diff",

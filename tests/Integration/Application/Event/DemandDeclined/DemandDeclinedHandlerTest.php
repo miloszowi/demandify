@@ -10,7 +10,6 @@ use Demandify\Application\Event\DemandDeclined\DemandDeclinedHandler;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Demand\Status;
-use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Tests\Fixtures\NotificationFixture;
 use Demandify\Tests\Integration\BaseKernelTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -22,7 +21,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 final class DemandDeclinedHandlerTest extends BaseKernelTestCase
 {
     private DemandDeclinedHandler $handler;
-    private NotificationRepository $notificationRepository;
     private DemandRepository $demandRepository;
 
     protected function setUp(): void
@@ -30,7 +28,6 @@ final class DemandDeclinedHandlerTest extends BaseKernelTestCase
         parent::setUp();
 
         $this->handler = self::getContainer()->get(DemandDeclinedHandler::class);
-        $this->notificationRepository = self::getContainer()->get(NotificationRepository::class);
         $this->demandRepository = self::getContainer()->get(DemandRepository::class);
 
         $this->load([new NotificationFixture()]);
@@ -51,23 +48,6 @@ final class DemandDeclinedHandlerTest extends BaseKernelTestCase
         self::assertInstanceOf(UpdateSentNotificationsWithDecision::class, $updateNotifications);
         self::assertSame($demand, $updateNotifications->demand);
 
-        self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
-        self::assertSame($demand->requester->uuid, $sendNotification->recipientUuid);
-        self::assertSame($demand, $sendNotification->demand);
-    }
-
-    public function testItDoesNotDispatchUpdateSentNotificationsWithDecisionWhenThereAreNoNotifications(): void
-    {
-        $demand = $this->demandRepository->findInStatus(Status::DECLINED)[0];
-        $event = new DemandDeclined($demand);
-
-        $this->entityManager->remove($this->notificationRepository->findByNotificationIdentifier(NotificationFixture::DECLINED_DEMAND_NOTIFICATION_IDENTIFIER));
-        $this->entityManager->flush();
-        $this->handler->__invoke($event);
-
-        self::assertCount(1, $this->getAsyncTransport()->getSent());
-        $sentMessages = $this->getAsyncTransport()->getSent();
-        $sendNotification = $sentMessages[0]->getMessage();
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
         self::assertSame($demand->requester->uuid, $sendNotification->recipientUuid);
         self::assertSame($demand, $sendNotification->demand);

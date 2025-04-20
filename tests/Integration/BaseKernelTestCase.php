@@ -47,4 +47,9 @@ abstract class BaseKernelTestCase extends KernelTestCase
     {
         return $this->getContainer()->get('messenger.transport.async');
     }
+
+    public function getTransport(string $transport): InMemoryTransport
+    {
+        return $this->getContainer()->get('messenger.transport.'.$transport);
+    }
 }

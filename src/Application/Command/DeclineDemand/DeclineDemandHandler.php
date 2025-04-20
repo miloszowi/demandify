@@ -8,9 +8,7 @@ use Demandify\Application\Command\CommandHandler;
 use Demandify\Application\Query\IsUserEligibleToDecisionForExternalService\IsUserEligibleToDecisionForExternalService;
 use Demandify\Application\Query\QueryBus;
 use Demandify\Domain\Demand\DemandRepository;
-use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Demandify\Domain\DomainEventPublisher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
@@ -18,7 +16,6 @@ class DeclineDemandHandler implements CommandHandler
 {
     public function __construct(
         private readonly DemandRepository $demandRepository,
-        private readonly DomainEventPublisher $domainEventPublisher,
         private readonly QueryBus $queryBus,
     ) {}
 
@@ -29,15 +26,11 @@ class DeclineDemandHandler implements CommandHandler
             new IsUserEligibleToDecisionForExternalService($command->approver, $demand->service)
         );
 
-        if (!$isUserEligible) {
+        if (false === $isUserEligible) {
             throw UserNotAuthorizedToUpdateDemandException::fromUser($command->approver, $demand->service);
         }
 
         $demand->declineBy($command->approver);
-
         $this->demandRepository->save($demand);
-        $this->domainEventPublisher->publish(
-            new DemandDeclined($demand)
-        );
     }
 }

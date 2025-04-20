@@ -8,7 +8,9 @@ use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSent
 use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Notification\Notification;
+use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationService;
+use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,24 +22,65 @@ use PHPUnit\Framework\TestCase;
 final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
 {
     private MockObject|NotificationService $notificationServiceMock;
+    private MockObject|NotificationRepository $notificationRepositoryMock;
     private UpdateSentNotificationsWithDecisionHandler $updateSentNotificationsWithDecisionHandler;
 
     protected function setUp(): void
     {
         $this->notificationServiceMock = $this->createMock(NotificationService::class);
-        $this->updateSentNotificationsWithDecisionHandler = new UpdateSentNotificationsWithDecisionHandler($this->notificationServiceMock);
+        $this->notificationRepositoryMock = $this->createMock(NotificationRepository::class);
+        $this->updateSentNotificationsWithDecisionHandler = new UpdateSentNotificationsWithDecisionHandler(
+            $this->notificationServiceMock,
+            $this->notificationRepositoryMock,
+        );
     }
 
     public function testUpdatesSentNotificationsWithDecision(): void
     {
         $notificationMock = $this->createMock(Notification::class);
-        $demandMock = $this->createMock(Demand::class);
-        $command = new UpdateSentNotificationsWithDecision([$notificationMock], $demandMock);
+        $demandMock = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
+        );
+        $command = new UpdateSentNotificationsWithDecision($demandMock);
+
+        $this->notificationRepositoryMock
+            ->expects(self::once())
+            ->method('findByDemandAndType')
+            ->willReturn([$notificationMock])
+        ;
 
         $this->notificationServiceMock
             ->expects(self::once())
-            ->method('update')
+            ->method('updateWithDecision')
             ->with($notificationMock, $command->demand)
+        ;
+
+        $this->updateSentNotificationsWithDecisionHandler->__invoke($command);
+    }
+
+    public function testDoesNotUpdateIfThereAreNoNotifications(): void
+    {
+        $demandMock = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
+        );
+        $command = new UpdateSentNotificationsWithDecision($demandMock);
+
+        $this->notificationRepositoryMock
+            ->expects(self::once())
+            ->method('findByDemandAndType')
+            ->willReturn([])
+        ;
+
+        $this->notificationServiceMock
+            ->expects(self::never())
+            ->method('updateWithDecision')
+            ->withAnyParameters()
         ;
 
         $this->updateSentNotificationsWithDecisionHandler->__invoke($command);

@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace Demandify\Domain\Demand;
 
+use Demandify\Domain\Demand\Event\DemandApproved;
+use Demandify\Domain\Demand\Event\DemandDeclined;
+use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\Eventable;
+use Demandify\Domain\EventReleasable;
 use Demandify\Domain\Task\DemandExecutor;
+use Demandify\Domain\Task\Event\TaskFailed;
+use Demandify\Domain\Task\Event\TaskSucceeded;
 use Demandify\Domain\Task\Task;
 use Demandify\Domain\User\User;
 use Doctrine\DBAL\Types\Types;
@@ -15,10 +22,12 @@ use Ramsey\Uuid\UuidInterface;
 #[
     ORM\Entity,
     ORM\Table(name: '`demand`'),
-    ORM\Index(name: 'service_idx', columns: ['service'])
+    ORM\Index(name: 'service_idx', columns: ['service']),
 ]
-class Demand
+class Demand implements EventReleasable
 {
+    use Eventable;
+
     #[
         ORM\Id,
         ORM\Column(name: 'uuid', type: 'uuid', unique: true, nullable: false)
@@ -61,18 +70,24 @@ class Demand
         $this->status = Status::NEW;
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
+
+        $this->recordThat(new DemandSubmitted($this));
     }
 
     public function approveBy(User $user): void
     {
         $this->status = $this->status->progress(Status::APPROVED);
         $this->approver = $user;
+
+        $this->recordThat(new DemandApproved($this));
     }
 
     public function declineBy(User $user): void
     {
         $this->status = $this->status->progress(Status::DECLINED);
         $this->approver = $user;
+
+        $this->recordThat(new DemandDeclined($this));
     }
 
     public function start(): void
@@ -90,5 +105,12 @@ class Demand
         };
 
         $this->task = $task;
+
+        $this->recordThat(
+            match ($task->success) {
+                true => new TaskSucceeded($this),
+                false => new TaskFailed($this),
+            }
+        );
     }
 }

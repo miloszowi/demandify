@@ -25,13 +25,24 @@ class DoctrineAwareUserSocialAccountRepository extends ServiceEntityRepository i
     public function findByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount
     {
         return $this->createQueryBuilder('usa')
-            ->andWhere('usa.userUuid = :user_uuid')
+            ->andWhere('usa.user = :user_uuid')
             ->andWhere('usa.type = :type')
             ->setParameter(':user_uuid', $userUuid->toString())
             ->setParameter(':type', $userSocialAccountType->value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function getByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): UserSocialAccount
+    {
+        $userSocialAccount = $this->findByUserUuidAndType($userUuid, $userSocialAccountType);
+
+        if (null === $userSocialAccount) {
+            throw UserSocialAccountNotFound::fromUserUuidIdAndType($userUuid, $userSocialAccountType);
+        }
+
+        return $userSocialAccount;
     }
 
     public function getByExternalIdAndType(string $externalId, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount

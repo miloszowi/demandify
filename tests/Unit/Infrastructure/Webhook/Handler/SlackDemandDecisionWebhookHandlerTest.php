@@ -12,7 +12,7 @@ use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Demandify\Infrastructure\External\Slack\SlackConfiguration;
-use Demandify\Infrastructure\Notification\Client\SlackNotificationClient;
+use Demandify\Infrastructure\Notification\Options\NotificationOptionsFactory;
 use Demandify\Infrastructure\Webhook\Handler\SlackDemandDecisionWebhookHandler;
 use Demandify\Infrastructure\Webhook\Request\SlackDemandDecisionWebhookRequest;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -69,7 +69,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
         $user = $this->createMock(User::class);
         $socialAccount = new UserSocialAccount($user, UserSocialAccountType::SLACK, 'U123');
 
-        $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', SlackNotificationClient::APPROVE_CALLBACK_KEY);
+        $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', NotificationOptionsFactory::APPROVE_CALLBACK_KEY);
 
         $this->serializer
             ->expects(self::once())
@@ -100,7 +100,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
         $user = $this->createMock(User::class);
         $socialAccount = new UserSocialAccount($user, UserSocialAccountType::SLACK, 'U123');
 
-        $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', SlackNotificationClient::DECLINE_CALLBACK_KEY);
+        $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', NotificationOptionsFactory::DECLINE_CALLBACK_KEY);
 
         $this->serializer
             ->expects(self::once())

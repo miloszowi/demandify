@@ -21,7 +21,7 @@ class TaskController extends AbstractController
 {
     public function __construct(
         private readonly Filesystem $filesystem,
-        private string $projectDir
+        private readonly string $projectDir
     ) {}
 
     #[Route(

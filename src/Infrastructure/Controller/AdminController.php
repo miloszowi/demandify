@@ -39,7 +39,11 @@ class AdminController extends AbstractController
         );
     }
 
-    #[Route('/admin/services/{service}', methods: ['GET', 'POST'])]
+    #[Route(
+        '/admin/services/{service}',
+        name: 'app_admin_edit_service',
+        methods: ['GET', 'POST']
+    )]
     public function editService(Request $request, string $service): Response
     {
         try {

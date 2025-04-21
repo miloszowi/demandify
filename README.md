@@ -1,5 +1,6 @@
 <p align="center"> 
 <img src="https://github.com/miloszowi/demandify/actions/workflows/app.yml/badge.svg" alt="pipeline status" />
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="license" />
 </p>
 <h1 align="center">Demandify </h1>
 <p align="center"><img title="logo" alt="logo" src="/docs/logo.png" width="150" height="150"></p>
@@ -26,7 +27,7 @@ run
 ```
 $ docker/start
 ```
-to setup everything at once - demandify should be available on localhost.
+to set up everything at once - demandify should be available on localhost.
 
 
 ## Running tests

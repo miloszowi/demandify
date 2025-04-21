@@ -36,8 +36,10 @@ class OAuth2Authenticator extends AbstractAuthenticator implements Authenticator
         $accessToken = $request->getSession()->get(AccessToken::class);
         $client = $this->clientResolver->byType($accessToken->type);
 
-        if (false === $client->checkAuth($accessToken->value)) {
-            throw new AuthenticationException('Failed to authenticate.');
+        if ($accessToken->expiresIn < time()) {
+            if (false === $client->checkAuth($accessToken->value)) {
+                throw new AuthenticationException('Failed to authenticate.');
+            }
         }
 
         return new SelfValidatingPassport(

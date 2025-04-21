@@ -100,7 +100,7 @@ class DemandController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $this->commandBus->dispatch(
-            new ApproveDemand($demand->uuid, $user)
+            new ApproveDemand($demand->uuid, $user->uuid)
         );
 
         return $this->redirectToRoute('app_review_demands');
@@ -118,7 +118,7 @@ class DemandController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $this->commandBus->dispatch(
-            new DeclineDemand($demand->uuid, $user)
+            new DeclineDemand($demand->uuid, $user->uuid)
         );
 
         return $this->redirectToRoute('app_review_demands');

@@ -42,7 +42,7 @@ final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
         $demand = $this->demandRepository->findInStatus(Status::NEW)[0];
         $command = new SendDemandNotification(
             $this->userRepository->getByEmail(Email::fromString(UserFixture::USER_WITH_SLACK_SOCIAL_ACCOUNT))->uuid,
-            $demand,
+            $demand->uuid,
             NotificationType::NEW_DEMAND
         );
 
@@ -56,7 +56,7 @@ final class SendDemandNotificationHandlerTest extends BaseKernelTestCase
         $demand = $this->demandRepository->findInStatus(Status::NEW)[0];
         $command = new SendDemandNotification(
             $this->userRepository->getByEmail(Email::fromString(UserFixture::USER_WITH_NOT_NOTIFIABLE_SOCIAL_ACCOUNT))->uuid,
-            $demand,
+            $demand->uuid,
             NotificationType::NEW_DEMAND
         );
 

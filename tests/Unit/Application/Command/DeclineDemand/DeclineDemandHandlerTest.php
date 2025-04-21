@@ -13,6 +13,7 @@ use Demandify\Domain\Demand\Exception\DemandNotFoundException;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,17 +26,20 @@ use Ramsey\Uuid\Uuid;
 final class DeclineDemandHandlerTest extends TestCase
 {
     private DemandRepository|MockObject $demandRepositoryMock;
+    private MockObject|UserRepository $userRepository;
     private MockObject|QueryBus $queryBus;
     private DeclineDemandHandler $handler;
 
     protected function setUp(): void
     {
         $this->demandRepositoryMock = $this->createMock(DemandRepository::class);
+        $this->userRepository = $this->createMock(UserRepository::class);
         $this->queryBus = $this->createMock(QueryBus::class);
 
         $this->handler = new DeclineDemandHandler(
             $this->demandRepositoryMock,
-            $this->queryBus
+            $this->userRepository,
+            $this->queryBus,
         );
     }
 
@@ -46,15 +50,22 @@ final class DeclineDemandHandlerTest extends TestCase
 
     public function testDeclinesDemand(): void
     {
-        $userMock = $this->createMock(User::class);
-        $demand = new Demand($userMock, 'test', 'test', 'test');
-        $command = new DeclineDemand($demand->uuid, $userMock);
+        $user = new User(Email::fromString('test@local.host'));
+        $demand = new Demand($user, 'test', 'test', 'test');
+        $command = new DeclineDemand($demand->uuid, $user->uuid);
 
         $this->demandRepositoryMock
             ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
+        ;
+
+        $this->userRepository
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($user->uuid)
+            ->willReturn($user)
         ;
 
         $this->queryBus
@@ -74,10 +85,9 @@ final class DeclineDemandHandlerTest extends TestCase
 
     public function testDecliningNonExistingDemandWillThrowException(): void
     {
-        $userMock = $this->createMock(User::class);
         $nonExistingUuid = Uuid::uuid4();
 
-        $command = new DeclineDemand($nonExistingUuid, $userMock);
+        $command = new DeclineDemand($nonExistingUuid, Uuid::uuid4());
 
         $this->demandRepositoryMock
             ->expects(self::once())
@@ -95,13 +105,20 @@ final class DeclineDemandHandlerTest extends TestCase
     {
         $user = new User(Email::fromString('test@local.host'));
         $demand = new Demand($user, 'test', 'test', 'test');
-        $command = new DeclineDemand($demand->uuid, $user);
+        $command = new DeclineDemand($demand->uuid, $user->uuid);
 
         $this->demandRepositoryMock
             ->expects(self::once())
             ->method('getByUuid')
             ->with($demand->uuid)
             ->willReturn($demand)
+        ;
+
+        $this->userRepository
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($user->uuid)
+            ->willReturn($user)
         ;
 
         $this->queryBus

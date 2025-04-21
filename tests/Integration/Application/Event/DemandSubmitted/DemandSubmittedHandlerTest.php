@@ -42,7 +42,7 @@ final class DemandSubmittedHandlerTest extends BaseKernelTestCase
         $this->load([new DemandFixture(), new ExternalServiceConfigurationFixture()]);
         $demand = $this->demandRepository->findInStatus(Status::NEW)[0];
         $recipient = $this->userRepository->getByEmail(Email::fromString(UserFixture::USER_EMAIL_FIXTURE));
-        $event = new DemandSubmitted($demand);
+        $event = new DemandSubmitted($demand->uuid);
 
         $this->handler->__invoke($event);
 
@@ -50,7 +50,7 @@ final class DemandSubmittedHandlerTest extends BaseKernelTestCase
         $sentMessages = $this->getAsyncTransport()->getSent();
         $sendNotification = $sentMessages[0]->getMessage();
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
-        self::assertSame($demand, $sendNotification->demand);
+        self::assertSame($demand->uuid, $sendNotification->demandUuid);
         self::assertTrue($recipient->uuid->equals($sendNotification->recipientUuid));
     }
 
@@ -58,7 +58,7 @@ final class DemandSubmittedHandlerTest extends BaseKernelTestCase
     {
         $this->load([new DemandFixture(), new ExternalServiceConfigurationWithoutEligibleApproversFixture()]);
         $demand = $this->demandRepository->findInStatus(Status::NEW)[0];
-        $event = new DemandSubmitted($demand);
+        $event = new DemandSubmitted($demand->uuid);
         $this->handler->__invoke($event);
 
         self::assertCount(0, $this->getAsyncTransport()->getSent());

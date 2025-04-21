@@ -36,7 +36,7 @@ final class TaskFailedHandlerTest extends BaseKernelTestCase
     {
         $demand = $this->demandRepository->findInStatus(Status::FAILED)[0];
 
-        $event = new TaskFailed($demand);
+        $event = new TaskFailed($demand->uuid);
 
         $this->handler->__invoke($event);
 
@@ -44,6 +44,6 @@ final class TaskFailedHandlerTest extends BaseKernelTestCase
         self::assertCount(1, $sentMessages);
         $sendNotification = $sentMessages[0]->getMessage();
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
-        self::assertSame($demand, $sendNotification->demand);
+        self::assertSame($demand->uuid, $sendNotification->demandUuid);
     }
 }

@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Demandify\Tests\Infrastructure\Webhook\Handler;
+namespace Demandify\Tests\Unit\Infrastructure\Webhook\Handler;
 
 use Demandify\Application\Command\ApproveDemand\ApproveDemand;
 use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\DeclineDemand\DeclineDemand;
+use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
@@ -66,7 +67,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
     public function testHandleSuccessfullyForApprovedDemand(): void
     {
         $request = new Request([], ['payload' => '{"callback_id": "550e8400-e29b-41d4-a716-446655440000", "user": {"id": "U123"}, "actions": [{"value": "approve"}]}']);
-        $user = $this->createMock(User::class);
+        $user = new User(Email::fromString('test@local.host'));
         $socialAccount = new UserSocialAccount($user, UserSocialAccountType::SLACK, 'U123');
 
         $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', NotificationOptionsFactory::APPROVE_CALLBACK_KEY);
@@ -97,7 +98,7 @@ final class SlackDemandDecisionWebhookHandlerTest extends TestCase
     public function testHandleSuccessfullyForDeclinedDemand(): void
     {
         $request = new Request([], ['payload' => '{"callback_id": "550e8400-e29b-41d4-a716-446655440000", "user": {"id": "U123"}, "actions": [{"value": "decline"}]}']);
-        $user = $this->createMock(User::class);
+        $user = new User(Email::fromString('test@local.host'));
         $socialAccount = new UserSocialAccount($user, UserSocialAccountType::SLACK, 'U123');
 
         $slackRequest = new SlackDemandDecisionWebhookRequest('550e8400-e29b-41d4-a716-446655440000', 'U123', NotificationOptionsFactory::DECLINE_CALLBACK_KEY);

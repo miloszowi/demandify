@@ -22,13 +22,28 @@ framework:
              sync: 'sync://'
 
         routing:
+            # Command
+            Demandify\Application\Command\ApproveDemand\ApproveDemand: async
+            Demandify\Application\Command\DeclineDemand\DeclineDemand: async
             Demandify\Application\Command\ExecuteDemand\ExecuteDemand: task
-            Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision: async
+            Demandify\Application\Command\LinkSocialAccountToUser\LinkSocialAccountToUser: async
+            Demandify\Application\Command\SaveSentNotification\SaveSentNotification: async
             Demandify\Application\Command\SendDemandNotification\SendDemandNotification: async
+            Demandify\Application\Command\SubmitDemand\SubmitDemand: async
+            Demandify\Application\Command\UpdateEligibleApprovers\UpdateEligibleApprovers: async
+            Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision: async
             Demandify\Application\Command\UpdateSocialAccountNotifiability\UpdateSocialAccountNotifiability: sync
+            # Event
             Demandify\Domain\Demand\Event\DemandApproved: async
             Demandify\Domain\Demand\Event\DemandDeclined: async
             Demandify\Domain\Demand\Event\DemandSubmitted: async
+            Demandify\Domain\Task\Event\TaskFailed: async
+            Demandify\Domain\Task\Event\TaskSucceeded: async
+            # Query
+            Demandify\Application\Query\GetDemandsSubmittedByUser\GetDemandsSubmittedByUser: sync
+            Demandify\Application\Query\GetDemandsToBeReviewedForUser\GetDemandsToBeReviewedForUser: sync
+            Demandify\Application\Query\IsUserEligibleToDecisionForExternalService\IsUserEligibleToDecisionForExternalService: sync
+            # Symfony
             Symfony\Component\Notifier\Message\ChatMessage: notification
 
 when@test:

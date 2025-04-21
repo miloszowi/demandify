@@ -71,7 +71,7 @@ class Demand implements EventReleasable
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
 
-        $this->recordThat(new DemandSubmitted($this));
+        $this->recordThat(new DemandSubmitted($this->uuid));
     }
 
     public function approveBy(User $user): void
@@ -79,7 +79,7 @@ class Demand implements EventReleasable
         $this->status = $this->status->progress(Status::APPROVED);
         $this->approver = $user;
 
-        $this->recordThat(new DemandApproved($this));
+        $this->recordThat(new DemandApproved($this->uuid));
     }
 
     public function declineBy(User $user): void
@@ -87,7 +87,7 @@ class Demand implements EventReleasable
         $this->status = $this->status->progress(Status::DECLINED);
         $this->approver = $user;
 
-        $this->recordThat(new DemandDeclined($this));
+        $this->recordThat(new DemandDeclined($this->uuid));
     }
 
     public function start(): void
@@ -108,8 +108,8 @@ class Demand implements EventReleasable
 
         $this->recordThat(
             match ($task->success) {
-                true => new TaskSucceeded($this),
-                false => new TaskFailed($this),
+                true => new TaskSucceeded($this->uuid),
+                false => new TaskFailed($this->uuid),
             }
         );
     }

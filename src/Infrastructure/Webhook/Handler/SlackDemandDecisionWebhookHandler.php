@@ -50,11 +50,11 @@ class SlackDemandDecisionWebhookHandler implements WebhookHandler
         $command = match ($slackRequest->isApproved()) {
             true => new ApproveDemand(
                 Uuid::fromString($slackRequest->demandUuid),
-                $socialAccount->user
+                $socialAccount->user->uuid
             ),
             false => new DeclineDemand(
                 Uuid::fromString($slackRequest->demandUuid),
-                $socialAccount->user
+                $socialAccount->user->uuid
             ),
         };
         $this->commandBus->dispatch($command);

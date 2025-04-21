@@ -41,7 +41,7 @@ final class DemandApprovedHandlerTest extends BaseKernelTestCase
     public function testItHandlesDemandApprovedEventSucesfully(): void
     {
         $demand = $this->demandRepository->findInStatus(Status::APPROVED)[0];
-        $event = new DemandApproved($demand);
+        $event = new DemandApproved($demand->uuid);
 
         $this->handler->__invoke($event);
 
@@ -53,21 +53,21 @@ final class DemandApprovedHandlerTest extends BaseKernelTestCase
         $executeDemand = $this->getTransport('task')->getSent()[0]->getMessage();
 
         self::assertInstanceOf(UpdateSentNotificationsWithDecision::class, $updateNotifications);
-        self::assertSame($demand, $updateNotifications->demand);
+        self::assertSame($demand->uuid, $updateNotifications->demandUuid);
 
         self::assertInstanceOf(ExecuteDemand::class, $executeDemand);
         self::assertSame($demand->uuid, $executeDemand->demandUuid);
 
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
         self::assertSame($demand->requester->uuid, $sendNotification->recipientUuid);
-        self::assertSame($demand, $sendNotification->demand);
+        self::assertSame($demand->uuid, $sendNotification->demandUuid);
         self::assertSame(NotificationType::DEMAND_APPROVED, $sendNotification->notificationType);
     }
 
     public function testItDoesNotDispatchUpdateSentNotificationsWithDecisionWhenThereAreNoNotifications(): void
     {
         $demand = $this->demandRepository->findInStatus(Status::APPROVED)[0];
-        $event = new DemandApproved($demand);
+        $event = new DemandApproved($demand->uuid);
 
         $this->entityManager->remove($this->notificationRepository->findByNotificationIdentifier(NotificationFixture::NOTIFICATION_IDENTIFIER));
         $this->entityManager->flush();

@@ -45,7 +45,7 @@ final class DeclineDemandHandlerTest extends BaseKernelTestCase
 
         $command = new DeclineDemand(
             $demand->uuid,
-            $approver
+            $approver->uuid
         );
 
         $this->declineDemandHandler->__invoke($command);
@@ -68,7 +68,7 @@ final class DeclineDemandHandlerTest extends BaseKernelTestCase
 
             $command = new DeclineDemand(
                 $demand->uuid,
-                $requester
+                $requester->uuid
             );
             $this->declineDemandHandler->__invoke($command);
 
@@ -84,7 +84,7 @@ final class DeclineDemandHandlerTest extends BaseKernelTestCase
 
         $command = new DeclineDemand(
             $demand->uuid,
-            $notEligibleApprover
+            $notEligibleApprover->uuid
         );
 
         self::expectException(UserNotAuthorizedToUpdateDemandException::class);

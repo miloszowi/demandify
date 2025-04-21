@@ -7,6 +7,7 @@ namespace Demandify\Tests\Unit\Application\Command\UpdateSentNotificationsWithDe
 use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
 use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecisionHandler;
 use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Notification\Notification;
 use Demandify\Domain\Notification\NotificationRepository;
 use Demandify\Domain\Notification\NotificationService;
@@ -22,15 +23,18 @@ use PHPUnit\Framework\TestCase;
 final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
 {
     private MockObject|NotificationService $notificationServiceMock;
+    private DemandRepository|MockObject $demandRepositoryMock;
     private MockObject|NotificationRepository $notificationRepositoryMock;
     private UpdateSentNotificationsWithDecisionHandler $updateSentNotificationsWithDecisionHandler;
 
     protected function setUp(): void
     {
         $this->notificationServiceMock = $this->createMock(NotificationService::class);
+        $this->demandRepositoryMock = $this->createMock(DemandRepository::class);
         $this->notificationRepositoryMock = $this->createMock(NotificationRepository::class);
         $this->updateSentNotificationsWithDecisionHandler = new UpdateSentNotificationsWithDecisionHandler(
             $this->notificationServiceMock,
+            $this->demandRepositoryMock,
             $this->notificationRepositoryMock,
         );
     }
@@ -44,7 +48,7 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
             'some_content',
             'some_reason',
         );
-        $command = new UpdateSentNotificationsWithDecision($demandMock);
+        $command = new UpdateSentNotificationsWithDecision($demandMock->uuid);
 
         $this->notificationRepositoryMock
             ->expects(self::once())
@@ -52,10 +56,17 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
             ->willReturn([$notificationMock])
         ;
 
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demandMock->uuid)
+            ->willReturn($demandMock)
+        ;
+
         $this->notificationServiceMock
             ->expects(self::once())
             ->method('updateWithDecision')
-            ->with($notificationMock, $command->demand)
+            ->with($notificationMock, $demandMock)
         ;
 
         $this->updateSentNotificationsWithDecisionHandler->__invoke($command);
@@ -69,12 +80,19 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends TestCase
             'some_content',
             'some_reason',
         );
-        $command = new UpdateSentNotificationsWithDecision($demandMock);
+        $command = new UpdateSentNotificationsWithDecision($demandMock->uuid);
 
         $this->notificationRepositoryMock
             ->expects(self::once())
             ->method('findByDemandAndType')
             ->willReturn([])
+        ;
+
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demandMock->uuid)
+            ->willReturn($demandMock)
         ;
 
         $this->notificationServiceMock

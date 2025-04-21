@@ -36,7 +36,7 @@ final class DemandDeclinedHandlerTest extends BaseKernelTestCase
     public function testItDeclinesDemandSuccessfully(): void
     {
         $demand = $this->demandRepository->findInStatus(Status::DECLINED)[0];
-        $event = new DemandDeclined($demand);
+        $event = new DemandDeclined($demand->uuid);
 
         $this->handler->__invoke($event);
 
@@ -46,10 +46,10 @@ final class DemandDeclinedHandlerTest extends BaseKernelTestCase
         $sendNotification = $sentMessages[1]->getMessage();
 
         self::assertInstanceOf(UpdateSentNotificationsWithDecision::class, $updateNotifications);
-        self::assertSame($demand, $updateNotifications->demand);
+        self::assertSame($demand->uuid, $updateNotifications->demandUuid);
 
         self::assertInstanceOf(SendDemandNotification::class, $sendNotification);
         self::assertSame($demand->requester->uuid, $sendNotification->recipientUuid);
-        self::assertSame($demand, $sendNotification->demand);
+        self::assertSame($demand->uuid, $sendNotification->demandUuid);
     }
 }

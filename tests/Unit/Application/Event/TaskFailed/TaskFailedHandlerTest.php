@@ -7,6 +7,7 @@ namespace Demandify\Tests\Unit\Application\Event\TaskFailed;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Event\TaskFailed\TaskFailedHandler;
 use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Task\Event\TaskFailed;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
@@ -22,12 +23,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 final class TaskFailedHandlerTest extends TestCase
 {
     private TaskFailedHandler $handler;
+    private DemandRepository|MockObject $demandRepositoryMock;
     private CommandBus|MockObject $commandBus;
 
     protected function setUp(): void
     {
+        $this->demandRepositoryMock = $this->createMock(DemandRepository::class);
         $this->commandBus = $this->createMock(CommandBus::class);
-        $this->handler = new TaskFailedHandler($this->commandBus);
+        $this->handler = new TaskFailedHandler($this->demandRepositoryMock, $this->commandBus);
     }
 
     public function testItSendsCommandToCommandBus(): void
@@ -38,12 +41,20 @@ final class TaskFailedHandlerTest extends TestCase
             'some_content',
             'some_reason',
         );
+
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demand->uuid)
+            ->willReturn($demand)
+        ;
+
         $this->commandBus
             ->expects(self::once())
             ->method('dispatch')
             ->with(self::isInstanceOf(SendDemandNotification::class))
         ;
 
-        $this->handler->__invoke(new TaskFailed($demand));
+        $this->handler->__invoke(new TaskFailed($demand->uuid));
     }
 }

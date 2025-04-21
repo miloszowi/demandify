@@ -7,6 +7,7 @@ namespace Demandify\Tests\Unit\Application\Event\DemandSubmitted;
 use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
 use Demandify\Domain\Demand\Demand;
+use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
@@ -23,16 +24,19 @@ use Ramsey\Uuid\Uuid;
 final class DemandSubmittedHandlerTest extends TestCase
 {
     private ExternalServiceConfigurationRepository|MockObject $externalServiceConfigurationRepositoryMock;
+    private DemandRepository|MockObject $demandRepositoryMock;
     private CommandBus|MockObject $commandBusMock;
     private DemandSubmittedHandler $handler;
 
     protected function setUp(): void
     {
         $this->externalServiceConfigurationRepositoryMock = $this->createMock(ExternalServiceConfigurationRepository::class);
+        $this->demandRepositoryMock = $this->createMock(DemandRepository::class);
         $this->commandBusMock = $this->createMock(CommandBus::class);
         $this->handler = new DemandSubmittedHandler(
             $this->externalServiceConfigurationRepositoryMock,
-            $this->commandBusMock
+            $this->demandRepositoryMock,
+            $this->commandBusMock,
         );
     }
 
@@ -44,9 +48,17 @@ final class DemandSubmittedHandlerTest extends TestCase
             'some_content',
             'some_reason',
         );
-        $event = new DemandSubmitted($demand);
+        $event = new DemandSubmitted($demand->uuid);
 
         $externalServiceConfigurationMock = $this->createMock(ExternalServiceConfiguration::class);
+
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demand->uuid)
+            ->willReturn($demand)
+        ;
+
         $externalServiceConfigurationMock
             ->expects(self::once())
             ->method('hasEligibleApprovers')
@@ -76,7 +88,14 @@ final class DemandSubmittedHandlerTest extends TestCase
             'some_content',
             'some_reason',
         );
-        $event = new DemandSubmitted($demand);
+        $event = new DemandSubmitted($demand->uuid);
+
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demand->uuid)
+            ->willReturn($demand)
+        ;
 
         $externalServiceConfiguration = $this->createMock(ExternalServiceConfiguration::class);
         $externalServiceConfiguration

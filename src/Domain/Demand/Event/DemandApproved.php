@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Demandify\Domain\Demand\Event;
 
-use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\DomainEvent;
+use Ramsey\Uuid\UuidInterface;
 
 readonly class DemandApproved implements DomainEvent
 {
     public function __construct(
-        public Demand $demand,
+        public UuidInterface $demandUuid,
         private \DateTimeImmutable $occuredAt = new \DateTimeImmutable(),
     ) {}
 

@@ -34,7 +34,7 @@ final class UpdateSentNotificationsWithDecisionHandlerTest extends BaseKernelTes
     public function testUpdatingNotificationsWillBeSuccessful(): void
     {
         $command = new UpdateSentNotificationsWithDecision(
-            $this->demandRepository->findInStatus(Status::APPROVED)[0]
+            $this->demandRepository->findInStatus(Status::APPROVED)[0]->uuid
         );
 
         $this->handler->__invoke($command);

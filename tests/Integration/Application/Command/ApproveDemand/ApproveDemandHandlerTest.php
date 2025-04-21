@@ -45,7 +45,7 @@ final class ApproveDemandHandlerTest extends BaseKernelTestCase
 
         $command = new ApproveDemand(
             $demand->uuid,
-            $approver
+            $approver->uuid
         );
 
         $this->approveDemandHandler->__invoke($command);
@@ -60,7 +60,7 @@ final class ApproveDemandHandlerTest extends BaseKernelTestCase
 
     public function testApprovingDemandIsFailingDueToInvalidDemandStatus(): void
     {
-        $requester = $this->userRepository->getByEmail(Email::fromString(UserFixture::USER_EMAIL_FIXTURE));
+        $approver = $this->userRepository->getByEmail(Email::fromString(UserFixture::USER_EMAIL_FIXTURE));
         $demands = $this->demandRepository->findInStatus(Status::APPROVED);
 
         foreach ($demands as $demand) {
@@ -68,7 +68,7 @@ final class ApproveDemandHandlerTest extends BaseKernelTestCase
 
             $command = new ApproveDemand(
                 $demand->uuid,
-                $requester
+                $approver->uuid
             );
             $this->approveDemandHandler->__invoke($command);
 
@@ -84,7 +84,7 @@ final class ApproveDemandHandlerTest extends BaseKernelTestCase
 
         $command = new ApproveDemand(
             $demand->uuid,
-            $notEligibleApprover
+            $notEligibleApprover->uuid
         );
 
         self::expectException(UserNotAuthorizedToUpdateDemandException::class);

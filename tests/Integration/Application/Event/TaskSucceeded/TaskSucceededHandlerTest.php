@@ -35,7 +35,7 @@ final class TaskSucceededHandlerTest extends BaseKernelTestCase
     {
         $demand = $this->demandRepository->findInStatus(Status::EXECUTED)[0];
 
-        $event = new TaskSucceeded($demand);
+        $event = new TaskSucceeded($demand->uuid);
 
         $this->handler->__invoke($event);
 

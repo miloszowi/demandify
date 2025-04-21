@@ -8,24 +8,30 @@ use Demandify\Application\Command\CommandBus;
 use Demandify\Application\Command\SendDemandNotification\SendDemandNotification;
 use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSentNotificationsWithDecision;
 use Demandify\Application\Event\DomainEventHandler;
+use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Notification\NotificationType;
 
 class DemandDeclinedHandler implements DomainEventHandler
 {
-    public function __construct(private readonly CommandBus $commandBus) {}
+    public function __construct(
+        private readonly DemandRepository $demandRepository,
+        private readonly CommandBus $commandBus,
+    ) {}
 
     public function __invoke(DemandDeclined $event): void
     {
+        $demand = $this->demandRepository->getByUuid($event->demandUuid);
+
         $this->commandBus->dispatch(
             new UpdateSentNotificationsWithDecision(
-                $event->demand,
+                $event->demandUuid,
             )
         );
         $this->commandBus->dispatch(
             new SendDemandNotification(
-                $event->demand->requester->uuid,
-                $event->demand,
+                $demand->requester->uuid,
+                $event->demandUuid,
                 NotificationType::DEMAND_DECLINED
             )
         );

@@ -8,9 +8,7 @@ use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Ramsey\Uuid\UuidInterface;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class UpdateEligibleApproversHandler implements CommandHandler
 {
     public function __construct(private readonly ExternalServiceConfigurationRepository $externalServiceConfigurationRepository) {}

@@ -9,9 +9,7 @@ use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 final class SubmitDemandHandler implements CommandHandler
 {
     public function __construct(

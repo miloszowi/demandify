@@ -10,9 +10,7 @@ use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSent
 use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandDeclined;
 use Demandify\Domain\Notification\NotificationType;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class DemandDeclinedHandler implements DomainEventHandler
 {
     public function __construct(private readonly CommandBus $commandBus) {}

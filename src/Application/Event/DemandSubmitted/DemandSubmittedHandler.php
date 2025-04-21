@@ -12,9 +12,7 @@ use Demandify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFo
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Demandify\Domain\Notification\NotificationType;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class DemandSubmittedHandler implements DomainEventHandler
 {
     public function __construct(

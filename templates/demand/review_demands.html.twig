@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Demands Awaiting Decision | Demandify{% endblock %}
+{% block title %}Review Demands | Demandify{% endblock %}
 
 {% block body %}
     <style>
@@ -150,7 +150,7 @@
     </style>
 
     <div class="demands-header">
-        <h1>Demands Awaiting Decision</h1>
+        <h1>Review Demands</h1>
         <p>Review and make decisions on demands that require your approval</p>
     </div>
 
@@ -165,7 +165,7 @@
         {% if demands is empty %}
             <div class="empty-state">
                 <i class="fas fa-check-circle"></i>
-                <h3>No demands awaiting decision</h3>
+                <h3>No demands to review</h3>
                 <p>There are currently no demands that require your approval.</p>
             </div>
         {% else %}

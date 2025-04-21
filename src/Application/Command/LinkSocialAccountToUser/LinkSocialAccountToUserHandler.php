@@ -9,9 +9,7 @@ use Demandify\Domain\User\Email;
 use Demandify\Domain\User\UserRepository;
 use Demandify\Domain\UserSocialAccount\Exception\UserSocialAccountAlreadyLinkedException;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class LinkSocialAccountToUserHandler implements CommandHandler
 {
     public function __construct(

@@ -7,9 +7,7 @@ namespace Demandify\Application\Query\GetDemandsSubmittedByUser;
 use Demandify\Application\Query\QueryHandler;
 use Demandify\Application\Query\ReadModel\DemandsSubmittedByUser;
 use Demandify\Domain\Demand\DemandRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class GetDemandsSubmittedByUserHandler implements QueryHandler
 {
     public function __construct(private readonly DemandRepository $demandRepository) {}

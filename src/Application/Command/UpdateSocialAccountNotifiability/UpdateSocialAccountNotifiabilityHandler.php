@@ -6,9 +6,7 @@ namespace Demandify\Application\Command\UpdateSocialAccountNotifiability;
 
 use Demandify\Application\Command\CommandHandler;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class UpdateSocialAccountNotifiabilityHandler implements CommandHandler
 {
     public function __construct(private readonly UserSocialAccountRepository $userSocialAccountRepository) {}

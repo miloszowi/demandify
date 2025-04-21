@@ -11,9 +11,7 @@ use Demandify\Application\Command\UpdateSentNotificationsWithDecision\UpdateSent
 use Demandify\Application\Event\DomainEventHandler;
 use Demandify\Domain\Demand\Event\DemandApproved;
 use Demandify\Domain\Notification\NotificationType;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class DemandApprovedHandler implements DomainEventHandler
 {
     public function __construct(private readonly CommandBus $commandBus) {}

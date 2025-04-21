@@ -11,18 +11,23 @@ services:
             $slackApiHttpClient: '@logging_http_client.slack'
             $googleApiHttpClient: '@logging_http_client.google'
 
+    Demandify\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+
     _instanceof:
         Demandify\Application\Command\CommandHandler:
             tags:
-                - { name: messenger.message_handler, bus: app.command_bus }
+                - { name: messenger.message_handler, bus: command_bus }
 
         Demandify\Application\Query\QueryHandler:
             tags:
-                - { name: messenger.message_handler, bus: app.query_bus }
+                - { name: messenger.message_handler, bus: query_bus }
 
         Demandify\Application\Event\DomainEventHandler:
             tags:
-                - { name: messenger.message_handler, bus: app.domain_event_bus }
+                - { name: messenger.message_handler, bus: domain_event_bus }
 
         Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2Client:
             tags: [ 'demandify.oauth.client' ]
@@ -32,11 +37,6 @@ services:
 
         Demandify\Infrastructure\Webhook\WebhookHandler:
             tags: [ 'demandify.webhook.handler' ]
-
-    Demandify\:
-        resource: '../src/'
-        exclude:
-            - '../src/Kernel.php'
 
     Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2ClientResolver:
         arguments:

@@ -8,9 +8,7 @@ use Demandify\Application\Query\QueryHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class GetDemandsToBeReviewedForUserHandler implements QueryHandler
 {
     public function __construct(

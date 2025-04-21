@@ -1,17 +1,18 @@
 framework:
     messenger:
         failure_transport: failed
-        default_bus: app.command_bus
+        default_bus: command_bus
 
         buses:
-            app.command_bus:
+            command_bus:
                 middleware:
                     - doctrine_transaction
-            app.domain_event_bus:
+            domain_event_bus:
                 default_middleware: allow_no_handlers
                 middleware:
                     - doctrine_transaction
-            app.query_bus: ~
+            query_bus:
+                default_middleware: allow_no_handlers
 
         transports:
              async: '%env(MESSENGER_TRANSPORT_DSN)%messages'
@@ -29,7 +30,6 @@ framework:
             Demandify\Domain\Demand\Event\DemandDeclined: async
             Demandify\Domain\Demand\Event\DemandSubmitted: async
             Symfony\Component\Notifier\Message\ChatMessage: notification
-
 
 when@test:
     framework:

@@ -19,6 +19,7 @@ class CommandBus implements CommandBusInterface
     public function dispatch(Command $command): void
     {
         $this->logger->info('Command bus dispatching command'.$command::class);
+
         $this->commandBus->dispatch($command);
     }
 }

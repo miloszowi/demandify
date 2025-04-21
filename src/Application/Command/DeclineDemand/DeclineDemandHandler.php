@@ -9,9 +9,7 @@ use Demandify\Application\Query\IsUserEligibleToDecisionForExternalService\IsUse
 use Demandify\Application\Query\QueryBus;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Exception\UserNotAuthorizedToUpdateDemandException;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[AsMessageHandler]
 class DeclineDemandHandler implements CommandHandler
 {
     public function __construct(

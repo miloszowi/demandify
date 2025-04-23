@@ -12,35 +12,33 @@
 </p>
 
 # Table of Contents
-- [About](#-about)
-- - [How it works](#-how-it-works)
-- [Security](#-security)
-- - [Public Endpoints](#-public-endpoints)
-- [Core Features](#-core-features)
+- [About](#about)
+  - [How it works](#how-it-works)
+- [Security](#security)
+  - [Public Endpoints](#public-endpoints)
 - [Requirements](#requirements)
 - [Quick Start](#quick-start)
 - [Tests](#tests)
 - [License](./LICENSE.md)
 - [Naming Conventions](docs/naming_conventions.md)
 
-## 📝 About
-**Demandify** is an internal web application that enables developers to safely request the execution of commands on production-like services such as **PostgreSQL**, **MySQL**, **Redis**, and others – all within a controlled and auditable workflow.
+## About
+**Demandify** is a web application that allows for users to demand execution of query on specific instance (e.g mysql, postgres, redis) – all within a controlled and auditable workflow.
 
-### 🔧 How it works
-1. **Developers** in the organization can create a _demand_, which includes:
-    - `content` – the command to be executed (e.g., `SELECT * FROM users`, `FLUSHDB`, etc.)
-    - `reason` – a justification for the action
-    - `destination` – the target service or environment (e.g., database, redis instance)
+### How it works
+1. **Users** can submit a **_demand_**, which includes:
+   - `content` – the command to be executed (e.g., `SELECT * FROM users`, `FLUSHDB`, etc.)
+   - `reason`
+   - `destination` – instance to be run on (e.g `mysql_master-prod`)
 
 2. Each demand goes through a **review process**:
-    - Only users with the appropriate permissions (assigned by an **admin**) can **approve** or **reject** demands.
-    - This approval step is essential for enforcing security and operational standards.
+   - Only users with the appropriate permissions (assigned by an **admin**) can **approve** or **reject** demands.
 
 3. Upon **approval**, the command is executed automatically:
-    - The **output** is saved to a file and made available to the requester.
-    - If execution fails, the **error output** is captured and stored in the system.
+   - The **output** is saved to a file and made available to the requester.
+   - If execution fails, the **error output** is captured and stored in the system.
 
-## 🔐 Security
+## Security
 When running Demandify in a production or internal organizational environment, **it is strongly recommended to**:
 - Deploy the application behind a VPN or reverse proxy with Active Directory (AD) or SSO integration
 - Limit public access only to trusted IP ranges
@@ -48,28 +46,9 @@ When running Demandify in a production or internal organizational environment, *
 
 This helps protect internal tooling, sensitive operational data and database connections from unauthorized access.
 
-### 🌍 Public Endpoints
+### Public Endpoints
 The following endpoints must remain publicly accessible for integrations such as webhooks:
 - `/webhook/{type}`
-
-## 🛠️ Core Features
-- **💬 Demand-based Command Requests**  
-  Developers can create "demands" to request execution of any command (e.g., SQL, Redis, CLI) on production-like environments. Each request includes context: command content, reason, and target system.
-
-- **✅ Approval Workflow**  
-  Every demand must be reviewed and explicitly approved by authorized users before execution. Admins assign approvers per service instance.
-
-- **📢 Real-time Notifications**  
-  Demandify integrates with communication platforms like Slack to send real-time updates on new demands, approvals, rejections, and execution statuses – keeping everyone in the loop.
-
-- **📁 Result Logging**  
-  Outputs from executed commands are stored securely and made available to the requester. If the execution fails, error logs are retained for further review.
-
-- **🔐 Access Control & Permissions**  
-  Role-based access ensures only authorized individuals can create, approve, or manage demands. Admins have full control over assignments and access levels.
-
-- **🕵️ Full Audit Trail**  
-  Every action – from demand creation to execution – is logged for accountability and compliance. You always know who did what, when, and why.
 
 ## Requirements
 * PHP 8.4 or newer
@@ -101,7 +80,7 @@ to run all of them at once:
 ```bash
 $ docker/tests
 ```
-or inside the container 
+or inside the container
 ```bash
 $ composer tests
 ```

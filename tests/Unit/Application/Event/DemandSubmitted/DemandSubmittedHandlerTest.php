@@ -9,6 +9,7 @@ use Demandify\Application\Event\DemandSubmitted\DemandSubmittedHandler;
 use Demandify\Domain\Demand\Demand;
 use Demandify\Domain\Demand\DemandRepository;
 use Demandify\Domain\Demand\Event\DemandSubmitted;
+use Demandify\Domain\ExternalService\Exception\ExternalServiceConfigurationNotFoundException;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\ExternalService\ExternalServiceConfigurationRepository;
 use Demandify\Domain\User\User;
@@ -38,6 +39,38 @@ final class DemandSubmittedHandlerTest extends TestCase
             $this->demandRepositoryMock,
             $this->commandBusMock,
         );
+    }
+
+    public function testHandlingWillNotDispatchAnyMessageDueToNoExternalServiceConfiguration(): void
+    {
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'some_service',
+            'some_content',
+            'some_reason',
+        );
+        $event = new DemandSubmitted($demand->uuid);
+
+        $this->demandRepositoryMock
+            ->expects(self::once())
+            ->method('getByUuid')
+            ->with($demand->uuid)
+            ->willReturn($demand)
+        ;
+
+        $this->externalServiceConfigurationRepositoryMock
+            ->expects(self::once())
+            ->method('getByName')
+            ->with($demand->service)
+            ->willThrowException(new ExternalServiceConfigurationNotFoundException())
+        ;
+
+        $this->commandBusMock
+            ->expects(self::never())
+            ->method('dispatch')
+        ;
+
+        $this->handler->__invoke($event);
     }
 
     public function testHandlingWillNotDispatchAnyMessageDueToNoEligibleApprovers(): void

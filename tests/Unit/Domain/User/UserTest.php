@@ -44,7 +44,7 @@ final class UserTest extends TestCase
 
     public function testCanGrantPrivilege(): void
     {
-        $role = UserRole::ROLE_USER;
+        $role = UserRole::ROLE_ADMIN;
         $this->user->grantPrivilege($role);
         self::assertContains($role->value, $this->user->getRoles());
     }
@@ -122,5 +122,20 @@ final class UserTest extends TestCase
     {
         $otherUser = new User(Email::fromString('another@local.host'));
         self::assertFalse($this->user->isEqualTo($otherUser));
+    }
+
+    public function testIsAdmin(): void
+    {
+        $this->user->grantPrivilege(UserRole::ROLE_ADMIN);
+        self::assertTrue($this->user->isAdmin());
+
+        $user = new User(Email::fromString('example@local.host'));
+        self::assertFalse($user->isAdmin());
+    }
+
+    public function testEreaseCredentials(): void
+    {
+        self::expectNotToPerformAssertions();
+        $this->user->eraseCredentials();
     }
 }

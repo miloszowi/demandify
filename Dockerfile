@@ -17,8 +17,8 @@ RUN apk update && apk add --no-cache --update linux-headers \
     pdo \
     pdo_pgsql \
     zip \
-    && pecl install amqp \
-    && docker-php-ext-enable amqp
+    && pecl install amqp pcov \
+    && docker-php-ext-enable amqp pcov
 #    && echo "xdebug.mode=debug,coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
 #    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
 #    && echo "xdebug.discover_client_host=true" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \

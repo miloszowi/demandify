@@ -9,6 +9,7 @@ use Demandify\Domain\User\Email;
 use Demandify\Domain\User\User;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @internal
@@ -46,5 +47,22 @@ final class ExternalServiceConfigurationTest extends TestCase
         $result = $externalServiceConfiguration->isUserEligible($user);
 
         self::assertFalse($result);
+    }
+
+    public function testHasEligibleApprovers(): void
+    {
+        $externalServiceConfiguration = new ExternalServiceConfiguration(
+            'test-service',
+            [Uuid::uuid4()->toString()]
+        );
+
+        self::assertTrue($externalServiceConfiguration->hasEligibleApprovers());
+
+        $externalServiceConfiguration = new ExternalServiceConfiguration(
+            'test-service',
+            []
+        );
+
+        self::assertFalse($externalServiceConfiguration->hasEligibleApprovers());
     }
 }

@@ -37,6 +37,7 @@ final class DemandTest extends TestCase
     public function testInitializable(): void
     {
         self::assertInstanceOf(Demand::class, $this->demand);
+        self::assertCount(1, $this->demand->releaseEvents());
     }
 
     public function testHasCorrectData(): void
@@ -52,24 +53,30 @@ final class DemandTest extends TestCase
 
     public function testCanBeApproved(): void
     {
+        $demand = new Demand($this->requester, 'service', 'content', 'reason');
+        $demand->releaseEvents();
         $approver = $this->createMock(User::class);
 
-        $this->demand->approveBy($approver);
+        $demand->approveBy($approver);
 
-        self::assertSame(Status::APPROVED, $this->demand->status);
-        self::assertSame($approver, $this->demand->approver);
-        self::assertInstanceOf(\DateTimeImmutable::class, $this->demand->updatedAt);
+        self::assertSame(Status::APPROVED, $demand->status);
+        self::assertSame($approver, $demand->approver);
+        self::assertInstanceOf(\DateTimeImmutable::class, $demand->updatedAt);
+        self::assertCount(1, $demand->releaseEvents());
     }
 
     public function testCanBeDeclined(): void
     {
+        $demand = new Demand($this->requester, 'service', 'content', 'reason');
+        $demand->releaseEvents();
         $approver = $this->createMock(User::class);
 
-        $this->demand->declineBy($approver);
+        $demand->declineBy($approver);
 
-        self::assertSame(Status::DECLINED, $this->demand->status);
-        self::assertSame($approver, $this->demand->approver);
-        self::assertInstanceOf(\DateTimeImmutable::class, $this->demand->updatedAt);
+        self::assertSame(Status::DECLINED, $demand->status);
+        self::assertSame($approver, $demand->approver);
+        self::assertInstanceOf(\DateTimeImmutable::class, $demand->updatedAt);
+        self::assertCount(1, $demand->releaseEvents());
     }
 
     public function testThrowsExceptionIfApproveIsCalledTwice(): void
@@ -133,6 +140,7 @@ final class DemandTest extends TestCase
 
         $demand->approveBy($this->createMock(User::class));
         $demand->start();
+        $demand->releaseEvents();
         $demand->execute(new FakeDemandExecutor());
 
         self::assertSame(Status::EXECUTED, $demand->status);
@@ -147,5 +155,35 @@ final class DemandTest extends TestCase
         self::assertSame($fakeTaskResult->resultPath, $demand->task->resultPath);
         self::assertSame($fakeTaskResult->executionTime, $demand->task->executionTime);
         self::assertSame($fakeTaskResult->errorMessage, $demand->task->errorMessage);
+        self::assertCount(1, $demand->releaseEvents());
+    }
+
+    public function testCanBeExecutedAndFail(): void
+    {
+        $demand = new Demand(
+            $this->createMock(User::class),
+            'Sample Service',
+            'This is a failed content',
+            'This is a failed reason'
+        );
+
+        $demand->approveBy($this->createMock(User::class));
+        $demand->releaseEvents();
+        $demand->start();
+        $demand->execute(new FakeDemandExecutor());
+
+        self::assertSame(Status::FAILED, $demand->status);
+        $fakeTaskResult = FakeDemandExecutor::getFailedResult();
+
+        self::assertInstanceOf(Task::class, $demand->task);
+        self::assertSame($fakeTaskResult->success, $demand->task->success);
+        self::assertSame(
+            $fakeTaskResult->executedAt->format('Y-m-d H:i:s'),
+            $demand->task->executedAt->format('Y-m-d H:i:s')
+        );
+        self::assertSame($fakeTaskResult->resultPath, $demand->task->resultPath);
+        self::assertSame($fakeTaskResult->executionTime, $demand->task->executionTime);
+        self::assertSame($fakeTaskResult->errorMessage, $demand->task->errorMessage);
+        self::assertCount(1, $demand->releaseEvents());
     }
 }

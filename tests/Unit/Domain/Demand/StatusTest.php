@@ -35,10 +35,19 @@ final class StatusTest extends TestCase
         self::assertSame(Status::APPROVED, $newStatus);
     }
 
+    public function testProgressNoTransitionsAvailable(): void
+    {
+        $status = Status::EXECUTED;
+        self::expectException(InvalidDemandStatusException::class);
+        self::expectExceptionMessage('No transitions allowed from status EXECUTED.');
+        $status->progress(Status::APPROVED);
+    }
+
     public function testProgressInvalidTransition(): void
     {
         $status = Status::NEW;
-        $this->expectException(InvalidDemandStatusException::class);
+        self::expectException(InvalidDemandStatusException::class);
+        self::expectExceptionMessage('Invalid transition from status NEW to IN_PROGRESS.');
         $status->progress(Status::IN_PROGRESS);
     }
 

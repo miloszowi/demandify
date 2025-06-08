@@ -10,6 +10,8 @@ use Demandify\Domain\Task\Task;
 
 class FakeDemandExecutor implements DemandExecutor
 {
+    public const FILE_PATH = 'var/results/some_file.txt';
+
     public function execute(Demand $demand): Task
     {
         if (str_contains($demand->content, 'failed')) {
@@ -38,7 +40,7 @@ class FakeDemandExecutor implements DemandExecutor
             true,
             1,
             'some success message',
-            'result path'
+            self::FILE_PATH
         );
     }
 }

@@ -10,6 +10,9 @@
     <server name="KERNEL_CLASS" value="\Demandify\Kernel"/>
   </php>
   <testsuites>
+    <testsuite name="Functional Tests">
+      <directory>tests/Functional</directory>
+    </testsuite>
     <testsuite name="Integration Tests">
       <directory>tests/Integration</directory>
     </testsuite>

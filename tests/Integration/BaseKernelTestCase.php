@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Demandify\Tests\Integration;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\UserRepository;
+use Demandify\Tests\Fixtures\FixtureLoadable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @internal
@@ -19,28 +21,11 @@ use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
  */
 abstract class BaseKernelTestCase extends KernelTestCase
 {
-    protected EntityManagerInterface $entityManager;
+    use FixtureLoadable;
 
-    protected function setUp(): void
+    public function getEntityManager(): EntityManagerInterface
     {
-        parent::setUp();
-
-        $this->entityManager = self::getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @param Fixture[] $fixtures
-     */
-    public function load(array $fixtures): void
-    {
-        $loader = new Loader();
-
-        foreach ($fixtures as $fixture) {
-            $loader->addFixture($fixture);
-        }
-
-        $executor = new ORMExecutor($this->entityManager, new ORMPurger($this->entityManager));
-        $executor->execute($loader->getFixtures());
+        return self::getContainer()->get('doctrine')->getManager();
     }
 
     public function getAsyncTransport(): InMemoryTransport
@@ -51,5 +36,18 @@ abstract class BaseKernelTestCase extends KernelTestCase
     public function getTransport(string $transport): InMemoryTransport
     {
         return $this->getContainer()->get('messenger.transport.'.$transport);
+    }
+
+    public function getTokenByUserEmail(Email $email): TokenInterface
+    {
+        $user = self::getContainer()->get(UserRepository::class)->getByEmail($email);
+        $firewallName = 'main';
+
+        return new UsernamePasswordToken($user, $firewallName, $user->getRoles());
+    }
+
+    public function getNullToken(): TokenInterface
+    {
+        return new NullToken();
     }
 }

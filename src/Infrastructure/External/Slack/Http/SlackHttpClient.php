@@ -6,8 +6,7 @@ namespace Demandify\Infrastructure\External\Slack\Http;
 
 use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Demandify\Infrastructure\External\Slack\Http\Response\Chat\PostMessageResponse;
-use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
+use Demandify\Infrastructure\External\Slack\Http\Response\OAuth2AccessResponse;
 use Demandify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
 use Demandify\Infrastructure\External\Slack\SlackConfiguration;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +21,7 @@ class SlackHttpClient
         private readonly SerializerInterface $serializer
     ) {}
 
-    public function oauthAccess(string $code, string $redirectUri): Oauth2AccessResponse
+    public function oauthAccess(string $code, string $redirectUri): OAuth2AccessResponse
     {
         $response = $this->slackApiHttpClient->request(
             Request::METHOD_POST,
@@ -45,7 +44,7 @@ class SlackHttpClient
 
         $response = $this->serializer->deserialize(
             $response->getContent(),
-            Oauth2AccessResponse::class,
+            OAuth2AccessResponse::class,
             JsonEncoder::FORMAT
         );
 
@@ -80,65 +79,6 @@ class SlackHttpClient
         }
 
         return $response;
-    }
-
-    /**
-     * @param mixed[] $blocks
-     */
-    public function sendChatMessage(array $blocks, string $recipientSlackId): PostMessageResponse
-    {
-        $response = $this->slackApiHttpClient->request(
-            Request::METHOD_POST,
-            '/api/chat.postMessage',
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json; charset=utf-8',
-                    'Authorization' => 'Bearer '.$this->slackConfiguration->oauthBotToken,
-                ],
-                'json' => [
-                    'channel' => $recipientSlackId,
-                    'blocks' => $blocks,
-                ],
-            ]
-        );
-
-        $response = $this->serializer->deserialize(
-            $response->getContent(),
-            PostMessageResponse::class,
-            JsonEncoder::FORMAT
-        );
-
-        if (false === $response->ok) {
-            throw SlackApiException::fromError((string) $response->error);
-        }
-
-        return $response;
-    }
-
-    /**
-     * @param mixed[] $blocks
-     */
-    public function updateChatMessage(array $blocks, string $channelId, string $notificationIdentifier): void
-    {
-        $response = $this->slackApiHttpClient->request(
-            Request::METHOD_POST,
-            '/api/chat.update',
-            [
-                'headers' => [
-                    'Content-Type' => 'application/json; charset=utf-8',
-                    'Authorization' => 'Bearer '.$this->slackConfiguration->oauthBotToken,
-                ],
-                'json' => [
-                    'channel' => $channelId,
-                    'ts' => $notificationIdentifier,
-                    'blocks' => $blocks,
-                ],
-            ]
-        );
-
-        if (false === $response->toArray()['ok']) {
-            throw SlackApiException::fromError((string) $response->toArray()['error']);
-        }
     }
 
     public function oauthTest(string $accessToken): void

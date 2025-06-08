@@ -6,7 +6,7 @@ namespace Demandify\Tests\Unit\Infrastructure\External\Slack\Http;
 
 use Demandify\Infrastructure\External\Http\LoggingAwareHttpClient;
 use Demandify\Infrastructure\External\Slack\Http\Exception\SlackApiException;
-use Demandify\Infrastructure\External\Slack\Http\Response\Oauth2AccessResponse;
+use Demandify\Infrastructure\External\Slack\Http\Response\OAuth2AccessResponse;
 use Demandify\Infrastructure\External\Slack\Http\Response\UserInfoResponse;
 use Demandify\Infrastructure\External\Slack\Http\SlackHttpClient;
 use Demandify\Infrastructure\External\Slack\SlackConfiguration;
@@ -58,14 +58,14 @@ final class SlackHttpClientTest extends TestCase
             ->willReturn($response)
         ;
 
-        $oauthResponse = new Oauth2AccessResponse(
+        $oauthResponse = new OAuth2AccessResponse(
             ok: true,
             error: null,
             accessToken: 'some_access_token'
         );
 
         $this->serializer->method('deserialize')
-            ->with($responseContent, Oauth2AccessResponse::class, 'json')
+            ->with($responseContent, OAuth2AccessResponse::class, 'json')
             ->willReturn($oauthResponse)
         ;
 
@@ -87,8 +87,8 @@ final class SlackHttpClientTest extends TestCase
         ;
 
         $this->serializer->method('deserialize')
-            ->with($responseContent, Oauth2AccessResponse::class, 'json')
-            ->willReturn(new Oauth2AccessResponse(false, 'invalid_grant'))
+            ->with($responseContent, OAuth2AccessResponse::class, 'json')
+            ->willReturn(new OAuth2AccessResponse(false, 'invalid_grant'))
         ;
 
         $this->slackHttpClient->oauthAccess('some_code', 'https://localhost/oauth/slack/check');

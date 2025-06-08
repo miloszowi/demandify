@@ -21,6 +21,8 @@ class OAuth2ClientResolver
             }
         }
 
-        throw new \RuntimeException('OAuth2 client not found');
+        throw new \RuntimeException(
+            \sprintf('OAuth2 client for type "%s" not found', $type->value)
+        );
     }
 }

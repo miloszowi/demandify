@@ -50,7 +50,7 @@ class TaskController extends AbstractController
         );
     }
 
-    public function getTaskPath(Demand $demand): string
+    private function getTaskPath(Demand $demand): string
     {
         if (null === $demand->task || null === $demand->task->resultPath) {
             throw new NotFoundHttpException();

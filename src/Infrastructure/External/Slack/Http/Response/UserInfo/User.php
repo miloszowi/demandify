@@ -6,6 +6,7 @@ namespace Demandify\Infrastructure\External\Slack\Http\Response\UserInfo;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
+// todo - idk if all of those are really required
 final readonly class User
 {
     public function __construct(

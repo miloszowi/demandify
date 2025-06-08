@@ -69,8 +69,8 @@ final class DemandApprovedHandlerTest extends BaseKernelTestCase
         $demand = $this->demandRepository->findInStatus(Status::APPROVED)[0];
         $event = new DemandApproved($demand->uuid);
 
-        $this->entityManager->remove($this->notificationRepository->findByNotificationIdentifier(NotificationFixture::NOTIFICATION_IDENTIFIER));
-        $this->entityManager->flush();
+        $this->getEntityManager()->remove($this->notificationRepository->findByNotificationIdentifier(NotificationFixture::NOTIFICATION_IDENTIFIER));
+        $this->getEntityManager()->flush();
         $this->handler->__invoke($event);
 
         self::assertCount(2, $this->getAsyncTransport()->getSent());

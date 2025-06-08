@@ -61,4 +61,19 @@ final class IsUserEligibleToDecisionForExternalServiceHandlerTest extends BaseKe
 
         self::assertFalse($result);
     }
+
+    public function testItReturnsFalseIfExternalServiceConfigurationDoesNotExist(): void
+    {
+        $notEligibleUser = $this->userRepository->getByEmail(
+            Email::fromString(UserFixture::USER_EMAIL_FIXTURE)
+        );
+        $query = new IsUserEligibleToDecisionForExternalService(
+            $notEligibleUser,
+            'not_existing_external_service'
+        );
+
+        $result = $this->handler->__invoke($query);
+
+        self::assertFalse($result);
+    }
 }

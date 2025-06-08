@@ -34,11 +34,14 @@ class DemandVoter extends Voter
         /** @var Demand $demand */
         $demand = $subject;
 
+        $isUserEligibleToDecisionForExternalService = $this->queryBus->ask(new IsUserEligibleToDecisionForExternalService($user, $demand->service));
+
         return match ($attribute) {
             self::VIEW => $demand->requester->uuid->equals($user->uuid)
                 || $demand->approver?->uuid->equals($user->uuid)
-                || $user->isAdmin(),
-            self::DECISION => $this->queryBus->ask(new IsUserEligibleToDecisionForExternalService($user, $demand->service)),
+                || $user->isAdmin()
+                || $isUserEligibleToDecisionForExternalService,
+            self::DECISION => $isUserEligibleToDecisionForExternalService,
             default => false
         };
     }

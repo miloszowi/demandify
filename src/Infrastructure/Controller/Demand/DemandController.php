@@ -89,7 +89,7 @@ class DemandController extends AbstractController
     }
 
     #[Route(
-        path: '/demand/{id}/approve',
+        path: '/demands/{id}/approve',
         name: 'app_demand_approve',
         requirements: ['id' => Requirement::UUID],
         methods: [Request::METHOD_POST],
@@ -107,7 +107,7 @@ class DemandController extends AbstractController
     }
 
     #[Route(
-        path: '/demand/{id}/decline',
+        path: '/demands/{id}/decline',
         name: 'app_demand_decline',
         requirements: ['id' => Requirement::UUID],
         methods: [Request::METHOD_POST],

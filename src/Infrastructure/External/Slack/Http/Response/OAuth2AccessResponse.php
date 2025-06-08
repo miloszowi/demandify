@@ -9,11 +9,11 @@ use Demandify\Infrastructure\External\Slack\Http\Response\OAuth2Access\Enterpris
 use Demandify\Infrastructure\External\Slack\Http\Response\OAuth2Access\Team;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-final readonly class Oauth2AccessResponse
+final readonly class OAuth2AccessResponse
 {
     public function __construct(
         public bool $ok,
-        public ?string $error,
+        public ?string $error = null,
         #[SerializedName('access_token')]
         public ?string $accessToken = null,
         #[SerializedName('token_type')]

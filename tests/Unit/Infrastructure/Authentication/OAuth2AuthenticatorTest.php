@@ -13,8 +13,10 @@ use Demandify\Infrastructure\Authentication\OAuth2Authenticator;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -104,5 +106,44 @@ final class OAuth2AuthenticatorTest extends TestCase
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Failed to authenticate.');
         $this->oAuth2Authenticator->authenticate($requestMock);
+    }
+
+    public function testOnAuthenticationSuccess(): void
+    {
+        self::expectNotToPerformAssertions();
+        $this->oAuth2Authenticator->onAuthenticationSuccess(
+            $this->createMock(Request::class),
+            new NullToken(),
+            'main'
+        );
+    }
+
+    public function testOnAuthenticationFailure(): void
+    {
+        $request = $this->createMock(Request::class);
+        $session = $this->createMock(SessionInterface::class);
+        $request
+            ->expects(self::once())
+            ->method('getSession')
+            ->willReturn($session)
+        ;
+
+        $session
+            ->expects(self::once())
+            ->method('remove')
+            ->with(AccessToken::class)
+        ;
+        $response = $this->oAuth2Authenticator->onAuthenticationFailure($request, $this->createMock(AuthenticationException::class));
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/login', $response->getTargetUrl());
+    }
+
+    public function testStart(): void
+    {
+        $response = $this->oAuth2Authenticator->start($this->createMock(Request::class));
+
+        self::assertInstanceOf(RedirectResponse::class, $response);
+        self::assertSame('/login', $response->getTargetUrl());
     }
 }

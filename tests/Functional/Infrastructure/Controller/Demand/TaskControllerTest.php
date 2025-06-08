@@ -14,6 +14,7 @@ use Demandify\Infrastructure\Controller\Demand\TaskController;
 use Demandify\Tests\Fixtures\TestCase;
 use Demandify\Tests\Functional\BaseWebTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -56,7 +57,9 @@ final class TaskControllerTest extends BaseWebTestCase
         $client = self::createClient();
         $client->loginUser($this->getUserForThisTest());
 
+        /** @var Filesystem $fileSystem */
         $fileSystem = self::getContainer()->get('filesystem');
+        $fileSystem->mkdir($_ENV['APP_RESULTS_PATH']);
         $fileSystem->touch($this->executedDemand->task->resultPath);
         $fileSystem->appendToFile($this->executedDemand->task->resultPath, 'test-content');
 
@@ -72,6 +75,7 @@ final class TaskControllerTest extends BaseWebTestCase
         $client->loginUser($this->getUserForThisTest());
 
         $fileSystem = self::getContainer()->get('filesystem');
+        $fileSystem->mkdir($_ENV['APP_RESULTS_PATH']);
         $fileSystem->touch($this->executedDemand->task->resultPath);
         $fileSystem->appendToFile($this->executedDemand->task->resultPath, 'test-content');
 

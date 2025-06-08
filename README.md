@@ -7,7 +7,9 @@
 
 <p align="center"> 
 <img src="https://github.com/miloszowi/demandify/actions/workflows/app.yml/badge.svg" alt="pipeline status" />
-<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="license" />
+<a href="https://codecov.io/gh/miloszowi/demandify" >
+<img src="https://codecov.io/gh/miloszowi/demandify/graph/badge.svg?token=5CZC0FLC1V"/>
+</a><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="license" />
 <img src="https://img.shields.io/github/stars/miloszowi/demandify" alt="repo stars">
 </p>
 

@@ -47,6 +47,8 @@ jobs:
           POSTGRES_DB: demandify_test
         ports:
           - 5432:5432
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -61,12 +63,21 @@ jobs:
 
       - name: Run PHPUnit tests
         run: |
+          mkdir -p coverage
+          chmod 777 coverage
           docker pull ghcr.io/${{ github.repository }}:latest
           docker run --rm \
             -e DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:5432/demandify?serverVersion=16&charset=utf8" \
             --network="host" \
+            -v ${{ github.workspace }}/coverage:/var/www/html/coverage \
             ghcr.io/${{ github.repository }}:latest \
-            /bin/sh -c "bin/console d:d:c --env=test && bin/console d:m:m --env=test --no-interaction && composer phpunit"
+            /bin/sh -c "bin/console d:d:c --env=test && bin/console d:m:m --env=test --no-interaction && ./vendor/bin/phpunit --coverage-clover coverage/coverage.xml"
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: coverage/coverage.xml
 
   phpstan:
     runs-on: ubuntu-latest

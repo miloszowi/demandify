@@ -7,14 +7,14 @@ namespace Demandify\Tests\Unit\Infrastructure\Authentication\OAuth2\Provider;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2Client;
 use Demandify\Infrastructure\Authentication\OAuth2\Provider\OAuth2ClientResolver;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(OAuth2ClientResolver::class)]
 final class OAuth2ClientResolverTest extends TestCase
 {
     private MockObject|OAuth2Client $slackClient;

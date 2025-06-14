@@ -21,7 +21,8 @@ class OAuthController extends AbstractController
 {
     public function __construct(
         private readonly OAuth2ClientResolver $clientResolver,
-        private readonly MessageBusInterface $messageBus
+        private readonly MessageBusInterface $messageBus,
+        private readonly UrlGeneratorInterface $urlGenerator,
     ) {}
 
     #[Route(
@@ -76,15 +77,15 @@ class OAuthController extends AbstractController
             $userIdentity->accessToken
         );
 
-        $this->addFlash('success', 'You have been successfully authorized.');
-
-        return $this->redirect($this->generateUrl('app_home'));
+        return $this->redirect(
+            $this->urlGenerator->generate('app_home')
+        );
     }
 
     private function generateCheckUrl(string $type): string
     {
-        return $this->generateUrl(
-            route: 'app_oauth_check',
+        return $this->urlGenerator->generate(
+            name: 'app_oauth_check',
             parameters: ['type' => $type],
             referenceType: UrlGeneratorInterface::ABSOLUTE_URL,
         );

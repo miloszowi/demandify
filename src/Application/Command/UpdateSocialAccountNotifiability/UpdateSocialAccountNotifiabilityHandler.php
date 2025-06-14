@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Demandify\Application\Command\UpdateSocialAccountNotifiability;
 
 use Demandify\Application\Command\CommandHandler;
-use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
+use Demandify\Domain\User\UserRepository;
 
 class UpdateSocialAccountNotifiabilityHandler implements CommandHandler
 {
-    public function __construct(private readonly UserSocialAccountRepository $userSocialAccountRepository) {}
+    public function __construct(private readonly UserRepository $userRepository) {}
 
     public function __invoke(UpdateSocialAccountNotifiability $command): void
     {
-        $socialAccount = $this->userSocialAccountRepository->getByUserUuidAndType(
-            $command->userUuid,
-            $command->socialAccountType
-        );
+        $user = $this->userRepository->getByUuid($command->userUuid);
+        $user
+            ->getSocialAccount($command->socialAccountType)
+            ?->setNotifiable($command->notifiable)
+        ;
 
-        $socialAccount->setNotifiable($command->notifiable);
-
-        $this->userSocialAccountRepository->save($socialAccount);
+        $this->userRepository->save($user);
     }
 }

@@ -7,13 +7,13 @@ namespace Demandify\Tests\Unit\Infrastructure\Authentication\OAuth2\Response;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use Demandify\Infrastructure\Authentication\AccessToken;
 use Demandify\Infrastructure\Authentication\OAuth2\Response\OAuth2Identity;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
+#[CoversClass(OAuth2Identity::class)]
 final class OAuth2IdentityTest extends TestCase
 {
     public function testItStoresAllProvidedData(): void

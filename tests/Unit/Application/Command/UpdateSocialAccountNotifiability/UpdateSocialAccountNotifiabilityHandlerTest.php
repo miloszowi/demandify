@@ -6,8 +6,10 @@ namespace Demandify\Tests\Unit\Application\Command\UpdateSocialAccountNotifiabil
 
 use Demandify\Application\Command\UpdateSocialAccountNotifiability\UpdateSocialAccountNotifiability;
 use Demandify\Application\Command\UpdateSocialAccountNotifiability\UpdateSocialAccountNotifiabilityHandler;
+use Demandify\Domain\User\Email;
+use Demandify\Domain\User\User;
+use Demandify\Domain\User\UserRepository;
 use Demandify\Domain\UserSocialAccount\UserSocialAccount;
-use Demandify\Domain\UserSocialAccount\UserSocialAccountRepository;
 use Demandify\Domain\UserSocialAccount\UserSocialAccountType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,13 +23,13 @@ use Ramsey\Uuid\Uuid;
 final class UpdateSocialAccountNotifiabilityHandlerTest extends TestCase
 {
     private UpdateSocialAccountNotifiabilityHandler $handler;
-    private MockObject|UserSocialAccountRepository $userSocialAccountRepositoryMock;
+    private MockObject|UserRepository $userRepository;
 
     protected function setUp(): void
     {
-        $this->userSocialAccountRepositoryMock = $this->createMock(UserSocialAccountRepository::class);
+        $this->userRepository = $this->createMock(UserRepository::class);
 
-        $this->handler = new UpdateSocialAccountNotifiabilityHandler($this->userSocialAccountRepositoryMock);
+        $this->handler = new UpdateSocialAccountNotifiabilityHandler($this->userRepository);
     }
 
     public function testItIsInitializable(): void
@@ -42,25 +44,21 @@ final class UpdateSocialAccountNotifiabilityHandlerTest extends TestCase
 
         $command = new UpdateSocialAccountNotifiability($userUuid, $userSocialAccountType, true);
 
-        $userSocialAccountMock = $this->createMock(UserSocialAccount::class);
+        $user = new User(Email::fromString('test@local.host'));
+        $userSocialAccountMock = new UserSocialAccount($user, $userSocialAccountType, 'external-id');
+        $user->linkSocialAccount($userSocialAccountMock);
 
-        $this->userSocialAccountRepositoryMock
+        $this->userRepository
             ->expects(self::once())
-            ->method('getByUserUuidAndType')
-            ->with($userUuid, $userSocialAccountType)
-            ->willReturn($userSocialAccountMock)
+            ->method('getByUuid')
+            ->with($userUuid)
+            ->willReturn($user)
         ;
 
-        $userSocialAccountMock
-            ->expects(self::once())
-            ->method('setNotifiable')
-            ->with(true)
-        ;
-
-        $this->userSocialAccountRepositoryMock
+        $this->userRepository
             ->expects(self::once())
             ->method('save')
-            ->with($userSocialAccountMock)
+            ->with($user)
         ;
 
         $this->handler->__invoke($command);

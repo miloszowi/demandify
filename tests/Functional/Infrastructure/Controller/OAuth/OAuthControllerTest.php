@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Demandify\Tests\Functional\Infrastructure\Controller\Demand;
+namespace Demandify\Tests\Functional\Infrastructure\Controller\OAuth;
 
 use Demandify\Infrastructure\Controller\OAuth\OAuthController;
 use Demandify\Tests\Functional\BaseWebTestCase;
@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 #[CoversClass(OAuthController::class)]
 final class OAuthControllerTest extends BaseWebTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
     public function testItRedirectsToTheOauthProvider(): void
     {
         $client = self::createClient();

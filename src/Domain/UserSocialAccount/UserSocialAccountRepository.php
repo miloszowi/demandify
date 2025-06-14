@@ -7,6 +7,9 @@ namespace Demandify\Domain\UserSocialAccount;
 use Demandify\Domain\User\Email;
 use Ramsey\Uuid\UuidInterface;
 
+/**
+ * TODO: Remove this and user aggregate user root instead!
+ */
 interface UserSocialAccountRepository
 {
     public function findByUserUuidAndType(UuidInterface $userUuid, UserSocialAccountType $userSocialAccountType): ?UserSocialAccount;

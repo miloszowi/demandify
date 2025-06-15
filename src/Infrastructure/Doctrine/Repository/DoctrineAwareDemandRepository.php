@@ -11,7 +11,6 @@ use Demandify\Domain\Demand\Status;
 use Demandify\Domain\ExternalService\ExternalServiceConfiguration;
 use Demandify\Domain\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Ramsey\Uuid\UuidInterface;
 
@@ -20,11 +19,6 @@ class DoctrineAwareDemandRepository extends ServiceEntityRepository implements D
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Demand::class);
-    }
-
-    public function createQueryBuilder(string $alias, ?string $indexBy = null): QueryBuilder
-    {
-        return parent::createQueryBuilder($alias, $indexBy);
     }
 
     public function getByUuid(UuidInterface $uuid): Demand

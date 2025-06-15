@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Demandify\Infrastructure\Doctrine\Listener;
 
-use Doctrine\DBAL\Schema\PostgreSQLSchemaManager;
 use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 
 class RemoveCreateSchemaFromMigrationListener
@@ -20,13 +19,9 @@ class RemoveCreateSchemaFromMigrationListener
             ->getSchemaManager()
         ;
 
-        if (!$schemaManager instanceof PostgreSQLSchemaManager) {
-            return;
-        }
-
         $schema = $args->getSchema();
 
-        foreach ($schemaManager->getExistingSchemaSearchPaths() as $namespace) {
+        foreach ($schemaManager->getExistingSchemaSearchPaths() as $namespace) { // @phpstan-ignore-line
             if (!$schema->hasNamespace($namespace)) {
                 $schema->createNamespace($namespace);
             }
